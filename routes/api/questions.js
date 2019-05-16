@@ -356,9 +356,12 @@ router.post("/create_web_form", (req, res) => {
             questionObject.check_id
           }</b>`;
 
-          html_template.replace("{{game_name}}", game_name);
-          html_template.replace("{{msg}}", msg);
-          html_template.replace("{{year}}", new Date().getFullYear());
+          html_template = html_template.replace("{{game_name}}", game_name);
+          html_template = html_template.replace("{{msg}}", msg);
+          html_template = html_template.replace(
+            "{{year}}",
+            new Date().getFullYear()
+          );
 
           let mailOptions = {
             //$_SESSION['game_name']."客服代碼通知信[".date("Y/m/d H:i:s")."]",
@@ -367,7 +370,7 @@ router.post("/create_web_form", (req, res) => {
             subject: `${game_name}客服代碼通知信 ${moment().format(
               "YYYY-MM-DD h:mm:ss"
             )}`, // Subject line
-            text: html_template // html body
+            html: html_template // html body
           };
 
           // send mail with defined transport object
