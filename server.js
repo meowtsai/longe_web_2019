@@ -4,7 +4,7 @@ const games = require("./routes/api/games");
 const service = require("./routes/api/service");
 const questions = require("./routes/api/questions");
 const upload = require("./routes/api/upload");
-const CONFIG = require("../config/config")[process.env.NODE_ENV];
+const CONFIG = require("./config/config")[process.env.NODE_ENV];
 const requestIp = require("request-ip");
 // default options
 
