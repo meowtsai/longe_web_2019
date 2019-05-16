@@ -1,0 +1,71 @@
+const Validator = require("validator");
+const isEmpty = require("./is-empty");
+const isImage = require("./is-image");
+
+module.exports = function validateCreateWebInput(data) {
+  let errors = {};
+
+  data.email = !isEmpty(data.email) ? data.email : "";
+  data.phone = !isEmpty(data.phone) ? data.phone : "";
+  data.content = !isEmpty(data.content) ? data.content : "";
+  data.server_id = !isEmpty(data.server_id) ? data.server_id : "";
+  data.question_type = !isEmpty(data.question_type) ? data.question_type : "";
+  data.files = !isEmpty(data.files) ? data.files : {};
+
+  data.partner_uid = !isEmpty(data.partner_uid) ? data.partner_uid : "";
+
+  if (isEmpty(data.partner_uid)) {
+    if (isEmpty(data.email)) {
+      errors.email = "Email 為必填。";
+    }
+    if (isEmpty(data.phone)) {
+      errors.phone = "手機為必填。";
+    }
+    if (
+      !Validator.isMobilePhone(
+        data.phone,
+        ["en-SG", "ms-MY", "zh-CN", "zh-HK", "zh-TW"],
+        { strictMode: false }
+      )
+    ) {
+      console.log(data.phone);
+      errors.phone = "僅可輸入新馬港澳台手機。";
+    }
+  }
+
+  if (!isEmpty(data.email)) {
+    if (!Validator.isEmail(data.email)) {
+      errors.email = "Email 格式不正確。";
+    }
+  }
+
+  if (isEmpty(data.server_id)) {
+    errors.server_id = "請選擇伺服器。";
+  }
+
+  if (isEmpty(data.question_type)) {
+    errors.question_type = "請選擇提問類型。";
+  }
+  if (isEmpty(data.content)) {
+    errors.content = "問題描述 為必填。";
+  }
+  if (Object.keys(data.files).length > 6) {
+    errors.file01 = "上傳檔案請勿超過6個。";
+  }
+
+  if (Object.keys(data.files).length > 0) {
+    //console.log("validation", data.files);
+    const errorFiles = Object.keys(data.files)
+      .filter(fileKey => !isImage(data.files[fileKey]))
+      .map(fileKey => data.files[fileKey].name);
+    //console.log("efl", errorFiles);
+    if (errorFiles.length > 0) {
+      errors.file01 = `上傳檔案僅限圖檔(請移除:${errorFiles.join(",")})。`;
+    }
+  }
+
+  return {
+    errors,
+    isValid: isEmpty(errors)
+  };
+};

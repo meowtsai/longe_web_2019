@@ -1,0 +1,19 @@
+.item-header {
+  font-size: 18px;
+  color: #cb3837;
+  text-decoration: none;
+  font-weight: normal;
+  line-height: 1.4;
+}
+.faq-item-box {
+  min-height: 0;
+  margin-top: -388px;
+  transition: margin-top 0.218s ease-out 0s;
+  display: none;
+}
+
+.faq-item-box-display {
+  min-height: 150;
+  margin-top: 0;
+  display: "";
+}

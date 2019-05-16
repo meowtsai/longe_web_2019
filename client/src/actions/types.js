@@ -1,0 +1,31 @@
+export const GET_CUSTOMERS = "GET_CUSTOMERS";
+export const UPDATE_CUSTOMER = "REMOVE_CUSTOMER";
+export const GET_GAMES = "GET_GAMES";
+export const GET_GAME = "GET_GAME";
+export const GET_SERVERS = "GET_SERVERS";
+
+export const GET_ERRORS = "GET_ERRORS";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
+export const USER_LOADING = "USER_LOADING";
+export const USER_LOADED = "USER_LOADED";
+export const AUTH_ERROR = "AUTH_ERROR";
+
+export const POSTING_LOADING = "POSTING_LOADING";
+export const CLEAR_LOADING = "CLEAR_LOADING";
+export const BEGIN_LOADING = "BEGIN_LOADING";
+
+export const POST_QUESTION = "POST_QUESTION";
+export const GET_QUESTION_BY_CHECKID = "GET_QUESTION_BY_CHECKID";
+export const GET_QUESTION_BY_ID = "GET_QUESTION_BY_ID";
+export const GET_QUESTION_LIST = "GET_QUESTION_LIST";
+
+export const QUESTION_INIT_SETUP = "QUESTION_INIT_SETUP";
+export const GET_USER_BY_TOKEN = "GET_USER_BY_TOKEN";
+
+export const FOCUS_REPLY = "FOCUS_REPLY";
+export const GET_REPLIES = "GET_REPLIES";
+export const CLOSE_QUESTION = "CLOSE_QUESTION";
+
+export const RENDER_CREATE_FORM = "RENDER_CREATE_FORM";
+export const CREATE_WEB_REPORT = "CREATE_WEB_REPORT";
