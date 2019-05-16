@@ -4,7 +4,7 @@ const games = require("./routes/api/games");
 const service = require("./routes/api/service");
 const questions = require("./routes/api/questions");
 const upload = require("./routes/api/upload");
-
+const CONFIG = require("../config/config")[process.env.NODE_ENV];
 const requestIp = require("request-ip");
 // default options
 
@@ -30,7 +30,7 @@ app.use("/api/service", service);
 app.use("/api/questions", questions);
 app.use("/api/upload", upload);
 
-const port = process.env.PORT || 5000;
+const port = CONFIG.port || 5000;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
