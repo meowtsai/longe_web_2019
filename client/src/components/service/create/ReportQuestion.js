@@ -132,7 +132,7 @@ class ReportQuestion extends Component {
       if (nextProps.report.create_result.question_id) {
         this.handleOpenModal();
       } else {
-        // this.setState({ showModal: false });
+        this.setState({ showModal: false });
       }
 
       //this.setState({ question: nextProps.service.question });

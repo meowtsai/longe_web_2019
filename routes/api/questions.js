@@ -349,7 +349,7 @@ router.post("/create_web_form", (req, res) => {
         const q_id = createResult.msg;
         //TODO: SEND MAIL
         /// EMAIL /////
-        if (process.env.NODE_ENV != "development" && is_in_game !== "1") {
+        if (process.env.NODE_ENV != "development" && !is_in_game) {
           let transporter = nodemailer.createTransport(smtp_server);
           const fs = require("fs");
 

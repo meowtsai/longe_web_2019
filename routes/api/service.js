@@ -74,7 +74,7 @@ router.post("/init_setup", auth_for_create, (req, res) => {
 
         CharacterModel.getCharInfoByInGameId(server_info.server_id, in_game_id)
           .then(char => {
-            console.log("char", char);
+            //console.log("char", char);
             if (char.status == 1) {
               if (char.msg.name !== character_name) {
                 CharacterModel.update_character(char.msg.id, character_name);
