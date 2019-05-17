@@ -31,6 +31,8 @@ app.use("/api/service", service);
 app.use("/api/questions", questions);
 app.use("/api/upload", upload);
 
+app.use("/uploads", express.static("client/public/uploads"));
+
 //serve static build (client)
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "stage") {
   //set static folder
