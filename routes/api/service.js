@@ -24,10 +24,12 @@ router.get("/question_types", (req, res) => {
 router.post("/init_setup", auth_for_create, (req, res) => {
   const searchArray = req.body.search_string.replace("?", "").split("&");
   let searchObject = {};
-  //console.log("init_setup searchArray", searchArray.length);
-  //console.log("init_setup user", req.user);
+  // console.log("init_setup searchArray length", searchArray.length);
+  // console.log("init_setup auth", req.header("x-auth-token"));
   if (searchArray.length === 1 && req.user) {
     ServiceModel.getUnreadByUID(req.user.partner_uid).then(unread_result => {
+      //console.log("init_setup unread_result", unread_result);
+
       res.json({
         token: req.header("x-auth-token"),
         is_in_game: true,
@@ -36,6 +38,7 @@ router.post("/init_setup", auth_for_create, (req, res) => {
       });
       return;
     });
+    return;
   }
 
   for (let index = 0; index < searchArray.length; index++) {
