@@ -20,7 +20,7 @@ const initialState = {
   loading: false,
   is_in_game: false,
   unread_count: 0,
-  focus: false
+  game_id: null
 };
 
 export default function(state = initialState, action) {
@@ -45,7 +45,7 @@ export default function(state = initialState, action) {
         token: action.payload.token,
         is_in_game: action.payload.is_in_game,
         unread_count: action.payload.unread_count,
-
+        game_id: action.payload.game_id,
         loading: false
       };
 
@@ -95,11 +95,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false
-      };
-    case FOCUS_REPLY:
-      return {
-        ...state,
-        focus: true
       };
 
     default:

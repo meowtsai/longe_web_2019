@@ -25,12 +25,13 @@ router.post("/init_setup", auth_for_create, (req, res) => {
   const searchArray = req.body.search_string.replace("?", "").split("&");
   let searchObject = {};
   //console.log("init_setup searchArray", searchArray.length);
-  //console.log("init_setup user", req.user);
+  console.log("init_setup user", req.user);
   if (searchArray.length === 1 && req.user) {
     res.json({
       token: req.header("x-auth-token"),
       is_in_game: true,
-      unread_count: 0
+      unread_count: 0,
+      game_id: req.user.vendor_game_id
     });
     return;
   }
@@ -110,6 +111,7 @@ router.post("/init_setup", auth_for_create, (req, res) => {
                 res.json({
                   token,
                   is_in_game,
+                  game_id,
                   unread_count: userObj.unread_count
                 });
               }

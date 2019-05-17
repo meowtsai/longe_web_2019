@@ -76,6 +76,10 @@ class QuestionView extends Component {
     const fileInfo = Object.keys(attachments).map(
       attach => attachments[attach].name
     );
+
+    const home_link = !isEmpty(question.partner_uid)
+      ? "/service_quick"
+      : `/service_quick?param_game_id=${this.props.match.params.game_id}`;
     // const linkStyle = {
     //   color: "#6c757d",
     //   "&:hover": {
@@ -276,9 +280,7 @@ class QuestionView extends Component {
                                 />
                                 <Link
                                   className="btn btn-secondary btn-block"
-                                  to={`/service/${
-                                    this.props.match.params.game_id
-                                  }`}
+                                  to={home_link}
                                 >
                                   回到客服中心
                                 </Link>
@@ -290,10 +292,7 @@ class QuestionView extends Component {
                       {question.status === "4" && (
                         <div className="alert alert-secondary" role="alert">
                           本提案單已經結案, 感謝您的回報。{" "}
-                          <Link
-                            className="alert-link"
-                            to={`/service/${this.props.match.params.game_id}`}
-                          >
+                          <Link className="alert-link" to={home_link}>
                             回到客服中心
                           </Link>
                         </div>

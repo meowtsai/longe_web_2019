@@ -164,7 +164,9 @@ router.post("/insert_reply", auth, (req, res) => {
             set_filename() +
             path.extname(req.files[keyName].name).toLowerCase();
 
-          add_pics.push("upload/" + new_file_name);
+          add_pics.push(
+            "http://test-payment.longeplay.com.tw:5002/uploads/" + new_file_name
+          );
 
           req.files[keyName].mv(
             `${__dirname}/../../client/public/uploads/${new_file_name}`,
@@ -320,10 +322,14 @@ router.post("/create_web_form", (req, res) => {
         if (index < 3) {
           questionObject = {
             ...questionObject,
-            [`pic_path${index + 1}`]: "/uploads/" + new_file_name
+            [`pic_path${index + 1}`]:
+              "http://test-payment.longeplay.com.tw:5002/uploads/" +
+              new_file_name
           };
         } else {
-          add_pics.push("upload/" + new_file_name);
+          add_pics.push(
+            "http://test-payment.longeplay.com.tw:5002/uploads/" + new_file_name
+          );
         }
 
         req.files[keyName].mv(
@@ -356,7 +362,8 @@ router.post("/create_web_form", (req, res) => {
             questionObject.check_id
           }</b>`;
 
-          html_template = html_template.replace("{{game_name}}", game_name);
+          html_template = html_template.replace(/{{game_name}}/g, game_name);
+
           html_template = html_template.replace("{{msg}}", msg);
           html_template = html_template.replace(
             "{{year}}",

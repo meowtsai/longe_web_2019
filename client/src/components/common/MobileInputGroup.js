@@ -40,7 +40,7 @@ const MobileInputGroup = ({
           </select>
         </div>
       </div>
-      <div class="col-sm-8 my-1">
+      <div className="col-sm-8 my-1">
         <div className="input-group">
           <div className="input-group-prepend">
             <span className="input-group-text">

@@ -4,7 +4,7 @@ class CSBox extends Component {
   render() {
     const { game } = this.props;
     return (
-      <Link to={`/service/${game.game_id}`}>
+      <Link to={`/service_quick?param_game_id=${game.game_id}`}>
         <div className="cs_box" style={{ boxSizing: "content-box" }}>
           <img src={game.logo_path} alt="" />
           <span>{game.game_name}</span>{" "}

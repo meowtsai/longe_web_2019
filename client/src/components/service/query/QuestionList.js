@@ -22,14 +22,14 @@ class QuestionList extends Component {
       <div>
         <nav className="navbar navbar-dark bg-dark">
           <div className="container text-center">
-            <span className="navbar-brand mb-0 h1 navbar-text">
+            <span className="navbar-brand mb-0 h1 navbar-text  m-auto">
               客服中心 >回報紀錄
             </span>
           </div>
         </nav>
         <div className="container">
           <div className="row">
-            <div className="col-sm-12 col-md-4 m-auto">
+            <div className="col-sm-12 col-md-6 m-auto">
               <div className="card">
                 <div className="card-body">
                   <p className="card-text">案件資訊(點選可查看進一步訊息)</p>

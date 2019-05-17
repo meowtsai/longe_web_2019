@@ -15,6 +15,8 @@ import {
 
 import axios from "axios";
 
+import queryString from "query-string";
+import isEmpty from "../validation/is-empty";
 export const postLoading = () => {
   return {
     type: POSTING_LOADING
@@ -70,6 +72,8 @@ export const getQuestion = questionData => dispatch => {
 
 export const getQuestionById = (q_id, history) => dispatch => {
   dispatch(postLoading());
+  dispatch(clearErrors());
+
   const token =
     localStorage.getItem("inGameToken") !== "undefined"
       ? localStorage.getItem("inGameToken")
@@ -146,7 +150,8 @@ export const insert_reply = (reply, history) => dispatch => {
   if (token) {
     config.headers["x-auth-token"] = token;
   }
-
+  dispatch(postLoading());
+  dispatch(clearErrors());
   axios
     .post(`/api/questions/insert_reply`, reply, config)
     .then(res =>
@@ -179,11 +184,22 @@ export const insert_reply = (reply, history) => dispatch => {
 };
 
 export const setUpQuestionConfig = validationObject => dispatch => {
-  const token = localStorage.getItem("inGameToken");
+  let token;
   const config = {
     headers: { "Content-Type": "application/json" }
   };
-  if (token) {
+
+  const parsed = queryString.parse(validationObject.search_string);
+  //console.log(parsed);
+  if (!isEmpty(parsed.param_game_id)) {
+    localStorage.removeItem("inGameToken");
+  } else {
+    token = localStorage.getItem("inGameToken");
+  }
+
+  //?param_game_id=g78naxx2hmt
+
+  if (!isEmpty(token)) {
     //console.log("setUpQuestionConfig", token);
     config.headers["x-auth-token"] = token;
   }

@@ -21,7 +21,9 @@ class App extends Component {
         <Router>
           <div className="App">
             <Route exact path="/" component={Landing} />
+            <Route exact path="/service_quick" component={ServiceHome} />
             <Route exact path="/service/:game_id" component={ServiceHome} />
+
             <Route exact path="/support" component={SupportHome} />
             <Route
               exact

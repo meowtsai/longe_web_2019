@@ -13,7 +13,7 @@ import FaqPanel from "../faq/FaqPanel";
 class InGameForm extends Component {
   constructor(props) {
     super(props);
-    //console.log(props);
+    console.log("InGameForm", props);
 
     this.state = {
       server_id: "",

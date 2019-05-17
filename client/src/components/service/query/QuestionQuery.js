@@ -59,6 +59,9 @@ class QuestionQuery extends Component {
   render() {
     const { errors } = this.state;
     const { loading } = this.props.service;
+    const home_link = `/service_quick?param_game_id=${
+      this.props.match.params.game_id
+    }`;
     return (
       <div className="query">
         {!errors && loading ? (
@@ -66,7 +69,7 @@ class QuestionQuery extends Component {
         ) : (
           <div className="container">
             <div className="row">
-              <div className="col-sm-12 col-md-4 m-auto">
+              <div className="col-sm-12 col-md-6 m-auto">
                 <h4 className="text-center">線上回報紀錄查詢</h4>
                 <p className="lead text-center">請填寫以下資訊</p>
                 <small className="d-block pb-3">* = 必填</small>
@@ -104,10 +107,7 @@ class QuestionQuery extends Component {
                     className="btn btn-info btn-block"
                   />
 
-                  <Link
-                    className="btn btn-secondary btn-block"
-                    to={`/service/${this.props.match.params.game_id}`}
-                  >
+                  <Link className="btn btn-secondary btn-block" to={home_link}>
                     回到客服中心
                   </Link>
                 </form>

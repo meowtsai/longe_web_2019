@@ -37,6 +37,7 @@ export const renderForm = game_id => dispatch => {
     )
     .catch(err => {
       //console.log(err);
+      dispatch(clearLoading());
       if (err.response.data.jwt) {
         localStorage.removeItem("inGameToken");
       }

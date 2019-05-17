@@ -42,7 +42,7 @@ const ServiceModel = {
   },
   getQuestionByID: async criteria => {
     let sqlQuery =
-      "SELECT q.id,q.type,q.content,q.server_id,q.character_name,q.pic_path1,q.pic_path2,q.pic_path3, q.create_time, q.status, q.phone,q.email, g.name as game_name, gi.name as server_name FROM questions  q join servers gi on gi.server_id=q.server_id join games g on g.game_id=gi.game_id WHERE  q.id=?";
+      "SELECT q.id,q.type,q.content,q.server_id,q.character_name,q.partner_uid,q.pic_path1,q.pic_path2,q.pic_path3, q.create_time, q.status, q.phone,q.email, g.name as game_name, gi.name as server_name FROM questions  q join servers gi on gi.server_id=q.server_id join games g on g.game_id=gi.game_id WHERE  q.id=?";
     if (!isEmpty(criteria.partner_uid)) {
       sqlQuery += " and q.partner_uid=?";
     } else {
