@@ -48,6 +48,9 @@ class QuestionList extends Component {
                             >
                               {q.id} <i className="fas fa-search" />
                             </Link>
+                            {q.status === "2" && q.is_read !== "1" && (
+                              <span class="badge badge-light">未讀</span>
+                            )}
                           </strong>
 
                           <small className="text-muted">
@@ -64,9 +67,6 @@ class QuestionList extends Component {
                               } mr-3`}
                             >
                               {q_status[q.status].text}
-                              {q.is_read === "1" && (
-                                <span class="badge badge-light">未讀</span>
-                              )}
                             </span>
 
                             <p
