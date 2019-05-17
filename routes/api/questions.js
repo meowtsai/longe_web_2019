@@ -375,7 +375,7 @@ router.post("/create_web_form", (req, res) => {
             from: '"龍邑自動回覆系統" <no-reply@longeplay.com.tw>', // sender address
             to: questionObject.email, // list of receivers
             subject: `${game_name}客服代碼通知信 ${moment().format(
-              "YYYY-MM-DD h:mm:ss"
+              "YYYY-MM-DD HH:mm:ss"
             )}`, // Subject line
             html: html_template // html body
           };

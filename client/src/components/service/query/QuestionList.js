@@ -64,6 +64,9 @@ class QuestionList extends Component {
                               } mr-3`}
                             >
                               {q_status[q.status].text}
+                              {q.is_read === "1" && (
+                                <span class="badge badge-light">未讀</span>
+                              )}
                             </span>
 
                             <p

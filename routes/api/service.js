@@ -25,15 +25,17 @@ router.post("/init_setup", auth_for_create, (req, res) => {
   const searchArray = req.body.search_string.replace("?", "").split("&");
   let searchObject = {};
   //console.log("init_setup searchArray", searchArray.length);
-  console.log("init_setup user", req.user);
+  //console.log("init_setup user", req.user);
   if (searchArray.length === 1 && req.user) {
-    res.json({
-      token: req.header("x-auth-token"),
-      is_in_game: true,
-      unread_count: 0,
-      game_id: req.user.vendor_game_id
+    ServiceModel.getUnreadByUID(req.user.partner_uid).then(unread_result => {
+      res.json({
+        token: req.header("x-auth-token"),
+        is_in_game: true,
+        unread_count: unread_result.cnt,
+        game_id: req.user.vendor_game_id
+      });
+      return;
     });
-    return;
   }
 
   for (let index = 0; index < searchArray.length; index++) {
@@ -97,7 +99,7 @@ router.post("/init_setup", auth_for_create, (req, res) => {
           })
           .then(unread_result => {
             userObj.unread_count = unread_result.cnt;
-            console.log(userObj);
+            //console.log(userObj);
 
             jwt.sign(
               userObj,

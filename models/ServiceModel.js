@@ -58,6 +58,14 @@ const ServiceModel = {
       ])
       .then(([rows, fields]) => {
         if (rows.length > 0) {
+          if (
+            rows[0].status === "2" ||
+            rows[0].status === "4" ||
+            rows[0].status === "7"
+          )
+            db1.query("UPDATE questions set is_read=1 where id=?", [
+              criteria.question_id
+            ]);
           return { status: 1, msg: rows[0] };
         } else {
           return { status: -1, msg: "沒有符合的提問紀錄" };
@@ -72,7 +80,7 @@ const ServiceModel = {
     return await db2
       .promise()
       .query(
-        "SELECT q.id,q.type,q.content,q.create_time, q.status FROM questions  q WHERE  q.partner_uid=? and q.server_id=? order by id desc ",
+        "SELECT q.id,q.type,q.content,q.create_time, q.status,q.is_read FROM questions  q WHERE  q.partner_uid=? and q.server_id=? order by id desc ",
         [partner_uid, server_id]
       )
       .then(([rows, fields]) => {
