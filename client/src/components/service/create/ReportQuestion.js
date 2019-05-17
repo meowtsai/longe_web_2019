@@ -348,20 +348,24 @@ class ReportQuestion extends Component {
                     <div className="col-sm-12 col-md-4 m-auto">
                       <div className="alert alert-success">
                         <strong>回報單 #{question_id} 提問成功</strong>
-                        <br />
-                        我們已經傳送郵件到您的mail，
-                        <br />
-                        後續追蹤客服請用提問mail或手機及以下代碼查詢：
-                        <font color="red">
-                          <b>{check_id}</b>
-                        </font>
+                        {isEmpty(user) && (
+                          <div>
+                            <br />
+                            我們已經傳送郵件到您的mail，
+                            <br />
+                            後續追蹤客服請用提問mail或手機及以下代碼查詢：
+                            <font color="red">
+                              <b>{check_id}</b>
+                            </font>
+                          </div>
+                        )}
                       </div>
 
                       <button
                         onClick={this.handleCloseModal}
                         className="btn btn-primary m-auto"
                       >
-                        我知道了
+                        確認
                       </button>
                     </div>
                   </div>
