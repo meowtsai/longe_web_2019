@@ -357,8 +357,10 @@ class ReportQuestion extends Component {
                               <b>{check_id}</b>
                             </font>
                             <br />
-                            註:專員將會回覆至<strong>回報紀錄</strong>
-                            頁面給您，務必自行前往查看。
+                            <font color="red">
+                              註:專員將會回覆至<strong>回報紀錄</strong>
+                              頁面給您，務必自行前往查看。
+                            </font>
                           </div>
                         )}
                       </div>
