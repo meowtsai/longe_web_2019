@@ -304,7 +304,7 @@ class ReportQuestion extends Component {
                     options={typesOption}
                     info="問題類型"
                   />
-
+                  <FaqPanel faq={faq} question_type={question_type} />
                   <TextAreaFieldGroup
                     placeholder="* 問題描述"
                     name="content"
@@ -313,7 +313,6 @@ class ReportQuestion extends Component {
                     error={errors.content}
                     info="請詳細描述您所遇到的遊戲問題"
                   />
-                  <FaqPanel faq={faq} question_type={question_type} />
 
                   <FileGroup
                     name="file01"
@@ -357,6 +356,8 @@ class ReportQuestion extends Component {
                             <font color="red">
                               <b>{check_id}</b>
                             </font>
+                            註:專員將會回覆至<strong>回報紀錄</strong>
+                            頁面給您，務必自行前往查看。
                           </div>
                         )}
                       </div>

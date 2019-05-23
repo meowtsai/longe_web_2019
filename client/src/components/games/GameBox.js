@@ -45,7 +45,7 @@ class GameBox extends Component {
                 style={{ backgroundImage: `url(${game.title_path})` }}
               />
             </div>
-            <span>{game.name}</span>
+            <span>{game.game_name}</span>
             <div className="box_detail">
               <a href={game.site} target="_blank" rel="noopener noreferrer">
                 <div className="allgame_home">前往官網</div>

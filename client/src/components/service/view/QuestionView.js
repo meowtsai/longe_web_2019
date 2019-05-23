@@ -141,7 +141,7 @@ class QuestionView extends Component {
                         <i className="fas fa-user-edit mr-2 text-info" />{" "}
                         提問描述
                       </h5>
-                      <div className="card mb-3">
+                      <div className="card mb-3 border-dark">
                         <div className="card-body  text-dark">
                           <p
                             className="card-text"
@@ -202,12 +202,22 @@ class QuestionView extends Component {
                         </div>
                       </div>
                       {!question.replies || question.replies.length === 0 ? (
-                        <div
-                          className="alert alert-warning fade show"
-                          role="alert"
-                        >
-                          <strong>提問已經送出!</strong>{" "}
-                          請耐心等候，我們查明之後將盡快回覆您。
+                        <div>
+                          <h5 className="mb-3">
+                            <i className="fas fa-user-clock mr-2 text-success" />{" "}
+                            專員回覆
+                          </h5>
+                          <div className="card mb-3 border-dark">
+                            <div className="card-body  text-dark">
+                              <div
+                                className="alert alert-warning fade show"
+                                role="alert"
+                              >
+                                <strong>提問已經送出!</strong>{" "}
+                                請耐心等候，我們查明之後將盡快回覆您。
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       ) : (
                         <ReplyContent
@@ -229,7 +239,7 @@ class QuestionView extends Component {
                             <i className="fas fa-question mr-2 text-danger" />
                             再次提問
                           </h5>
-                          <div className="card">
+                          <div className="card border-dark">
                             <div className="card-body">
                               <form onSubmit={this.onSubmit}>
                                 <TextAreaFieldGroup
