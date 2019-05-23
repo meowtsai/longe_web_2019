@@ -41,8 +41,31 @@ if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "stage") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
+
 const port = CONFIG.port || 5000;
 
-app.listen(port, () => {
+let server;
+if (app.get("env") !== "production") {
+  var http = require("http");
+
+  server = http.createServer(app);
+} else {
+  var fs = require("fs");
+  const https = require("https");
+  var options = {
+    key: fs.readFileSync(config.ssl_options.keyfile),
+    cert: fs.readFileSync(config.ssl_options.certfile),
+    ca: [fs.readFileSync(config.ssl_options.cafile)]
+  };
+
+  server = https.createServer(options, app);
+}
+
+// server.listen(port, "0.0.0.0", function() {
+//   console.log("server env :" + app.get("env"));
+//   console.log("server is listening on:" + port);
+// });
+
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
