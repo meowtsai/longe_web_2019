@@ -53,9 +53,9 @@ if (app.get("env") !== "production") {
   var fs = require("fs");
   const https = require("https");
   var options = {
-    key: fs.readFileSync(config.ssl_options.keyfile),
-    cert: fs.readFileSync(config.ssl_options.certfile),
-    ca: [fs.readFileSync(config.ssl_options.cafile)]
+    key: fs.readFileSync(CONFIG.ssl_options.keyfile),
+    cert: fs.readFileSync(CONFIG.ssl_options.certfile),
+    ca: [fs.readFileSync(CONFIG.ssl_options.cafile)]
   };
 
   server = https.createServer(options, app);
