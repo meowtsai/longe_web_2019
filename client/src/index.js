@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "core-js";
 import "regenerator-runtime/runtime";
+import "whatwg-fetch";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
