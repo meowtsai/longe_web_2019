@@ -24,9 +24,9 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <a className="navbar-brand" href="#">
+          <Link to="/" className="navbar-brand">
             <div className="nav_logo" />
-          </a>
+          </Link>
 
           <button
             className="navbar-toggler"

@@ -155,6 +155,7 @@ class QuestionView extends Component {
                                 href={question.pic_path1}
                                 className="btn btn-sm btn-outline-secondary"
                                 target="_blank"
+                                rel="noopener noreferrer"
                               >
                                 附圖1
                               </a>
@@ -164,6 +165,7 @@ class QuestionView extends Component {
                                   href={question.pic_path2}
                                   className="btn btn-sm btn-outline-secondary"
                                   target="_blank"
+                                  rel="noopener noreferrer"
                                 >
                                   附圖2
                                 </a>
@@ -173,6 +175,7 @@ class QuestionView extends Component {
                                   href={question.pic_path3}
                                   className="btn btn-sm btn-outline-secondary"
                                   target="_blank"
+                                  rel="noopener noreferrer"
                                 >
                                   附圖3
                                 </a>
@@ -187,6 +190,7 @@ class QuestionView extends Component {
                                       href={pic.pic_path}
                                       className="btn btn-sm btn-outline-secondary"
                                       target="_blank"
+                                      rel="noopener noreferrer"
                                     >
                                       附圖{idx + 4}
                                     </a>

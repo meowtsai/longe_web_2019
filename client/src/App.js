@@ -13,6 +13,7 @@ import QuestionView from "./components/service/view/QuestionView";
 import ReportQuestion from "./components/service/create/ReportQuestion";
 
 import FileUpload from "./components/FileUpload";
+import Complete_agreement from "./components/policies/Complete_agreement";
 
 class App extends Component {
   render() {
@@ -45,6 +46,11 @@ class App extends Component {
               exact
               path="/service/:game_id/create"
               component={ReportQuestion}
+            />
+            <Route
+              exact
+              path="/member/complete_agreement"
+              component={Complete_agreement}
             />
 
             <Route exact path="/upload" component={FileUpload} />

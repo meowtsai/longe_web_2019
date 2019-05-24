@@ -35,6 +35,7 @@ class SingleReply extends Component {
                   key={pic.id}
                   href={pic.pic_path}
                   className="btn btn-sm btn-outline-secondary"
+                  rel="noopener noreferrer"
                   target="_blank"
                 >
                   附圖{idx + 1}
