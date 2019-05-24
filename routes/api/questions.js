@@ -4,6 +4,7 @@ var jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const auth_for_create = require("../../middleware/auth_for_create");
 const geoip = require("geoip-lite");
+
 const Validator = require("validator");
 const uniqid = require("uniqid");
 const md5 = require("md5");
@@ -164,9 +165,7 @@ router.post("/insert_reply", auth, (req, res) => {
             set_filename() +
             path.extname(req.files[keyName].name).toLowerCase();
 
-          add_pics.push(
-            "http://test-payment.longeplay.com.tw:5002/uploads/" + new_file_name
-          );
+          add_pics.push(SERVICE_CONFIG.image_path + new_file_name);
 
           req.files[keyName].mv(
             `${__dirname}/../../client/public/uploads/${new_file_name}`,
@@ -322,14 +321,10 @@ router.post("/create_web_form", (req, res) => {
         if (index < 3) {
           questionObject = {
             ...questionObject,
-            [`pic_path${index + 1}`]:
-              "http://test-payment.longeplay.com.tw:5002/uploads/" +
-              new_file_name
+            [`pic_path${index + 1}`]: SERVICE_CONFIG.image_path + new_file_name
           };
         } else {
-          add_pics.push(
-            "http://test-payment.longeplay.com.tw:5002/uploads/" + new_file_name
-          );
+          add_pics.push(SERVICE_CONFIG.image_path + new_file_name);
         }
 
         req.files[keyName].mv(
@@ -358,7 +353,9 @@ router.post("/create_web_form", (req, res) => {
             "utf8"
           );
 
-          const msg = `您提問的案件單號為#${q_id}<br />後續若要<a href='https://game.longeplay.com.tw/service_quick?site=long_e&param_game_id=${game_id}'>追蹤此單號</a>的客服問題請用以下代碼進行查詢：<br /><b>${
+          const msg = `您提問的案件單號為#${q_id}<br />後續若要<a href='${
+            SERVICE_CONFIG.report_path
+          }?param_game_id=${game_id}'>追蹤此單號</a>的客服問題請用以下代碼進行查詢：<br /><b>${
             questionObject.check_id
           }</b>`;
 
