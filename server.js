@@ -7,6 +7,7 @@ const questions = require("./routes/api/questions");
 const upload = require("./routes/api/upload");
 const CONFIG = require("./config/config")[process.env.NODE_ENV];
 const requestIp = require("request-ip");
+const helmet = require("helmet");
 // default options
 
 const app = express();
@@ -25,6 +26,8 @@ app.use(
 
 app.use(express.json());
 app.use(requestIp.mw());
+
+app.use(helmet());
 
 app.use("/api/games", games);
 app.use("/api/service", service);

@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Moment from "react-moment";
+import { ReCaptcha } from "react-recaptcha-google";
 import Spinner from "../../common/Spinner";
 import FileGroup from "../../common/FileGroup";
 import TextAreaFieldGroup from "../../common/TextAreaFieldGroup";
 import ReplyContent from "./ReplyContent";
 import isEmpty from "../../../validation/is-empty";
+
 import {
   getQuestionById,
   insert_reply
@@ -23,6 +25,7 @@ class QuestionView extends Component {
     this.state = {
       content: "",
       errors: "",
+      captcha_token: "",
       loading: false,
       file01: "",
       attachments: []
@@ -30,6 +33,8 @@ class QuestionView extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onLoadRecaptcha = this.onLoadRecaptcha.bind(this);
+    this.verifyCallback = this.verifyCallback.bind(this);
   }
   componentDidMount() {
     const q_id = this.props.match.params.q_id;
@@ -50,6 +55,7 @@ class QuestionView extends Component {
       formData.append(`attachment${index}`, fileArray[index - 1]);
     }
     formData.append("content", this.state.content);
+    formData.append("captcha_token", this.state.captcha_token);
 
     this.props.insert_reply(formData, this.props.history);
     this.setState({ content: "", attachments: [], file01: "" });
@@ -69,6 +75,18 @@ class QuestionView extends Component {
         this.setState({ errors: {}, attachments: e.target.files });
       }
     }
+  }
+
+  onLoadRecaptcha() {
+    if (this.myCaptcha) {
+      this.myCaptcha.reset();
+      //this.myCaptcha.execute();
+    }
+  }
+  verifyCallback(recaptchaToken) {
+    // Here you will get the final recaptchaToken!!!
+    //console.log(recaptchaToken, "<= your recaptcha token");
+    this.setState({ captcha_token: recaptchaToken });
   }
   render() {
     const { question, loading } = this.props.service;
@@ -286,6 +304,21 @@ class QuestionView extends Component {
                                     某些手機設備無法選取檔案，請在官網使用web回報
                                   </small>
                                 </div>
+                                <ReCaptcha
+                                  ref={el => {
+                                    this.myCaptcha = el;
+                                  }}
+                                  size="normal"
+                                  render="explicit"
+                                  sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
+                                  onloadCallback={this.onLoadRecaptcha}
+                                  verifyCallback={this.verifyCallback}
+                                />
+                                {errors.captcha_token && (
+                                  <div className="invalid-feedback d-block">
+                                    {errors.captcha_token}
+                                  </div>
+                                )}
 
                                 <input
                                   type="submit"

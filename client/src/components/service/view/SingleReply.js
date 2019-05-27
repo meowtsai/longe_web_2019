@@ -64,6 +64,12 @@ class SingleReply extends Component {
             </small>
           </div>
         )}
+        {reply.is_official === "0" && lastReply && (
+          <div className="alert alert-warning fade show" role="alert">
+            <strong>提問已經送出!</strong>{" "}
+            請耐心等候，我們查明之後將盡快回覆您。
+          </div>
+        )}
       </div>
     );
   }

@@ -11,11 +11,16 @@ import QuestionList from "./components/service/query/QuestionList";
 import QuestionView from "./components/service/view/QuestionView";
 
 import ReportQuestion from "./components/service/create/ReportQuestion";
+import TestRobot from "./components/service/create/TestRobot";
 
 import FileUpload from "./components/FileUpload";
-import Complete_agreement from "./components/policies/Complete_agreement";
 
+import Complete_agreement from "./components/policies/Complete_agreement";
+import { loadReCaptcha } from "react-recaptcha-google";
 class App extends Component {
+  componentDidMount() {
+    loadReCaptcha();
+  }
   render() {
     return (
       <Provider store={store}>
@@ -54,6 +59,7 @@ class App extends Component {
             />
 
             <Route exact path="/upload" component={FileUpload} />
+            <Route exact path="/robot" component={TestRobot} />
           </div>
         </Router>
       </Provider>

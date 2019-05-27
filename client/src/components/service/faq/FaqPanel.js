@@ -31,7 +31,7 @@ class FaqPanel extends Component {
 }
 
 FaqPanel.propTypes = {
-  faq: PropTypes.array.isRequired
+  faq: PropTypes.array
 };
 
 export default FaqPanel;

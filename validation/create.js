@@ -1,10 +1,14 @@
 const Validator = require("validator");
 const isEmpty = require("./is-empty");
 const isImage = require("./is-image");
+const VerifyRecaptcha = require("./robot-check");
 
 module.exports = function validateCreateWebInput(data) {
   let errors = {};
 
+  data.captcha_token = !isEmpty(data.captcha_token) ? data.captcha_token : "";
+
+  data.email = !isEmpty(data.email) ? data.email : "";
   data.email = !isEmpty(data.email) ? data.email : "";
   data.phone = !isEmpty(data.phone) ? data.phone : "";
   data.content = !isEmpty(data.content) ? data.content : "";
@@ -13,6 +17,15 @@ module.exports = function validateCreateWebInput(data) {
   data.files = !isEmpty(data.files) ? data.files : {};
 
   data.partner_uid = !isEmpty(data.partner_uid) ? data.partner_uid : "";
+
+  if (isEmpty(data.captcha_token)) {
+    errors.captcha_token = "你是機器人嗎?";
+  } else {
+    if (!VerifyRecaptcha(data.captcha_token, data.ip)) {
+      console.log("VerifyRecaptcha failed");
+      errors.captcha_token = "你是機器人嗎?";
+    }
+  }
 
   if (isEmpty(data.partner_uid)) {
     if (isEmpty(data.email)) {

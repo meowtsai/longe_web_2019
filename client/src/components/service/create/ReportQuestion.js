@@ -16,7 +16,9 @@ import isEmpty from "../../../validation/is-empty";
 import FaqPanel from "../faq/FaqPanel";
 import MobileInputGroup from "../../common/MobileInputGroup";
 
+import { ReCaptcha } from "react-recaptcha-google";
 ReactModal.setAppElement("#root");
+
 class ReportQuestion extends Component {
   constructor(props) {
     //console.log("ReportQuestion", props);
@@ -32,6 +34,7 @@ class ReportQuestion extends Component {
       errors: "",
       file01: "",
       mobile_locale: "886",
+      captcha_token: "",
 
       attachments: [],
       loading: false,
@@ -42,6 +45,9 @@ class ReportQuestion extends Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+
+    this.onLoadRecaptcha = this.onLoadRecaptcha.bind(this);
+    this.verifyCallback = this.verifyCallback.bind(this);
   }
 
   handleOpenModal() {
@@ -91,6 +97,7 @@ class ReportQuestion extends Component {
     formData.append("game_name", game.game_name);
     formData.append("question_type", this.state.question_type);
     formData.append("content", this.state.content);
+    formData.append("captcha_token", this.state.captcha_token);
 
     //console.log("formData", formData);
 
@@ -113,8 +120,25 @@ class ReportQuestion extends Component {
     }
   }
 
+  onLoadRecaptcha() {
+    if (this.myCaptcha) {
+      this.myCaptcha.reset();
+      //this.myCaptcha.execute();
+    }
+  }
+  verifyCallback(recaptchaToken) {
+    // Here you will get the final recaptchaToken!!!
+    //console.log(recaptchaToken, "<= your recaptcha token");
+    this.setState({ captcha_token: recaptchaToken });
+  }
+
   componentDidMount() {
-    //console.log("componentDidMount");
+    if (this.myCaptcha) {
+      //console.log("started, just a second...");
+      this.myCaptcha.reset();
+      //this.myCaptcha.execute();
+    }
+
     this.props.renderForm(this.props.match.params.game_id);
     //this.setState({ showModal: false });
     // const search_values = queryString.parse(this.props.location.search);
@@ -288,7 +312,7 @@ class ReportQuestion extends Component {
         <div className="row">
           <div className="col-sm-12 col-md-6 m-auto">
             <h4 className="text-center mt-5">線上回報</h4>
-            <small className="d-block mb-3 text-center">請填寫以下資訊</small>
+            <small className="d-block mb-3 text-center">11請填寫以下資訊</small>
 
             {loading ? (
               <Spinner />
@@ -326,6 +350,22 @@ class ReportQuestion extends Component {
                     limit={6}
                     info={!isEmpty(fileInfo) ? fileInfo : []}
                   />
+
+                  <ReCaptcha
+                    ref={el => {
+                      this.myCaptcha = el;
+                    }}
+                    size="normal"
+                    render="explicit"
+                    sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
+                    onloadCallback={this.onLoadRecaptcha}
+                    verifyCallback={this.verifyCallback}
+                  />
+                  {errors.captcha_token && (
+                    <div className="invalid-feedback d-block">
+                      {errors.captcha_token}
+                    </div>
+                  )}
 
                   <input
                     type="submit"

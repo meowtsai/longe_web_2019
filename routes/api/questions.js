@@ -143,7 +143,8 @@ router.post("/insert_reply", auth, (req, res) => {
     //console.log(req.user);
     const { errors, isValid } = validateReplyInput({
       ...req.body,
-      files: req.files
+      files: req.files,
+      ip: req.clientIp
     });
     if (!isValid) {
       return res.status(400).json(errors);
@@ -271,9 +272,10 @@ router.get("/render_create_form/:game_id", auth_for_create, (req, res) => {
 router.post("/create_web_form", (req, res) => {
   let { errors, isValid } = validateCreateWebInput({
     ...req.body,
-    files: req.files
+    files: req.files,
+    ip: req.clientIp
   });
-
+  //console.log("create_web_form", req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -282,6 +284,7 @@ router.post("/create_web_form", (req, res) => {
 
   //console.log("ip", ip);
   //console.log("geo", geo);
+  //TODO: implement google api validation here
   let game_id = req.body.game_id;
   let game_name = req.body.game_name;
   let partner_uid = null;
@@ -290,6 +293,7 @@ router.post("/create_web_form", (req, res) => {
     partner_uid = req.body.partner_uid;
     is_in_game = 1;
   }
+  //captcha_token:
 
   let questionObject = {
     uid: 0,
