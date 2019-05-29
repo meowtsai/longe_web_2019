@@ -11,9 +11,6 @@ import QuestionList from "./components/service/query/QuestionList";
 import QuestionView from "./components/service/view/QuestionView";
 
 import ReportQuestion from "./components/service/create/ReportQuestion";
-import TestRobot from "./components/service/create/TestRobot";
-
-import FileUpload from "./components/FileUpload";
 
 import Complete_agreement from "./components/policies/Complete_agreement";
 
@@ -54,9 +51,6 @@ class App extends Component {
               path="/member/complete_agreement"
               component={Complete_agreement}
             />
-
-            <Route exact path="/upload" component={FileUpload} />
-            <Route exact path="/robot" component={TestRobot} />
           </div>
         </Router>
       </Provider>
