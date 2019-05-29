@@ -413,9 +413,12 @@ a {
   background: rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
+
 #cs_box_outer {
   width: 90%;
   margin: 0 auto;
+  overflow: hidden;
+  padding-bottom: 150px;
 }
 #cs_qa {
   width: 90%;
