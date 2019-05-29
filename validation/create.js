@@ -22,7 +22,7 @@ module.exports = function validateCreateWebInput(data) {
     errors.captcha_token = "你是機器人嗎?";
   } else {
     if (!VerifyRecaptcha(data.captcha_token, data.ip)) {
-      console.log("VerifyRecaptcha failed");
+      //console.log("VerifyRecaptcha failed");
       errors.captcha_token = "你是機器人嗎?";
     }
   }
@@ -41,7 +41,7 @@ module.exports = function validateCreateWebInput(data) {
         { strictMode: false }
       )
     ) {
-      console.log(data.phone);
+      //console.log(data.phone);
       errors.phone = "僅可輸入新馬港澳台手機。";
     }
   }

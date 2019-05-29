@@ -289,10 +289,12 @@ router.post("/create_web_form", (req, res) => {
   let game_name = req.body.game_name;
   let partner_uid = null;
   let is_in_game = 0;
+  let note = isEmpty(req.body.note) ? "" : req.body.note;
   if (!isEmpty(req.body.partner_uid)) {
     partner_uid = req.body.partner_uid;
     is_in_game = 1;
   }
+
   //captcha_token:
 
   let questionObject = {
@@ -309,7 +311,8 @@ router.post("/create_web_form", (req, res) => {
     is_quick: 1,
     update_time: new Date(),
     ip: ip,
-    country: geo === null ? "NULL" : geo.country
+    country: geo === null ? "NULL" : geo.country,
+    note
   };
   let add_pics = [];
   //console.log("QuestionObject", questionObject);

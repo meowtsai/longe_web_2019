@@ -16,7 +16,7 @@ import isEmpty from "../../../validation/is-empty";
 import FaqPanel from "../faq/FaqPanel";
 import MobileInputGroup from "../../common/MobileInputGroup";
 
-import { ReCaptcha } from "react-recaptcha-google";
+import ReCAPTCHA from "react-google-recaptcha";
 ReactModal.setAppElement("#root");
 
 class ReportQuestion extends Component {
@@ -46,7 +46,7 @@ class ReportQuestion extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
-    this.onLoadRecaptcha = this.onLoadRecaptcha.bind(this);
+    // this.onLoadRecaptcha = this.onLoadRecaptcha.bind(this);
     this.verifyCallback = this.verifyCallback.bind(this);
   }
 
@@ -77,6 +77,7 @@ class ReportQuestion extends Component {
       formData.append("partner_uid", user.partner_uid);
       formData.append("server_id", user.server_info.server_id);
       formData.append("character_name", user.character_name);
+      formData.append("note", user.q_note);
     } else {
       let phone =
         this.state.mobile_locale === "886"
@@ -106,6 +107,7 @@ class ReportQuestion extends Component {
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+    //console.log(e.target.name, e.target.value);
     //console.log(e.target.files);
     if (!isEmpty(e.target.files)) {
       if (Object.keys(e.target.files).length > 6) {
@@ -120,38 +122,14 @@ class ReportQuestion extends Component {
     }
   }
 
-  onLoadRecaptcha() {
-    if (this.myCaptcha) {
-      this.myCaptcha.reset();
-      //this.myCaptcha.execute();
-    }
-  }
   verifyCallback(recaptchaToken) {
-    // Here you will get the final recaptchaToken!!!
-    //console.log(recaptchaToken, "<= your recaptcha token");
     this.setState({ captcha_token: recaptchaToken });
   }
 
   componentDidMount() {
-    if (this.myCaptcha) {
-      //console.log("started, just a second...");
-      this.myCaptcha.reset();
-      //this.myCaptcha.execute();
-    }
-
     this.props.renderForm(this.props.match.params.game_id);
-    //this.setState({ showModal: false });
-    // const search_values = queryString.parse(this.props.location.search);
-    // console.log("this.props.service", this.props.service);
-    // if (this.props.service.is_in_game) {
-    //   console.log("is_in_game");
-    //   this.props.verifyQuestionToken();
-    // } else {
-
-    // }
   }
   componentWillReceiveProps(nextProps) {
-    //console.log(nextProps);
     if (nextProps.report) {
       if (nextProps.report.create_result.question_id) {
         this.handleOpenModal();
@@ -168,7 +146,7 @@ class ReportQuestion extends Component {
 
   render() {
     const { game, question_types, user, faq } = this.props.report.settings;
-    //console.log("faq", faq);
+
     const { loading } = this.props.report;
     const { question_id, check_id } = this.props.report.create_result;
 
@@ -312,7 +290,7 @@ class ReportQuestion extends Component {
         <div className="row">
           <div className="col-sm-12 col-md-6 m-auto">
             <h4 className="text-center mt-5">線上回報</h4>
-            <small className="d-block mb-3 text-center">11請填寫以下資訊</small>
+            <small className="d-block mb-3 text-center">請填寫以下資訊</small>
 
             {loading ? (
               <Spinner />
@@ -350,17 +328,11 @@ class ReportQuestion extends Component {
                     limit={6}
                     info={!isEmpty(fileInfo) ? fileInfo : []}
                   />
-
-                  <ReCaptcha
-                    ref={el => {
-                      this.myCaptcha = el;
-                    }}
-                    size="normal"
-                    render="explicit"
+                  <ReCAPTCHA
                     sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
-                    onloadCallback={this.onLoadRecaptcha}
-                    verifyCallback={this.verifyCallback}
+                    onChange={this.verifyCallback}
                   />
+
                   {errors.captcha_token && (
                     <div className="invalid-feedback d-block">
                       {errors.captcha_token}

@@ -63,7 +63,7 @@ export const createWebReport = (questionData, history) => dispatch => {
       });
     })
     .catch(err => {
-      console.log("err", err.response);
+      //console.log("err", err.response);
       dispatch(clearLoading());
       if (!err.response.status) {
         // network error

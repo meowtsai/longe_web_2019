@@ -33,7 +33,7 @@ export const createQuestion = (questionData, history) => dispatch => {
   axios
     .post("/api/question", questionData)
     .then(res => {
-      console.log("createQuestion", res.data.msg.token);
+      //console.log("createQuestion", res.data.msg.token);
       localStorage.setItem("jwtToken", res.data.msg.token);
       dispatch({
         type: GET_QUESTION_BY_CHECKID,

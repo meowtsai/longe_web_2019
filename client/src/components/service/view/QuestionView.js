@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Moment from "react-moment";
-import { ReCaptcha } from "react-recaptcha-google";
+import ReCAPTCHA from "react-google-recaptcha";
 import Spinner from "../../common/Spinner";
 import FileGroup from "../../common/FileGroup";
 import TextAreaFieldGroup from "../../common/TextAreaFieldGroup";
@@ -33,7 +33,6 @@ class QuestionView extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onLoadRecaptcha = this.onLoadRecaptcha.bind(this);
     this.verifyCallback = this.verifyCallback.bind(this);
   }
   componentDidMount() {
@@ -77,15 +76,7 @@ class QuestionView extends Component {
     }
   }
 
-  onLoadRecaptcha() {
-    if (this.myCaptcha) {
-      this.myCaptcha.reset();
-      //this.myCaptcha.execute();
-    }
-  }
   verifyCallback(recaptchaToken) {
-    // Here you will get the final recaptchaToken!!!
-    //console.log(recaptchaToken, "<= your recaptcha token");
     this.setState({ captcha_token: recaptchaToken });
   }
   render() {
@@ -98,13 +89,6 @@ class QuestionView extends Component {
     const home_link = !isEmpty(question.partner_uid)
       ? "/service_quick"
       : `/service_quick?param_game_id=${this.props.match.params.game_id}`;
-    // const linkStyle = {
-    //   color: "#6c757d",
-    //   "&:hover": {
-    //     color: "white"
-    //   }
-    // };
-    //console.log(errors);
     return (
       <div className="container">
         <div className="row">
@@ -304,15 +288,9 @@ class QuestionView extends Component {
                                     某些手機設備無法選取檔案，請在官網使用web回報
                                   </small>
                                 </div>
-                                <ReCaptcha
-                                  ref={el => {
-                                    this.myCaptcha = el;
-                                  }}
-                                  size="normal"
-                                  render="explicit"
+                                <ReCAPTCHA
                                   sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
-                                  onloadCallback={this.onLoadRecaptcha}
-                                  verifyCallback={this.verifyCallback}
+                                  onChange={this.verifyCallback}
                                 />
                                 {errors.captcha_token && (
                                   <div className="invalid-feedback d-block">
