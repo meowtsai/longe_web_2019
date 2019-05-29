@@ -16,11 +16,8 @@ import TestRobot from "./components/service/create/TestRobot";
 import FileUpload from "./components/FileUpload";
 
 import Complete_agreement from "./components/policies/Complete_agreement";
-import { loadReCaptcha } from "react-recaptcha-google";
+
 class App extends Component {
-  componentDidMount() {
-    loadReCaptcha();
-  }
   render() {
     return (
       <Provider store={store}>
