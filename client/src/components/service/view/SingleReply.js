@@ -7,7 +7,7 @@ import * as showdown from "showdown";
 
 class SingleReply extends Component {
   render() {
-    const { reply, lastReply, q_status, pics } = this.props;
+    const { reply, lastReply, q_status, pics, token } = this.props;
     return (
       <div
         className={classnames("card mb-3", {
@@ -54,7 +54,11 @@ class SingleReply extends Component {
             <hr />
             <button
               className="btn btn-info btn-block"
-              onClick={this.props.closeQuestion}
+              onClick={this.props.closeQuestion.bind(
+                this,
+                reply.question_id,
+                token
+              )}
             >
               <i className="far fa-check-circle mr-3" />
               我沒問題了，結案

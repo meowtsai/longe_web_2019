@@ -5,7 +5,7 @@ import ReactModal from "react-modal";
 import { Link } from "react-router-dom";
 import { renderForm } from "../../../actions/reportActions";
 import Spinner from "../../common/Spinner";
-
+import queryString from "query-string";
 import TextFieldGroup from "../../common/TextFieldGroup";
 import TextAreaFieldGroup from "../../common/TextAreaFieldGroup";
 import RadioGroup from "../../common/RadioGroup";
@@ -38,7 +38,8 @@ class ReportQuestion extends Component {
 
       attachments: [],
       loading: false,
-      showModal: false
+      showModal: false,
+      token: ""
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -56,9 +57,14 @@ class ReportQuestion extends Component {
 
   handleCloseModal() {
     this.setState({ showModal: false });
+
     this.props.history.push(
       `/service/${this.props.match.params.game_id}/view/${
         this.props.report.create_result.question_id
+      }?token=${
+        isEmpty(this.props.report.settings.user)
+          ? this.props.report.create_result.token
+          : this.state.token
       }`
     );
   }
@@ -127,7 +133,11 @@ class ReportQuestion extends Component {
   }
 
   componentDidMount() {
-    this.props.renderForm(this.props.match.params.game_id);
+    const search_values = queryString.parse(this.props.location.search);
+
+    this.setState({ token: search_values.token });
+
+    this.props.renderForm(this.props.match.params.game_id, search_values.token);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.report) {
@@ -150,7 +160,13 @@ class ReportQuestion extends Component {
     const { loading } = this.props.report;
     const { question_id, check_id } = this.props.report.create_result;
 
-    const { errors, attachments, question_type, mobile_locale } = this.state;
+    const {
+      errors,
+      attachments,
+      question_type,
+      mobile_locale,
+      token
+    } = this.state;
 
     const localeOptions = [
       { label: "台灣 (+886)", value: "886", placeholder: "0912 345 678" },
@@ -169,7 +185,7 @@ class ReportQuestion extends Component {
       attach => attachments[attach].name
     );
     const home_link = !isEmpty(user)
-      ? "/service_quick"
+      ? `/service_quick?token=${token}`
       : `/service_quick?param_game_id=${this.props.match.params.game_id}`;
 
     let formContent;

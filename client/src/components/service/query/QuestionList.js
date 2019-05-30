@@ -2,14 +2,19 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
+import queryString from "query-string";
 import { connect } from "react-redux";
 import { getQuestionList } from "../../../actions/questionActions";
 class QuestionList extends Component {
   componentDidMount() {
-    this.props.getQuestionList();
+    const search_values = queryString.parse(this.props.location.search);
+    const q_token = search_values.token;
+    this.props.getQuestionList(q_token);
   }
 
   render() {
+    const search_values = queryString.parse(this.props.location.search);
+    const q_token = search_values.token;
     const { question_list } = this.props.service;
     const q_status = {
       "1": { text: "處理中", style: "danger" },
@@ -44,7 +49,7 @@ class QuestionList extends Component {
                             <Link
                               to={`/service/${
                                 this.props.match.params.game_id
-                              }/view/${q.id}`}
+                              }/view/${q.id}?token=${q_token}`}
                             >
                               {q.id} <i className="fas fa-search" />
                             </Link>
@@ -69,7 +74,7 @@ class QuestionList extends Component {
                               {q_status[q.status].text}
                             </span>
 
-                            <p
+                            <span
                               className="card-text small"
                               style={{ overflowWrap: "break-word" }}
                               dangerouslySetInnerHTML={{

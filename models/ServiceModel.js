@@ -11,7 +11,7 @@ const ServiceModel = {
       .then(([rows, fields]) => rows[0])
       .catch(err => {
         //console.log(err);
-        return rows[0];
+        return 0;
       });
   },
   getQuestionByCheckID: async (check_id, email, phone) => {
@@ -76,6 +76,34 @@ const ServiceModel = {
         return { status: -1, msg: err.message };
       });
   },
+  getQuestionByIDQuickCheck: async criteria => {
+    let sqlQuery = "SELECT id FROM questions  q WHERE  q.id=?";
+    if (!isEmpty(criteria.partner_uid)) {
+      sqlQuery += " and q.partner_uid=?";
+    } else {
+      sqlQuery += " and q.check_id=?";
+    }
+    return await db2
+      .promise()
+      .query(sqlQuery, [
+        criteria.question_id,
+        !isEmpty(criteria.partner_uid)
+          ? criteria.partner_uid
+          : criteria.check_id
+      ])
+      .then(([rows, fields]) => {
+        if (rows.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
+  },
+
   getQuestions: async (partner_uid, server_id) => {
     return await db2
       .promise()
@@ -99,7 +127,7 @@ const ServiceModel = {
     return await db2
       .promise()
       .query(
-        "select id,content,create_time,is_official  from question_replies where question_id=? order by id asc",
+        "select id,content,create_time,is_official,question_id  from question_replies where question_id=? order by id asc",
         [question_id]
       )
       .then(([rows, fields]) => {
@@ -133,7 +161,7 @@ const ServiceModel = {
         question_id
       )
       .then(([rows, fields]) => {
-        return { status: 1, msg: rows };
+        return { status: rows[0].chk, msg: rows[0].chk };
       })
       .catch(err => {
         //console.log(err);
@@ -217,13 +245,23 @@ const ServiceModel = {
         return { status: -1, msg: err.message };
       });
   },
-  closeQuestion: async q_id => {
+  closeQuestion: async criteria => {
+    let sqlQuery =
+      "UPDATE questions set close_admin_uid=null,system_closed_start=null, status=4 where id=?";
+    if (!isEmpty(criteria.partner_uid)) {
+      sqlQuery += " and q.partner_uid=?";
+    } else {
+      sqlQuery += " and q.check_id=?";
+    }
+
     return await db1
       .promise()
-      .query(
-        "UPDATE questions set close_admin_uid=null,system_closed_start=null, status=4 where id=?",
-        [q_id]
-      )
+      .query(sqlQuery, [
+        criteria.question_id,
+        !isEmpty(criteria.partner_uid)
+          ? criteria.partner_uid
+          : criteria.check_id
+      ])
       .then(([rows, fields]) => {
         if (rows.affectedRows > 0) {
           return { status: 1, msg: "修改成功" };

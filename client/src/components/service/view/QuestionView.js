@@ -9,7 +9,7 @@ import FileGroup from "../../common/FileGroup";
 import TextAreaFieldGroup from "../../common/TextAreaFieldGroup";
 import ReplyContent from "./ReplyContent";
 import isEmpty from "../../../validation/is-empty";
-
+import queryString from "query-string";
 import {
   getQuestionById,
   insert_reply
@@ -28,7 +28,8 @@ class QuestionView extends Component {
       captcha_token: "",
       loading: false,
       file01: "",
-      attachments: []
+      attachments: [],
+      token: ""
     };
 
     this.onChange = this.onChange.bind(this);
@@ -36,27 +37,39 @@ class QuestionView extends Component {
     this.verifyCallback = this.verifyCallback.bind(this);
   }
   componentDidMount() {
+    const search_values = queryString.parse(this.props.location.search);
+    //console.log("search_values", search_values);
     const q_id = this.props.match.params.q_id;
-    this.props.getQuestionById(q_id, this.props.history);
+
+    this.setState({ token: search_values.token });
+    this.props.getQuestionById(q_id, search_values.token, this.props.history);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
+      //console.log(nextProps.errors);
+      if (nextProps.errors.jwt) {
+        this.props.history.push(
+          `/service/${this.props.match.params.game_id}/query`
+        );
+      }
       this.setState({ errors: nextProps.errors });
     }
   }
 
   onSubmit(e) {
     e.preventDefault();
+    const q_id = this.props.match.params.q_id;
     let formData = new FormData();
     let fileArray = this.state.attachments;
     for (let index = 1; index <= fileArray.length; index++) {
       formData.append(`attachment${index}`, fileArray[index - 1]);
     }
     formData.append("content", this.state.content);
+    formData.append("question_id", q_id);
     formData.append("captcha_token", this.state.captcha_token);
 
-    this.props.insert_reply(formData, this.props.history);
+    this.props.insert_reply(formData, this.state.token, this.props.history);
     this.setState({ content: "", attachments: [], file01: "" });
   }
 
@@ -81,13 +94,13 @@ class QuestionView extends Component {
   }
   render() {
     const { question, loading } = this.props.service;
-    const { errors, attachments } = this.state;
+    const { errors, attachments, token } = this.state;
     const fileInfo = Object.keys(attachments).map(
       attach => attachments[attach].name
     );
 
     const home_link = !isEmpty(question.partner_uid)
-      ? "/service_quick"
+      ? `/service_quick?token=${token}`
       : `/service_quick?param_game_id=${this.props.match.params.game_id}`;
     return (
       <div className="container">
@@ -228,6 +241,7 @@ class QuestionView extends Component {
                       ) : (
                         <ReplyContent
                           q_status={question.status}
+                          token={token}
                           replies={question.replies}
                           pic_plus={question.pic_plus.filter(
                             pic => pic.reply_id !== 0

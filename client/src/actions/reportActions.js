@@ -18,9 +18,9 @@ export const clearLoading = () => {
     type: CLEAR_LOADING
   };
 };
-export const renderForm = game_id => dispatch => {
+export const renderForm = (game_id, token) => dispatch => {
   dispatch(beginLoading());
-  const token = localStorage.getItem("inGameToken");
+  //const token = localStorage.getItem("inGameToken");
   const config = {
     headers: { "Content-Type": "application/json" }
   };
@@ -39,7 +39,7 @@ export const renderForm = game_id => dispatch => {
       //console.log(err);
       dispatch(clearLoading());
       if (err.response.data.jwt) {
-        localStorage.removeItem("inGameToken");
+        //localStorage.removeItem("inGameToken");
       }
       dispatch({
         type: GET_ERRORS,
@@ -56,7 +56,7 @@ export const createWebReport = (questionData, history) => dispatch => {
     })
     .then(res => {
       //console.log("createWebReport status", res.status);
-      localStorage.setItem("jwtToken", res.data.msg.token);
+      //localStorage.setItem("jwtToken", res.data.msg.token);
       dispatch({
         type: CREATE_WEB_REPORT,
         payload: res.data.msg

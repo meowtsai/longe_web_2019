@@ -34,7 +34,7 @@ export const createQuestion = (questionData, history) => dispatch => {
     .post("/api/question", questionData)
     .then(res => {
       //console.log("createQuestion", res.data.msg.token);
-      localStorage.setItem("jwtToken", res.data.msg.token);
+      //localStorage.setItem("jwtToken", res.data.msg.token);
       dispatch({
         type: GET_QUESTION_BY_CHECKID,
         payload: res.data.msg
@@ -56,7 +56,7 @@ export const getQuestion = questionData => dispatch => {
   axios
     .post("/api/questions/by_checkid", questionData)
     .then(res => {
-      localStorage.setItem("jwtToken", res.data.msg.token);
+      //localStorage.setItem("jwtToken", res.data.msg.token);
       dispatch({
         type: GET_QUESTION_BY_CHECKID,
         payload: res.data.msg
@@ -70,14 +70,14 @@ export const getQuestion = questionData => dispatch => {
     });
 };
 
-export const getQuestionById = (q_id, history) => dispatch => {
+export const getQuestionById = (q_id, token, history) => dispatch => {
   dispatch(postLoading());
   dispatch(clearErrors());
 
-  const token =
-    localStorage.getItem("inGameToken") !== "undefined"
-      ? localStorage.getItem("inGameToken")
-      : localStorage.getItem("jwtToken");
+  // const token =
+  //   localStorage.getItem("inGameToken") !== "undefined"
+  //     ? localStorage.getItem("inGameToken")
+  //     : localStorage.getItem("jwtToken");
   //console.log("getQuestionById", token);
   const config = {
     headers: { "Content-Type": "application/json" }
@@ -97,8 +97,9 @@ export const getQuestionById = (q_id, history) => dispatch => {
     )
     .catch(err => {
       //console.log("err. ", err.response.data);
+      dispatch(clearLoading());
       if (err.response.data.jwt) {
-        localStorage.removeItem("jwtToken");
+        //localStorage.removeItem("jwtToken");
         history.push("../query");
       } else {
         dispatch({
@@ -109,9 +110,9 @@ export const getQuestionById = (q_id, history) => dispatch => {
     });
 };
 
-export const getQuestionList = () => dispatch => {
+export const getQuestionList = token => dispatch => {
   dispatch(postLoading());
-  const token = localStorage.getItem("inGameToken");
+
   //console.log("getQuestionById", token);
   const config = {
     headers: { "Content-Type": "application/json" }
@@ -132,7 +133,6 @@ export const getQuestionList = () => dispatch => {
     .catch(err => {
       //console.log("err. ", err.response.data);
       if (err.response.data.jwt) {
-        localStorage.removeItem("inGameToken");
         //history.push("../query");
       }
       dispatch({
@@ -142,8 +142,8 @@ export const getQuestionList = () => dispatch => {
     });
 };
 
-export const insert_reply = (reply, history) => dispatch => {
-  const token = localStorage.getItem("jwtToken");
+export const insert_reply = (reply, token, history) => dispatch => {
+  //const token = localStorage.getItem("jwtToken");
   const config = {
     headers: { "Content-Type": "multipart/form-data" }
   };
@@ -172,7 +172,7 @@ export const insert_reply = (reply, history) => dispatch => {
           payload: { file01: "附件尺寸太大, 請控制在8MB以內" }
         });
       } else if (err.response.data.jwt) {
-        localStorage.removeItem("jwtToken");
+        //localStorage.removeItem("jwtToken");
         history.push("../query");
       } else {
         dispatch({
@@ -183,19 +183,19 @@ export const insert_reply = (reply, history) => dispatch => {
     });
 };
 
-export const setUpQuestionConfig = validationObject => dispatch => {
-  let token;
+export const setUpQuestionConfig = (validationObject, token) => dispatch => {
+  //let token;
   const config = {
     headers: { "Content-Type": "application/json" }
   };
 
   const parsed = queryString.parse(validationObject.search_string);
   //console.log(parsed);
-  if (!isEmpty(parsed.param_game_id)) {
-    localStorage.removeItem("inGameToken");
-  } else {
-    token = localStorage.getItem("inGameToken");
-  }
+  // if (!isEmpty(parsed.param_game_id)) {
+  //   localStorage.removeItem("inGameToken");
+  // } else {
+  //   token = localStorage.getItem("inGameToken");
+  // }
 
   //?param_game_id=g78naxx2hmt
 
@@ -206,14 +206,15 @@ export const setUpQuestionConfig = validationObject => dispatch => {
   axios
     .post("/api/service/init_setup", validationObject, config)
     .then(res => {
-      //console.log("setUpQuestionConfig return ", res.data.token);
-      localStorage.setItem("inGameToken", res.data.token);
+      //console.log("setUpQuestionConfig return ", res.data);
+      //localStorage.setItem("inGameToken", res.data.token);
       dispatch({
         type: QUESTION_INIT_SETUP,
         payload: res.data
       });
     })
     .catch(err => {
+      //console.log("setUpQuestionConfig err ", err.response);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -221,38 +222,9 @@ export const setUpQuestionConfig = validationObject => dispatch => {
     });
 };
 
-export const verifyQuestionToken = () => dispatch => {
-  dispatch(postLoading());
-  //console.log("verifyQuestionToken");
-  const token = localStorage.getItem("inGameToken");
-  const config = {
-    headers: { "Content-Type": "application/json" }
-  };
-  if (token) {
-    config.headers["x-auth-token"] = token;
-  }
-  axios
-    .get(`/api/questions/get_user_by_token`, config)
-    .then(res =>
-      dispatch({
-        type: GET_USER_BY_TOKEN,
-        payload: res.data
-      })
-    )
-    .catch(err => {
-      //console.log("err", err.message);
-      if (err.response.data.jwt) {
-        localStorage.removeItem("inGameToken");
-      }
-      dispatch({
-        type: GET_USER_BY_TOKEN,
-        payload: {}
-      });
-    });
-};
-
-export const closeQuestion = (reply, history) => dispatch => {
-  const token = localStorage.getItem("jwtToken");
+export const closeQuestion = (q_id, token, history) => dispatch => {
+  console.log("q_id", q_id);
+  console.log("token", token);
   const config = {
     headers: { "Content-Type": "application/json" }
   };
@@ -261,7 +233,7 @@ export const closeQuestion = (reply, history) => dispatch => {
   }
 
   axios
-    .post(`/api/questions/close_question`, "", config)
+    .post(`/api/questions/close_question`, { question_id: q_id }, config)
     .then(res =>
       dispatch({
         type: CLOSE_QUESTION,
@@ -272,7 +244,7 @@ export const closeQuestion = (reply, history) => dispatch => {
       //console.log("err. ", err.response.data);
 
       if (err.response.data.jwt) {
-        localStorage.removeItem("jwtToken");
+        //localStorage.removeItem("jwtToken");
         history.push("../query");
       } else {
         dispatch({

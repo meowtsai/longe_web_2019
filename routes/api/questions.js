@@ -10,6 +10,7 @@ const uniqid = require("uniqid");
 const md5 = require("md5");
 const path = require("path");
 const isEmpty = require("../../validation/is-empty");
+
 const validateQuestionQueryInput = require("../../validation/question_query");
 const validateReplyInput = require("../../validation/reply");
 const validateCreateWebInput = require("../../validation/create");
@@ -139,6 +140,7 @@ router.get("/list", auth, (req, res) => {
 //@desc: POST question_reply
 //@access: private
 router.post("/insert_reply", auth, (req, res) => {
+  //console.log("insert_reply", req.user);
   if (req.user) {
     //console.log(req.user);
     const { errors, isValid } = validateReplyInput({
@@ -150,58 +152,87 @@ router.post("/insert_reply", auth, (req, res) => {
       return res.status(400).json(errors);
     }
 
-    let replyObject = {
-      uid: 0,
-      question_id: req.user.question_id,
-      content: Validator.escape(req.body.content)
-    };
-
-    let add_pics = [];
-
-    if (!isEmpty(req.files)) {
-      //console.log("req.files", req.files);
-      if (Object.keys(req.files).length > 0) {
-        Object.keys(req.files).forEach((keyName, index) => {
-          const new_file_name =
-            set_filename() +
-            path.extname(req.files[keyName].name).toLowerCase();
-
-          add_pics.push(SERVICE_CONFIG.image_path + new_file_name);
-
-          req.files[keyName].mv(
-            `${__dirname}/../../client/public/uploads/${new_file_name}`,
-            err => {
-              if (err) return res.status(500).send({ file01: err.message });
-            }
-          );
-        });
-      }
+    let criteria = {};
+    if (!isEmpty(req.user.partner_uid)) {
+      criteria = {
+        partner_uid: req.user.partner_uid,
+        question_id: req.body.question_id
+      };
+    } else {
+      criteria = {
+        check_id: req.user.check_id,
+        question_id: req.user.question_id
+      };
     }
-    let rtnMsg = {};
-    ServiceModel.checkRepeactReplies(req.user.question_id)
-      .then(chkResult => ServiceModel.insertReply(replyObject, add_pics))
-      .then(insResult => {
-        if (insResult.status !== 1) {
-          return res.status(400).json({ errors: insResult.msg });
-        }
+    ServiceModel.getQuestionByIDQuickCheck(criteria).then(qExist => {
+      if (qExist) {
+        const question_id = !isEmpty(req.user.partner_uid)
+          ? req.body.question_id
+          : req.user.question_id;
 
-        return ServiceModel.openQuestion(req.user.question_id);
-      })
-      .then(setResult => {
-        return ServiceModel.getRepliesByQID(req.user.question_id);
-      })
-      .then(gResult => {
-        rtnMsg.replies = [...gResult.msg];
-        return ServiceModel.getPicplusByQID(req.user.question_id);
-      })
-      .then(pResult => {
-        rtnMsg.pic_plus = [...pResult.msg];
-        //console.log("rtnMsg", rtnMsg);
-        res.json({ status: 1, msg: rtnMsg });
-      })
-      .catch(err => {
-        return res.status(400).json({ errors: err.message });
-      });
+        let replyObject = {
+          uid: 0,
+          question_id,
+          content: Validator.escape(req.body.content)
+        };
+
+        let add_pics = [];
+
+        if (!isEmpty(req.files)) {
+          //console.log("req.files", req.files);
+          if (Object.keys(req.files).length > 0) {
+            Object.keys(req.files).forEach((keyName, index) => {
+              const new_file_name =
+                set_filename() +
+                path.extname(req.files[keyName].name).toLowerCase();
+
+              add_pics.push(SERVICE_CONFIG.image_path + new_file_name);
+
+              req.files[keyName].mv(
+                `${__dirname}/../../client/public/uploads/${new_file_name}`,
+                err => {
+                  if (err) return res.status(500).send({ file01: err.message });
+                }
+              );
+            });
+          }
+        }
+        let rtnMsg = {};
+        ServiceModel.checkRepeactReplies(question_id)
+          .then(chkResult => {
+            //console.log(chkResult);
+            if (chkResult.status > 0) {
+              return res.status(400).json({ errors: "請勿重複提問!" });
+            } else {
+              return ServiceModel.insertReply(replyObject, add_pics);
+            }
+          })
+          .then(insResult => {
+            if (insResult.status !== 1) {
+              return res.status(400).json({ errors: insResult.msg });
+            }
+
+            return ServiceModel.openQuestion(question_id);
+          })
+          .then(setResult => {
+            return ServiceModel.getRepliesByQID(question_id);
+          })
+          .then(gResult => {
+            rtnMsg.replies = [...gResult.msg];
+            return ServiceModel.getPicplusByQID(question_id);
+          })
+          .then(pResult => {
+            rtnMsg.pic_plus = [...pResult.msg];
+            //console.log("rtnMsg", rtnMsg);
+            res.json({ status: 1, msg: rtnMsg });
+          })
+          .catch(err => {
+            return res.status(400).json({ errors: err.message });
+          });
+      } else {
+        return res.status(404).json({ noexist: "問題不存在" });
+      }
+    });
   }
 });
 
@@ -210,7 +241,20 @@ router.post("/insert_reply", auth, (req, res) => {
 //@access: private
 router.post("/close_question", auth, (req, res) => {
   if (req.user) {
-    ServiceModel.closeQuestion(req.user.question_id).then(cResult => {
+    let criteria = {};
+    if (!isEmpty(req.user.partner_uid)) {
+      criteria = {
+        partner_uid: req.user.partner_uid,
+        question_id: req.body.question_id
+      };
+    } else {
+      criteria = {
+        check_id: req.user.check_id,
+        question_id: req.user.question_id
+      };
+    }
+
+    ServiceModel.closeQuestion(criteria).then(cResult => {
       res.json(cResult);
     });
   }
@@ -289,13 +333,13 @@ router.post("/create_web_form", (req, res) => {
   let game_name = req.body.game_name;
   let partner_uid = null;
   let is_in_game = 0;
-  let note = isEmpty(req.body.note) ? "" : req.body.note;
+  let note = isEmpty(req.body.note)
+    ? ""
+    : req.body.note.replace("undefined", "");
   if (!isEmpty(req.body.partner_uid)) {
     partner_uid = req.body.partner_uid;
     is_in_game = 1;
   }
-
-  //captcha_token:
 
   let questionObject = {
     uid: 0,

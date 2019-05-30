@@ -80,6 +80,7 @@ const GameModel = {
         [game_id, address]
       )
       .then(([rows, fields]) => {
+        //console.log(rows);
         if (rows.length > 0) {
           return rows[0];
         } else {

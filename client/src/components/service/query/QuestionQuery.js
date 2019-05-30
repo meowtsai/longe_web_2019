@@ -12,9 +12,9 @@ class QuestionQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      email: "a_3281968@yahoo.com.tw",
       mobile: "",
-      check_id: "",
+      check_id: "1dle50v",
       errors: "",
       question: {},
       loading: false
@@ -34,7 +34,7 @@ class QuestionQuery extends Component {
         this.props.history.push(
           `/service/${this.props.match.params.game_id}/view/${
             nextProps.service.user.question_id
-          }`
+          }?token=${nextProps.service.token}`
         );
       }
 

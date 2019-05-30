@@ -8,8 +8,8 @@ const ServiceModel = require("../../models/ServiceModel");
 const GameModel = require("../../models/GameModel");
 const CharacterModel = require("../../models/CharacterModel");
 
-router.get("/test", (req, res) => {
-  res.json({ msg: "Service API Route works" });
+router.get("/test", async (req, res) => {
+  res.json({ status: 1, msg: "works" });
 });
 
 router.get("/question_types", (req, res) => {
@@ -21,23 +21,28 @@ router.get("/question_types", (req, res) => {
 //@desc: get a question by email,phone, checkid
 //@access: public
 
-router.post("/init_setup", auth_for_create, (req, res) => {
+router.post("/init_setup", auth_for_create, async (req, res) => {
   const searchArray = req.body.search_string.replace("?", "").split("&");
   let searchObject = {};
-  // console.log("init_setup searchArray length", searchArray.length);
-  // console.log("init_setup auth", req.header("x-auth-token"));
-  if (searchArray.length === 1 && req.user) {
-    ServiceModel.getUnreadByUID(req.user.partner_uid).then(unread_result => {
-      //console.log("init_setup unread_result", unread_result);
+  //console.log("init_setup searchArray length", searchArray.length);
+  //console.log("req.user auth", req.user);
 
-      res.json({
-        token: req.header("x-auth-token"),
-        is_in_game: true,
-        unread_count: unread_result.cnt,
-        game_id: req.user.vendor_game_id
+  if (searchArray.length === 1 && req.user) {
+    ServiceModel.getUnreadByUID(req.user.partner_uid)
+      .then(unread_result => {
+        //console.log("init_setup unread_result", unread_result);
+
+        res.json({
+          token: req.header("x-auth-token"),
+          is_in_game: true,
+          unread_count: unread_result.cnt,
+          game_id: req.user.vendor_game_id
+        });
+        return;
+      })
+      .catch(err => {
+        res.status(400).json(err.message);
       });
-      return;
-    });
     return;
   }
 
@@ -61,7 +66,8 @@ router.post("/init_setup", auth_for_create, (req, res) => {
     key
   } = searchObject;
   const is_in_game = validate_params(searchObject);
-
+  //
+  //console.log("is_in_game", is_in_game);
   if (is_in_game) {
     let userObj = {
       vendor_game_id: game_id,
@@ -72,58 +78,52 @@ router.post("/init_setup", auth_for_create, (req, res) => {
       q_note: `等級=${level}, 系統=${usr_device}, os=${os_ver}, app_ver=${app_ver},time_zone=${time_zone},network=${network}`,
       is_in_game
     };
-
-    GameModel.getServersByGameIdAndAddress(game_id, server_name).then(
-      server_info => {
-        userObj.server_info = server_info;
-
-        CharacterModel.getCharInfoByInGameId(server_info.server_id, in_game_id)
-          .then(char => {
-            //console.log("char", char);
-            if (char.status == 1) {
-              if (char.msg.name !== character_name) {
-                CharacterModel.update_character(char.msg.id, character_name);
-              }
-            } else {
-              let character_info = {
-                uid: 0,
-                partner_uid,
-                name: character_name,
-                in_game_id,
-                server_id: server_info.server_id,
-                create_status: 0,
-                ad: ""
-              };
-              //console.log(character_info);
-              CharacterModel.create_character(character_info);
-            }
-
-            return ServiceModel.getUnreadByUID(partner_uid);
-          })
-          .then(unread_result => {
-            userObj.unread_count = unread_result.cnt;
-            //console.log(userObj);
-
-            jwt.sign(
-              userObj,
-              SERVICE_CONFIG.jwt_encryption,
-              {
-                expiresIn: "1d"
-              },
-              (err, token) => {
-                //console.log(token);
-                if (err) throw err;
-                res.json({
-                  token,
-                  is_in_game,
-                  game_id,
-                  unread_count: userObj.unread_count
-                });
-              }
-            );
-          });
-      }
+    const server_info = await GameModel.getServersByGameIdAndAddress(
+      game_id,
+      server_name
     );
+    userObj.server_info = server_info;
+
+    const char = await CharacterModel.getCharInfoByInGameId(
+      server_info.server_id,
+      in_game_id
+    );
+    if (char.status == 1) {
+      if (char.msg.name !== character_name) {
+        CharacterModel.update_character(char.msg.id, character_name).catch(
+          err => {
+            //console.log("update_character", err.message);
+            throw err;
+          }
+        );
+      }
+    } else {
+      let character_info = {
+        uid: 0,
+        partner_uid,
+        name: character_name,
+        in_game_id,
+        server_id: server_info.server_id,
+        create_status: 0,
+        ad: ""
+      };
+      //console.log("character_info", character_info);
+      CharacterModel.create_character(character_info).catch(err => {
+        //console.log("create_character", err.message);
+        throw err;
+      });
+    }
+    const unread_result = await ServiceModel.getUnreadByUID(partner_uid);
+    userObj.unread_count = unread_result.cnt;
+    const token = jwt.sign(userObj, SERVICE_CONFIG.jwt_encryption, {
+      expiresIn: "1d"
+    });
+    res.json({
+      token,
+      is_in_game,
+      game_id,
+      unread_count: userObj.unread_count
+    });
   } else {
     res.json({ is_in_game });
   }

@@ -15,9 +15,9 @@ function auth(req, res, next) {
     req.user = decoded;
     next();
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     errors.jwt = e.message;
-    res.status(400).json({ errors });
+    res.status(400).json({ ...errors });
   }
 }
 

@@ -11,7 +11,7 @@ module.exports = async function VerifyRecaptcha(token, ip) {
     remoteip: ip
   });
   const response = await axios.post(ggl_recaptcha_validate, post_data);
-
+  //console.log("VerifyRecaptcha", response.data);
   if (!response.data.success) {
     //console.log("not validate");
     return false;
