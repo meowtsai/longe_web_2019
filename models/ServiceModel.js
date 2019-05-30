@@ -249,9 +249,9 @@ const ServiceModel = {
     let sqlQuery =
       "UPDATE questions set close_admin_uid=null,system_closed_start=null, status=4 where id=?";
     if (!isEmpty(criteria.partner_uid)) {
-      sqlQuery += " and q.partner_uid=?";
+      sqlQuery += " and partner_uid=?";
     } else {
-      sqlQuery += " and q.check_id=?";
+      sqlQuery += " and check_id=?";
     }
 
     return await db1

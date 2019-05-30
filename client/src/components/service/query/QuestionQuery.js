@@ -12,9 +12,9 @@ class QuestionQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "a_3281968@yahoo.com.tw",
+      email: "",
       mobile: "",
-      check_id: "1dle50v",
+      check_id: "",
       errors: "",
       question: {},
       loading: false

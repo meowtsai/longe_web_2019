@@ -254,6 +254,8 @@ router.post("/close_question", auth, (req, res) => {
       };
     }
 
+    //console.log("close_question criteria", criteria);
+
     ServiceModel.closeQuestion(criteria).then(cResult => {
       res.json(cResult);
     });
