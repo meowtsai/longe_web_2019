@@ -3,6 +3,7 @@ import {
   CLEAR_LOADING,
   RENDER_CREATE_FORM,
   GET_ERRORS,
+  CLEAR_ERRORS,
   CREATE_WEB_REPORT
 } from "./types";
 
@@ -20,6 +21,7 @@ export const clearLoading = () => {
 };
 export const renderForm = (game_id, token) => dispatch => {
   dispatch(beginLoading());
+  dispatch(clearErrors());
   //const token = localStorage.getItem("inGameToken");
   const config = {
     headers: { "Content-Type": "application/json" }
@@ -78,4 +80,9 @@ export const createWebReport = (questionData, history) => dispatch => {
         });
       }
     });
+};
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
 };

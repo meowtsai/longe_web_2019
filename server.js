@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+var logger = require("morgan");
+var rfs = require("rotating-file-stream");
 const fileUpload = require("express-fileupload");
 const games = require("./routes/api/games");
 const service = require("./routes/api/service");
@@ -9,9 +11,14 @@ const CONFIG = require("./config/config")[process.env.NODE_ENV];
 const requestIp = require("request-ip");
 const helmet = require("helmet");
 // default options
-
+// create a rotating write stream
+var accessLogStream = rfs("access.log", {
+  interval: "1d", // rotate daily
+  path: path.join(__dirname, "log")
+});
 const app = express();
-
+app.set("trust proxy", true);
+app.use(logger("combined", { stream: accessLogStream }));
 app.use(
   fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
