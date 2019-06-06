@@ -203,6 +203,7 @@ export const setUpQuestionConfig = (validationObject, token) => dispatch => {
     //console.log("setUpQuestionConfig", token);
     config.headers["x-auth-token"] = token;
   }
+  dispatch(postLoading());
   axios
     .post("/api/service/init_setup", validationObject, config)
     .then(res => {

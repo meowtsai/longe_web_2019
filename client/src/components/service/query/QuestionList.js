@@ -34,7 +34,7 @@ class QuestionList extends Component {
         </nav>
         <div className="container">
           <div className="row">
-            <div className="col-sm-12 col-md-6 m-auto">
+            <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
               <div className="card">
                 <div className="card-body">
                   <p className="card-text">案件資訊(點選可查看進一步訊息)</p>

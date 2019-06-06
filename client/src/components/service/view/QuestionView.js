@@ -105,7 +105,7 @@ class QuestionView extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-sm-12 col-md-6 m-auto">
+          <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
             <h4 className="text-center mt-5">提問查詢</h4>
             {loading ? (
               <Spinner />

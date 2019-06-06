@@ -69,7 +69,7 @@ class QuestionQuery extends Component {
         ) : (
           <div className="container">
             <div className="row">
-              <div className="col-sm-12 col-md-6 m-auto">
+              <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
                 <h4 className="text-center">線上回報紀錄查詢</h4>
                 <p className="lead text-center">請填寫以下資訊</p>
                 <small className="d-block pb-3">* = 必填</small>

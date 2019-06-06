@@ -304,7 +304,7 @@ class ReportQuestion extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-sm-12 col-md-6 m-auto">
+          <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
             <h4 className="text-center mt-5">線上回報</h4>
             <small className="d-block mb-3 text-center">請填寫以下資訊</small>
 

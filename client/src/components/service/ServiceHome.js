@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import isEmpty from "../../validation/is-empty";
+import Spinner from "../common/Spinner";
 import { setUpQuestionConfig } from "../../actions/questionActions";
 
 import "./service.css";
@@ -28,7 +29,7 @@ class ServiceHome extends Component {
     //console.log("game_id", search_game_id);
     //const game_id = this.props.match.params.game_id;
     let game_id = this.props.service.game_id;
-    const { is_in_game, unread_count, token } = this.props.service;
+    const { is_in_game, unread_count, token, loading } = this.props.service;
     const parsed = queryString.parse(this.props.location.search);
     if (!isEmpty(parsed.param_game_id)) {
       game_id = parsed.param_game_id;
@@ -48,37 +49,41 @@ class ServiceHome extends Component {
             </span>
           </div>
         </nav>
-        <div className="container" style={{ marginTop: "50px" }}>
-          <div className="row">
-            <div className="col-md-12 text-center">
-              <hr />
-              <div className="row justify-content-center">
-                <div className="col-sm-3 col-xs-6">
-                  <Link to={linkReport} className="quick-button">
-                    <i className="fas fa-edit" />
-                    <p style={{ padding: "10px" }}>線上回報</p>
-                  </Link>
-                </div>
-                <div className="col-sm-3 col-xs-6">
-                  <Link to={linkQuery} className="quick-button">
-                    <i className="fa fa-file-text" />
-                    <p style={{ padding: "10px" }}>回報紀錄</p>
-                    {unread_count > 0 && (
-                      <span className="notification red">{unread_count}</span>
-                    )}
-                  </Link>
-                </div>
-              </div>
-              <div className="row justify-content-center">
-                {is_in_game && (
-                  <div className="col-md-12 alert alert-warning m-5">
-                    提醒您：若無法選取檔案回報，請直接利用官網線上提問。
+        {loading ? (
+          <Spinner />
+        ) : (
+          <div className="container" style={{ marginTop: "50px" }}>
+            <div className="row">
+              <div className="col-md-12 text-center">
+                <hr />
+                <div className="row justify-content-center">
+                  <div className="col-sm-6 col-xs-6 col-md-4">
+                    <Link to={linkReport} className="quick-button">
+                      <i className="fas fa-edit" />
+                      <p style={{ padding: "10px" }}>線上回報</p>
+                    </Link>
                   </div>
-                )}
+                  <div className="col-sm-6 col-xs-6 col-md-4">
+                    <Link to={linkQuery} className="quick-button">
+                      <i className="fa fa-file-text" />
+                      <p style={{ padding: "10px" }}>回報紀錄</p>
+                      {unread_count > 0 && (
+                        <span className="notification red">{unread_count}</span>
+                      )}
+                    </Link>
+                  </div>
+                </div>
+                <div className="row justify-content-center">
+                  {is_in_game && (
+                    <div className="col-md-12 alert alert-warning m-5">
+                      提醒您：若無法選取檔案回報，請直接利用官網線上提問。
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
