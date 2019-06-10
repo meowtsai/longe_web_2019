@@ -9,7 +9,6 @@ module.exports = function validateCreateWebInput(data) {
   data.captcha_token = !isEmpty(data.captcha_token) ? data.captcha_token : "";
 
   data.email = !isEmpty(data.email) ? data.email : "";
-  data.email = !isEmpty(data.email) ? data.email : "";
   data.phone = !isEmpty(data.phone) ? data.phone : "";
   data.content = !isEmpty(data.content) ? data.content : "";
   data.server_id = !isEmpty(data.server_id) ? data.server_id : "";
@@ -26,11 +25,10 @@ module.exports = function validateCreateWebInput(data) {
       errors.captcha_token = "你是機器人嗎?";
     }
   }
-
+  if (isEmpty(data.email)) {
+    errors.email = "Email 為必填。";
+  }
   if (isEmpty(data.partner_uid)) {
-    if (isEmpty(data.email)) {
-      errors.email = "Email 為必填。";
-    }
     if (isEmpty(data.phone)) {
       errors.phone = "手機為必填。";
     }
