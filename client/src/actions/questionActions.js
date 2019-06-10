@@ -6,7 +6,6 @@ import {
   GET_QUESTION_BY_CHECKID,
   GET_QUESTION_BY_ID,
   QUESTION_INIT_SETUP,
-  GET_USER_BY_TOKEN,
   FOCUS_REPLY,
   GET_REPLIES,
   CLOSE_QUESTION,
@@ -189,7 +188,7 @@ export const setUpQuestionConfig = (validationObject, token) => dispatch => {
     headers: { "Content-Type": "application/json" }
   };
 
-  const parsed = queryString.parse(validationObject.search_string);
+  //const parsed = queryString.parse(validationObject.search_string);
   //console.log(parsed);
   // if (!isEmpty(parsed.param_game_id)) {
   //   localStorage.removeItem("inGameToken");
@@ -224,8 +223,8 @@ export const setUpQuestionConfig = (validationObject, token) => dispatch => {
 };
 
 export const closeQuestion = (q_id, token, history) => dispatch => {
-  console.log("q_id", q_id);
-  console.log("token", token);
+  // console.log("q_id", q_id);
+  // console.log("token", token);
   const config = {
     headers: { "Content-Type": "application/json" }
   };

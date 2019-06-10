@@ -245,13 +245,13 @@ class ReportQuestion extends Component {
             </div>
 
             <TextFieldGroup
-              placeholder="(選填)Email"
+              placeholder="* Email"
               name="email"
               type="email"
               value={this.state.email}
               onChange={this.onChange}
               error={errors.email}
-              info="若您留下信箱，您就可以收到電子郵件回覆通知。"
+              info="我們將會使用email通知回報後續處理結果, 請務必正確填寫"
             />
           </div>
         );
