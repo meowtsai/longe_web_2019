@@ -100,7 +100,10 @@ class ReportQuestion extends Component {
           : this.state.server_id
       );
 
-      formData.append("character_name", this.state.character_name);
+      formData.append(
+        "character_name",
+        this.state.got_char === "no" ? "" : this.state.character_name
+      );
     }
     formData.append("game_id", game.game_id);
     formData.append("game_name", game.game_name);
