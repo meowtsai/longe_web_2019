@@ -54,6 +54,10 @@ module.exports = function validateCreateWebInput(data) {
     errors.server_id = "請選擇伺服器。";
   }
 
+  if (data.got_char !== "no") {
+    errors.character_name = "請提供角色名稱方便作業。";
+  }
+
   if (isEmpty(data.question_type)) {
     errors.question_type = "請選擇提問類型。";
   }

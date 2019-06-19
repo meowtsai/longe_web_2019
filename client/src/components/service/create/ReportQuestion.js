@@ -25,6 +25,7 @@ class ReportQuestion extends Component {
     super(props);
     this.state = {
       server_id: "",
+      got_char: "yes",
       character_name: "",
       email: "",
       phone: "",
@@ -79,6 +80,7 @@ class ReportQuestion extends Component {
     }
 
     formData.append("email", this.state.email);
+    formData.append("got_char", this.state.got_char);
     if (user) {
       formData.append("partner_uid", user.partner_uid);
       formData.append("server_id", user.server_info.server_id);
@@ -287,15 +289,46 @@ class ReportQuestion extends Component {
               options={serversOption}
               info="伺服器"
             />
-            <TextFieldGroup
-              placeholder="角色名稱"
-              name="character_name"
-              type="text"
-              value={this.state.character_name}
-              onChange={this.onChange}
-              error={errors.character_name}
-              info="(選填)角色名稱"
-            />
+
+            <div className="custom-control custom-radio">
+              <input
+                className="custom-control-input"
+                type="radio"
+                name="got_char"
+                id="got_char_yes"
+                value="yes"
+                onChange={this.onChange}
+                checked={this.state.got_char === "yes" ? true : false}
+              />
+              <label className="custom-control-label" for="got_char_yes">
+                我有角色
+              </label>
+              {this.state.got_char === "yes" && (
+                <TextFieldGroup
+                  placeholder="* 角色名稱"
+                  name="character_name"
+                  type="text"
+                  value={this.state.character_name}
+                  onChange={this.onChange}
+                  error={errors.character_name}
+                  info="請填寫角色名稱"
+                />
+              )}
+            </div>
+            <div className="custom-control custom-radio mb-3">
+              <input
+                className="custom-control-input"
+                type="radio"
+                name="got_char"
+                id="got_char_no"
+                value="no"
+                onChange={this.onChange}
+                checked={this.state.got_char === "no" ? true : false}
+              />{" "}
+              <label className="custom-control-label" for="got_char_no">
+                我沒有角色(或是我忘了角色名稱)
+              </label>
+            </div>
           </div>
         );
       }
