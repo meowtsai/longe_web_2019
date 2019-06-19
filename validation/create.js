@@ -54,7 +54,7 @@ module.exports = function validateCreateWebInput(data) {
     errors.server_id = "請選擇伺服器。";
   }
 
-  if (data.got_char !== "no") {
+  if (data.got_char !== "no" && isEmpty(data.character_name)) {
     errors.character_name = "請提供角色名稱方便作業。";
   }
 
