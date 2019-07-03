@@ -20,11 +20,15 @@ const ServiceModel = {
     if (!isEmpty(email)) {
       sqlSelect += " and email=?";
       condition.push(email);
+    } else {
+      if (!isEmpty(phone)) {
+        sqlSelect += " and phone=?";
+        condition.push(phone);
+      } else {
+        return { status: -1, msg: "沒有符合的提問紀錄" };
+      }
     }
-    if (!isEmpty(phone)) {
-      sqlSelect += " and phone=?";
-      condition.push(phone);
-    }
+
     return await db2
       .promise()
       .query(sqlSelect, condition)

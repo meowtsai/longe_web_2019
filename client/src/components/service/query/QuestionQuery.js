@@ -72,7 +72,9 @@ class QuestionQuery extends Component {
               <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
                 <h4 className="text-center">線上回報紀錄查詢</h4>
                 <p className="lead text-center">請填寫以下資訊</p>
-                <small className="d-block pb-3">* = 必填</small>
+                <small className="d-block pb-3">
+                  * = Email 或手機擇一填寫即可
+                </small>
                 <form onSubmit={this.onSubmit}>
                   <TextFieldGroup
                     placeholder="* Email"
