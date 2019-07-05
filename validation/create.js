@@ -37,7 +37,8 @@ module.exports = function validateCreateWebInput(data) {
         data.phone,
         ["en-SG", "ms-MY", "zh-CN", "zh-HK", "zh-TW"],
         { strictMode: false }
-      )
+      ) &&
+      !isMacau(data.phone)
     ) {
       //console.log(data.phone);
       errors.phone = "僅可輸入新馬港澳台手機。";
@@ -84,3 +85,12 @@ module.exports = function validateCreateWebInput(data) {
     isValid: isEmpty(errors)
   };
 };
+
+function isMacau(phone) {
+  ///\bter\b/.test("interest")
+  const re = new RegExp(/^(\+?853\-?)?[6][0-9]{7}/);
+  if (re.test(phone)) {
+    return true;
+  }
+  return false;
+}
