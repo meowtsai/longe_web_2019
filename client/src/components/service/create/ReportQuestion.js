@@ -303,7 +303,7 @@ class ReportQuestion extends Component {
                 onChange={this.onChange}
                 checked={this.state.got_char === "yes" ? true : false}
               />
-              <label className="custom-control-label" for="got_char_yes">
+              <label className="custom-control-label" htmlFor="got_char_yes">
                 我有角色
               </label>
               {this.state.got_char === "yes" && (
@@ -328,7 +328,7 @@ class ReportQuestion extends Component {
                 onChange={this.onChange}
                 checked={this.state.got_char === "no" ? true : false}
               />{" "}
-              <label className="custom-control-label" for="got_char_no">
+              <label className="custom-control-label" htmlFor="got_char_no">
                 我沒有角色(或是我忘了角色名稱)
               </label>
             </div>
@@ -383,6 +383,7 @@ class ReportQuestion extends Component {
                   <ReCAPTCHA
                     sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
                     onChange={this.verifyCallback}
+                    hl={"ja"}
                   />
 
                   {errors.captcha_token && (
