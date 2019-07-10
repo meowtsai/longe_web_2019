@@ -383,7 +383,6 @@ class ReportQuestion extends Component {
                   <ReCAPTCHA
                     sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
                     onChange={this.verifyCallback}
-                    hl={"ja"}
                   />
 
                   {errors.captcha_token && (
