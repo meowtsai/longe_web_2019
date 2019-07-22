@@ -29,7 +29,8 @@ class QuestionView extends Component {
       loading: false,
       file01: "",
       attachments: [],
-      token: ""
+      token: "",
+      useRecaptcha: true
     };
 
     this.onChange = this.onChange.bind(this);
@@ -46,8 +47,22 @@ class QuestionView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.service) {
+      const { question } = nextProps.service;
+
+      //console.log("user", user);
+      if (
+        question &&
+        question.partner_uid !== null &&
+        this.props.match.params.game_id === "h38na"
+      ) {
+        this.setState({ useRecaptcha: false });
+      }
+    }
+
     if (nextProps.errors) {
       //console.log(nextProps.errors);
+
       if (nextProps.errors.jwt) {
         this.props.history.push(
           `/service/${this.props.match.params.game_id}/query`
@@ -68,6 +83,7 @@ class QuestionView extends Component {
     formData.append("content", this.state.content);
     formData.append("question_id", q_id);
     formData.append("captcha_token", this.state.captcha_token);
+    formData.append("useRecaptcha", this.state.useRecaptcha);
 
     this.props.insert_reply(formData, this.state.token, this.props.history);
     this.setState({ content: "", attachments: [], file01: "" });
@@ -94,7 +110,7 @@ class QuestionView extends Component {
   }
   render() {
     const { question, loading } = this.props.service;
-    const { errors, attachments, token } = this.state;
+    const { errors, attachments, token, useRecaptcha } = this.state;
     const fileInfo = Object.keys(attachments).map(
       attach => attachments[attach].name
     );
@@ -305,6 +321,7 @@ class QuestionView extends Component {
                                 <ReCAPTCHA
                                   sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
                                   onChange={this.verifyCallback}
+                                  size={useRecaptcha ? "normal" : "invisible"}
                                 />
                                 {errors.captcha_token && (
                                   <div className="invalid-feedback d-block">

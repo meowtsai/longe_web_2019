@@ -40,7 +40,8 @@ class ReportQuestion extends Component {
       attachments: [],
       loading: false,
       showModal: false,
-      token: ""
+      token: "",
+      useRecaptcha: true
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -110,6 +111,7 @@ class ReportQuestion extends Component {
     formData.append("question_type", this.state.question_type);
     formData.append("content", this.state.content);
     formData.append("captcha_token", this.state.captcha_token);
+    formData.append("useRecaptcha", this.state.useRecaptcha);
 
     //console.log("formData", formData);
 
@@ -146,6 +148,16 @@ class ReportQuestion extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.report) {
+      const { user } = nextProps.report.settings;
+      //console.log("user", user);
+      if (
+        user &&
+        user.vendor_game_id === "h38na" &&
+        user.q_note.indexOf("windows") > -1
+      ) {
+        this.setState({ useRecaptcha: false });
+      }
+
       if (nextProps.report.create_result.question_id) {
         this.handleOpenModal();
       } else {
@@ -170,7 +182,8 @@ class ReportQuestion extends Component {
       attachments,
       question_type,
       mobile_locale,
-      token
+      token,
+      useRecaptcha
     } = this.state;
 
     const localeOptions = [
@@ -380,9 +393,11 @@ class ReportQuestion extends Component {
                     limit={6}
                     info={!isEmpty(fileInfo) ? fileInfo : []}
                   />
+
                   <ReCAPTCHA
                     sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
                     onChange={this.verifyCallback}
+                    size={useRecaptcha ? "normal" : "invisible"}
                   />
 
                   {errors.captcha_token && (

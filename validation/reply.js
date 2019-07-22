@@ -9,13 +9,14 @@ module.exports = function validateReplyInput(data) {
   data.captcha_token = !isEmpty(data.captcha_token) ? data.captcha_token : "";
   data.content = !isEmpty(data.content) ? data.content : "";
   data.files = !isEmpty(data.files) ? data.files : {};
-
-  if (isEmpty(data.captcha_token)) {
-    errors.captcha_token = "你是機器人嗎?";
-  } else {
-    if (!VerifyRecaptcha(data.captcha_token, data.ip)) {
-      //console.log("VerifyRecaptcha failed");
+  if (data.useRecaptcha !== "false") {
+    if (isEmpty(data.captcha_token)) {
       errors.captcha_token = "你是機器人嗎?";
+    } else {
+      if (!VerifyRecaptcha(data.captcha_token, data.ip)) {
+        //console.log("VerifyRecaptcha failed");
+        errors.captcha_token = "你是機器人嗎?";
+      }
     }
   }
 
