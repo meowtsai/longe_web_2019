@@ -11,7 +11,7 @@ import QuestionList from "./components/service/query/QuestionList";
 import QuestionView from "./components/service/view/QuestionView";
 
 import ReportQuestion from "./components/service/create/ReportQuestion";
-
+import EventSerial from "./components/events/EventSerial";
 import Complete_agreement from "./components/policies/Complete_agreement";
 
 class App extends Component {
@@ -51,6 +51,8 @@ class App extends Component {
               path="/member/complete_agreement"
               component={Complete_agreement}
             />
+
+            <Route exact path="/events/event_serial" component={EventSerial} />
           </div>
         </Router>
       </Provider>

@@ -19,7 +19,8 @@ export const clearLoading = () => {
     type: CLEAR_LOADING
   };
 };
-export const renderForm = (game_id, token) => dispatch => {
+export const renderForm = (game_id, token) => async dispatch => {
+  console.log("renderForm game_id", game_id);
   dispatch(beginLoading());
   dispatch(clearErrors());
   //const token = localStorage.getItem("inGameToken");
@@ -29,25 +30,46 @@ export const renderForm = (game_id, token) => dispatch => {
   if (token) {
     config.headers["x-auth-token"] = token;
   }
-  axios
-    .get(`/api/questions/render_create_form/${game_id}`, config)
-    .then(res =>
-      dispatch({
-        type: RENDER_CREATE_FORM,
-        payload: res.data
-      })
-    )
-    .catch(err => {
-      //console.log(err);
-      dispatch(clearLoading());
-      if (err.response.data.jwt) {
-        //localStorage.removeItem("inGameToken");
-      }
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+
+  try {
+    let res = await axios.get(
+      `/api/questions/render_create_form/${game_id}`,
+      config
+    );
+
+    console.log("renderForm", res.data);
+
+    dispatch({
+      type: RENDER_CREATE_FORM,
+      payload: res.data
     });
+  } catch (err) {
+    console.log("renderForm err", err);
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    });
+  }
+
+  // axios
+  //   .get(`/api/questions/render_create_form/${game_id}`, config)
+  //   .then(res =>
+  //     dispatch({
+  //       type: RENDER_CREATE_FORM,
+  //       payload: res.data
+  //     })
+  //   )
+  //   .catch(err => {
+  //     //console.log(err);
+  //     dispatch(clearLoading());
+  //     if (err.response.data.jwt) {
+  //       //localStorage.removeItem("inGameToken");
+  //     }
+  //     dispatch({
+  //       type: GET_ERRORS,
+  //       payload: err.response.data
+  //     });
+  //   });
 };
 
 export const createWebReport = (questionData, history) => dispatch => {

@@ -122,6 +122,17 @@ class ReportQuestion extends Component {
     this.setState({ [e.target.name]: e.target.value });
     //console.log(e.target.name, e.target.value);
     //console.log(e.target.files);
+
+    if (
+      e.target.name === "question_type" &&
+      e.target.value.indexOf("event_") > -1
+    ) {
+      const event_id = e.target.value.replace("event_", "");
+
+      this.props.history.push(
+        `/events/event_serial?event_id=${event_id}&token=${this.state.token}`
+      );
+    }
     if (!isEmpty(e.target.files)) {
       if (Object.keys(e.target.files).length > 6) {
         this.setState({
@@ -172,7 +183,13 @@ class ReportQuestion extends Component {
   }
 
   render() {
-    const { game, question_types, user, faq } = this.props.report.settings;
+    const {
+      game,
+      question_types,
+      user,
+      faq,
+      events
+    } = this.props.report.settings;
 
     const { loading } = this.props.report;
     const { question_id, check_id } = this.props.report.create_result;
@@ -209,10 +226,26 @@ class ReportQuestion extends Component {
     let formContent;
     let typesOption = [];
     if (game && question_types) {
+      // <? foreach($events as $e_row):?>
+      // <?if ($partner_uid &&( ($e_row->status==1 && now() > $e_row->begin_time && now() < $e_row->end_time ) || IN_OFFICE)): ?>
+      // <div class="form-check-inline">
+      //   <input type="radio" class="form_radio" name="question_type" value="event_<?=$e_row->id?>" > <?=$e_row->event_name?> <br>
+      // </div>
+      // <? endif;?>
+      // <? endforeach;?>
+
       typesOption = Object.getOwnPropertyNames(question_types).map(type => ({
         label: question_types[type],
         value: type
       }));
+
+      typesOption = [
+        ...typesOption,
+        ...events.map(event => ({
+          label: event.event_name,
+          value: `event_${event.id}`
+        }))
+      ];
 
       let serversOption = [];
 
@@ -393,13 +426,13 @@ class ReportQuestion extends Component {
                     limit={6}
                     info={!isEmpty(fileInfo) ? fileInfo : []}
                   />
-
-                  <ReCAPTCHA
-                    sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
-                    onChange={this.verifyCallback}
-                    size={useRecaptcha ? "normal" : "invisible"}
-                  />
-
+                  {useRecaptcha && (
+                    <ReCAPTCHA
+                      sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
+                      onChange={this.verifyCallback}
+                      size={useRecaptcha ? "normal" : "invisible"}
+                    />
+                  )}
                   {errors.captcha_token && (
                     <div className="invalid-feedback d-block">
                       {errors.captcha_token}

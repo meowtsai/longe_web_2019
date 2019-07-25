@@ -7,6 +7,8 @@ const games = require("./routes/api/games");
 const service = require("./routes/api/service");
 const questions = require("./routes/api/questions");
 const upload = require("./routes/api/upload");
+const events = require("./routes/api/events");
+
 const CONFIG = require("./config/config")[process.env.NODE_ENV];
 const requestIp = require("request-ip");
 const helmet = require("helmet");
@@ -38,6 +40,7 @@ app.use(helmet());
 
 app.use("/api/games", games);
 app.use("/api/service", service);
+app.use("/api/events", events);
 app.use("/api/questions", questions);
 app.use("/api/upload", upload);
 

@@ -20,6 +20,7 @@ const smtp_server = require("../../config/config")["smtp_server"];
 
 const ServiceModel = require("../../models/ServiceModel");
 const GameModel = require("../../models/GameModel");
+const EventModel = require("../../models/EventModel");
 const moment = require("moment");
 const SERVICE_CONFIG = require("../../config/service");
 
@@ -275,42 +276,64 @@ router.get("/get_user_by_token", auth, (req, res) => {
 //@route: GET /api/question/render_create_form
 //@desc: get user by verify its token
 //@access: private
-router.get("/render_create_form/:game_id", auth_for_create, (req, res) => {
-  const game_id = req.params.game_id;
-  let rtn_data = {
-    game: {},
-    user: {}
-  };
+router.get(
+  "/render_create_form/:game_id",
+  auth_for_create,
+  async (req, res) => {
+    const game_id = req.params.game_id;
+    let rtn_data = {
+      game: {},
+      user: {}
+    };
+    //console.log("render_create_form", Date.now());
+    const game = await GameModel.getGameById(game_id);
+    const servers = await GameModel.getServersByGameId(game_id);
+    const faq_result = await GameModel.getFaqByGameId(game_id);
+    const events = await EventModel.getSerailEvents(game_id);
 
-  GameModel.getGameById(game_id)
-    .then(game => {
-      rtn_data.game = { game_id, game_name: game.msg.game_name };
-      return GameModel.getServersByGameId(game_id);
-    })
-    .then(servers => {
-      rtn_data = {
-        game: {
-          ...rtn_data.game,
-          servers: servers.msg
-        },
+    rtn_data = {
+      game: { game_id, game_name: game.msg.game_name, servers: servers.msg },
+      user: req.user,
+      faq: [...faq_result.msg],
+      question_types: SERVICE_CONFIG.question_types,
+      events: events.msg
+    };
 
-        question_types: SERVICE_CONFIG.question_types
-      };
+    //console.log("render_create_form", Date.now());
 
-      return GameModel.getFaqByGameId(game_id);
-    })
-    .then(faq_result => {
-      if (req.user) {
-        //in game report
-        rtn_data.user = req.user;
-      }
-      rtn_data.faq = [...faq_result.msg];
-      res.json(rtn_data);
-    })
-    .catch(err => {
-      res.json(err.message);
-    });
-});
+    return res.json(rtn_data);
+
+    //   GameModel.getGameById(game_id)
+    //     .then(game => {
+    //       rtn_data.game = { game_id, game_name: game.msg.game_name };
+    //       return GameModel.getServersByGameId(game_id);
+    //     })
+    //     .then(servers => {
+    //       rtn_data = {
+    //         game: {
+    //           ...rtn_data.game,
+    //           servers: servers.msg
+    //         },
+
+    //         question_types: SERVICE_CONFIG.question_types
+    //       };
+
+    //       return GameModel.getFaqByGameId(game_id);
+    //     })
+    //     .then(faq_result => {
+    //       if (req.user) {
+    //         //in game report
+    //         rtn_data.user = req.user;
+    //       }
+    //       rtn_data.faq = [...faq_result.msg];
+    //       console.log("render_create_form", Date.now());
+    //       res.json(rtn_data);
+    //     })
+    //     .catch(err => {
+    //       res.json(err.message);
+    //     });
+  }
+);
 
 //@route: POST /api/questions/create_web_form
 //@desc: POST create_web_form

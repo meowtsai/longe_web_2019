@@ -7,7 +7,7 @@ function auth(req, res, next) {
   //console.log("auth", req.header("x-auth-token"));
   let errors = {};
   //check for token
-  if (!token) res.status(401).json({ errors: "Authorization denied" });
+  if (!token) return res.status(401).json({ errors: "Authorization denied" });
 
   try {
     const decoded = jwt.verify(token, SERVICE_CONFIG.jwt_encryption);
@@ -17,7 +17,7 @@ function auth(req, res, next) {
   } catch (e) {
     //console.log(e);
     errors.jwt = e.message;
-    res.status(400).json({ ...errors });
+    return res.status(400).json({ ...errors });
   }
 }
 

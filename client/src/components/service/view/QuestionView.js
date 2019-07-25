@@ -318,11 +318,13 @@ class QuestionView extends Component {
                                     某些手機設備無法選取檔案，請在官網使用web回報
                                   </small>
                                 </div>
-                                <ReCAPTCHA
-                                  sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
-                                  onChange={this.verifyCallback}
-                                  size={useRecaptcha ? "normal" : "invisible"}
-                                />
+                                {useRecaptcha && (
+                                  <ReCAPTCHA
+                                    sitekey="6LefP6UUAAAAAA0qZDJrLhODhk6vP0X6Gx--zbQ1"
+                                    onChange={this.verifyCallback}
+                                    size={useRecaptcha ? "normal" : "invisible"}
+                                  />
+                                )}
                                 {errors.captcha_token && (
                                   <div className="invalid-feedback d-block">
                                     {errors.captcha_token}
