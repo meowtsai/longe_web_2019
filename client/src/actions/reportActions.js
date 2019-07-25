@@ -20,7 +20,7 @@ export const clearLoading = () => {
   };
 };
 export const renderForm = (game_id, token) => async dispatch => {
-  console.log("renderForm game_id", game_id);
+  //console.log("renderForm game_id", game_id);
   dispatch(beginLoading());
   dispatch(clearErrors());
   //const token = localStorage.getItem("inGameToken");
@@ -37,14 +37,14 @@ export const renderForm = (game_id, token) => async dispatch => {
       config
     );
 
-    console.log("renderForm", res.data);
+    //console.log("renderForm", res.data);
 
     dispatch({
       type: RENDER_CREATE_FORM,
       payload: res.data
     });
   } catch (err) {
-    console.log("renderForm err", err);
+    //console.log("renderForm err", err);
     dispatch({
       type: GET_ERRORS,
       payload: err.response.data

@@ -20,6 +20,7 @@ const EventSerial = props => {
   } = props;
 
   useEffect(() => {
+    console.log("useEffect called");
     props.loadUser(event_id, token);
   }, []);
 
@@ -127,7 +128,7 @@ const EventSerial = props => {
                       <fieldset className="m-3">
                         <legend>使用注意事項</legend>
 
-                        <ul className="m-3">
+                        <ul className="m-3 small">
                           <li style={liStyle}>
                             本序號僅提供《超機動聯盟》亞洲服玩家兌換。
                           </li>
@@ -162,7 +163,7 @@ const EventSerial = props => {
   );
 };
 
-const liStyle = { listStyleType: "square", marginBottom: "1rem" };
+const liStyle = { listStyleType: "square", marginBottom: "0.5rem" };
 
 const mapStateToProps = state => ({
   event: state.event,

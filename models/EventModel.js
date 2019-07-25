@@ -5,7 +5,7 @@ const EventModel = {
     return await db2
       .promise()
       .query(
-        "select id,type, status,event_name,begin_time,end_time from events where type=2 and status <>0  and game_id=?",
+        "select id,type, status,event_name,begin_time,end_time from events where type=2 and status <>0  and game_id=?  and end_time > now()",
         [game_id]
       )
       .then(([rows, fields]) => {
@@ -20,7 +20,7 @@ const EventModel = {
     return await db2
       .promise()
       .query(
-        "select id,type, status,event_name,begin_time,end_time from events where type=2 and status <>0  and id=? ",
+        "select id,type, status,event_name,begin_time,end_time from events where type=2 and status <>0  and id=? and end_time > now()",
         [event_id]
       )
       .then(([rows, fields]) => {

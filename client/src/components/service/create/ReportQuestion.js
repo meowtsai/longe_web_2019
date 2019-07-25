@@ -239,14 +239,6 @@ class ReportQuestion extends Component {
         value: type
       }));
 
-      typesOption = [
-        ...typesOption,
-        ...events.map(event => ({
-          label: event.event_name,
-          value: `event_${event.id}`
-        }))
-      ];
-
       let serversOption = [];
 
       if (game.servers) {
@@ -262,6 +254,13 @@ class ReportQuestion extends Component {
         }
       }
       if (user) {
+        typesOption = [
+          ...typesOption,
+          ...events.map(event => ({
+            label: event.event_name,
+            value: `event_${event.id}`
+          }))
+        ];
         formContent = (
           <div>
             <div className="form-group">
