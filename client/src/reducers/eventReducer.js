@@ -10,7 +10,8 @@ const initialState = {
   user: {},
   event: {},
   logs: [],
-  redeem_msg: ""
+  redeem_msg: "",
+  redeem_status: "NORMAL"
 };
 
 export default function(state = initialState, action) {

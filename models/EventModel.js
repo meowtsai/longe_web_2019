@@ -92,7 +92,7 @@ const EventModel = {
         return { status: -1, msg: err.message };
       });
   },
-  redeemSerial: async (char_id, serial_no, event_id) => {
+  redeemSerial: async (char_id, serial_no, event_id, logId) => {
     // $this->db->where(array('substr(serial,1,16)'=>$data['serial'], 'event_id' => $event_id,'status' => '0'));
     // $this->db->update('event_serial',array("uid" => $char_id,"status" => 1));
     // console.log(
@@ -106,6 +106,8 @@ const EventModel = {
       )
       .then(([rows, fields]) => {
         if (rows.affectedRows > 0) {
+          //console.log(`Update log_serial_event set status=1 where id=${logId}`);
+          db1.query("Update log_serial_event set status=1 where id=?", [logId]);
           return { status: 1, msg: "更新成功" };
         } else {
           return { status: -1, msg: "更新失敗" };

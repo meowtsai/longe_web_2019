@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
@@ -15,7 +15,7 @@ const EventSerial = props => {
   const token = search_values.token;
 
   const {
-    event: { user, event, loading, logs, redeem_msg },
+    event: { user, event, loading, logs, redeem_msg, redeem_status },
     errors
   } = props;
 
@@ -93,42 +93,82 @@ const EventSerial = props => {
                     <th scope="row">角色ID</th>
                     <td>{user.in_game_id}</td>
                   </tr>
-                  <tr className="bg-warning text-dark">
-                    <th scope="row">序號</th>
-                    <td>
-                      <TextFieldGroup
-                        placeholder="* 序號"
-                        name="serial_no"
-                        type="serial_no"
-                        value={serial_no}
-                        onChange={e => {
-                          setSerail(e.target.value);
-                        }}
-                        error={errors.serial_no}
-                        info="請輸入兌換序號"
-                      />
-                    </td>
-                  </tr>
-                  <tr className="bg-warning text-dark">
-                    <td colSpan="2">
-                      <div className="text-center">
-                        <Link
-                          to={`/service_quick?token=${token}`}
-                          className="btn btn-secondary  col-4"
-                        >
-                          <i className="fas fa-sign-out-alt mr-3" />
-                          取消
-                        </Link>
-                        <button
-                          onClick={onRedeem}
-                          className="btn btn-info  ml-3 col-4"
-                        >
-                          <i className="fas fa-check mr-3" />
-                          送出
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+
+                  {redeem_status === "NORMAL" && (
+                    <Fragment>
+                      <tr className="bg-warning text-dark">
+                        <th scope="row">序號</th>
+                        <td>
+                          <TextFieldGroup
+                            placeholder="* 序號"
+                            name="serial_no"
+                            type="serial_no"
+                            value={serial_no}
+                            onChange={e => {
+                              setSerail(e.target.value);
+                            }}
+                            error={errors.serial_no}
+                            info="請輸入兌換序號"
+                          />
+                        </td>
+                      </tr>
+                      <tr className="bg-warning text-dark">
+                        <td colSpan="2">
+                          <div className="text-center">
+                            <Link
+                              to={`/service_quick?token=${token}`}
+                              className="btn btn-secondary  col-4"
+                            >
+                              <i className="fas fa-sign-out-alt mr-3" />
+                              取消
+                            </Link>
+                            <button
+                              onClick={onRedeem}
+                              className="btn btn-info  ml-3 col-4"
+                            >
+                              <i className="fas fa-check mr-3" />
+                              送出
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </Fragment>
+                  )}
+
+                  {redeem_status === "COMPLETED" && (
+                    <tr className="bg-light text-success">
+                      <td colSpan="2">
+                        <div className="text-center">
+                          您已經完成兌換，請參見下方紀錄和說明。
+                          <Link
+                            to={`/service_quick?token=${token}`}
+                            className="btn btn-secondary  col-4"
+                          >
+                            <i className="fas fa-sign-out-alt ml-3" />
+                            回客服首頁
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+
+                  {redeem_status === "REACH_LIMITED" && (
+                    <tr className="bg-light text-danger">
+                      <td colSpan="2">
+                        <div className="text-center">
+                          抱歉，您輸入錯誤次數已經超過上限。
+                          <Link
+                            to={`/service_quick?token=${token}`}
+                            className="btn btn-secondary  col-4"
+                          >
+                            <i className="fas fa-sign-out-alt ml-3" />
+                            回客服首頁
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+
                   <tr>
                     <td colSpan="2">
                       {logs.length > 0 && <RedeemRecords logs={logs} />}

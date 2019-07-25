@@ -24,8 +24,18 @@ router.get("/render_event_form/:event_id", auth, async (req, res) => {
       req.user.in_game_id,
       event_id
     );
+    const queryCount = await EventModel.getInputCount(
+      event_id,
+      req.user.in_game_id
+    );
     rtn_data.event = event.msg;
     rtn_data.logs = logs;
+    rtn_data.redeem_status =
+      logs.length > 1
+        ? "COMPLETED"
+        : queryCount > 9
+        ? "REACH_LIMITED"
+        : "NORMAL";
   }
 
   return res.json(rtn_data);
@@ -62,7 +72,8 @@ router.post("/redeem_serial_code/:event_id", auth, async (req, res) => {
       event_id: event_id
     };
     //add log and get id
-    const logId = await EventModel.addRedeemLog(log).msg;
+    const logRes = await EventModel.addRedeemLog(log);
+    const logId = logRes.msg;
 
     tryCount = 9 - queryCount;
     if (queryCount > 9)
@@ -99,7 +110,8 @@ router.post("/redeem_serial_code/:event_id", auth, async (req, res) => {
     const redeem_result = await EventModel.redeemSerial(
       req.user.in_game_id,
       serial_no,
-      event_id
+      event_id,
+      logId
     );
     //console.log("redeem_result", redeem_result);
     if (redeem_result.status === 1) {
