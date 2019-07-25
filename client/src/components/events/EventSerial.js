@@ -49,13 +49,18 @@ const EventSerial = props => {
     <div className="container">
       <div className="row">
         <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
-          <h4 className="text-center mt-5">兌獎中心</h4>
+          <h4 className="text-center mt-5">
+            <i className="fas fa-chess-queen mr-3" />
+            兌獎中心
+            <i className="fas fa-chess-queen ml-3" />
+          </h4>
           <small
             className={`d-block mb-3 text-center ${
-              warning ? "font-weight-bold" : ""
+              warning ? "font-weight-bold text-danger" : ""
             }`}
           >
-            請輸入序號已完成兌換程序(建議用複製以免多次錯誤被鎖定)
+            請輸入序號已完成兌換程序 <br />
+            建議用複製以免多次錯誤被鎖定
           </small>
           {loading ? (
             <Spinner />
@@ -88,7 +93,7 @@ const EventSerial = props => {
                     <th scope="row">角色ID</th>
                     <td>{user.in_game_id}</td>
                   </tr>
-                  <tr>
+                  <tr className="bg-warning text-dark">
                     <th scope="row">序號</th>
                     <td>
                       <TextFieldGroup
@@ -104,19 +109,21 @@ const EventSerial = props => {
                       />
                     </td>
                   </tr>
-                  <tr>
+                  <tr className="bg-warning text-dark">
                     <td colSpan="2">
                       <div className="text-center">
                         <Link
                           to={`/service_quick?token=${token}`}
-                          className="btn btn-secondary  col-3"
+                          className="btn btn-secondary  col-4"
                         >
+                          <i className="fas fa-sign-out-alt mr-3" />
                           取消
                         </Link>
                         <button
                           onClick={onRedeem}
-                          className="btn btn-info  ml-3 col-3"
+                          className="btn btn-info  ml-3 col-4"
                         >
+                          <i className="fas fa-check mr-3" />
                           送出
                         </button>
                       </div>
@@ -126,7 +133,11 @@ const EventSerial = props => {
                     <td colSpan="2">
                       {logs.length > 0 && <RedeemRecords logs={logs} />}
                       <fieldset className="m-3">
-                        <legend>使用注意事項</legend>
+                        <legend>
+                          {" "}
+                          <i className="fas fa-clipboard mr-2 text-info" />{" "}
+                          使用注意事項
+                        </legend>
 
                         <ul className="m-3 small">
                           <li style={liStyle}>
@@ -146,7 +157,7 @@ const EventSerial = props => {
                           <li style={liStyle}>每個序號僅限一次兌換。</li>
                           <li style={liStyle}>錯誤達十次將鎖定兌獎功能。</li>
                           <li style={liStyle}>
-                            獎項將於每週一晚上 00：00
+                            獎項將於每週一晚上 23：59
                             前，發送上一週「週一~週日」兌換成功之帳號，將以遊戲內郵件發送獎勵至所填寫的角色ID。
                           </li>
                         </ul>
