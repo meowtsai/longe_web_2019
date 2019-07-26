@@ -30,9 +30,13 @@ class ServiceHome extends Component {
     //const game_id = this.props.match.params.game_id;
     let game_id = this.props.service.game_id;
     const { is_in_game, unread_count, token, loading } = this.props.service;
+
     const parsed = queryString.parse(this.props.location.search);
     if (!isEmpty(parsed.param_game_id)) {
       game_id = parsed.param_game_id;
+    }
+    if (game_id === undefined) {
+      game_id = parsed.game_id;
     }
     const linkReport = is_in_game
       ? `/service/${game_id}/create?token=${token}`
@@ -40,6 +44,10 @@ class ServiceHome extends Component {
     const linkQuery = is_in_game
       ? `/service/${game_id}/list?token=${token}`
       : `/service/${game_id}/query`;
+
+    // console.log(game_id);
+    // console.log(game_id === undefined);
+
     return (
       <div>
         <nav className="navbar navbar-dark bg-dark">
