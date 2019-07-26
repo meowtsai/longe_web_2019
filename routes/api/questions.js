@@ -190,7 +190,7 @@ router.post("/insert_reply", auth, (req, res) => {
               add_pics.push(SERVICE_CONFIG.image_path + new_file_name);
 
               req.files[keyName].mv(
-                `${__dirname}/../../client/public/uploads/${new_file_name}`,
+                `${SERVICE_CONFIG.image_upload_dir}${new_file_name}`,
                 err => {
                   if (err) return res.status(500).send({ file01: err.message });
                 }
@@ -404,7 +404,7 @@ router.post("/create_web_form", (req, res) => {
         }
 
         req.files[keyName].mv(
-          `${__dirname}/../../client/public/uploads/${new_file_name}`,
+          `${SERVICE_CONFIG.image_upload_dir}${new_file_name}`,
           err => {
             if (err) return res.status(500).send({ file01: err.message });
           }
