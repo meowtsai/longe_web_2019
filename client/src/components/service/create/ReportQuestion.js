@@ -209,7 +209,7 @@ class ReportQuestion extends Component {
       { label: "澳門 (+853)", value: "853", placeholder: "6612 3456" },
       { label: "新加坡 (+65)", value: "65", placeholder: "8123 4567" },
       { label: "馬來西亞 (+60)", value: "60", placeholder: "12 345 6789" },
-      { label: "中國 (+86)", value: "86", placeholder: "131 2345 6789" }
+      { label: "中國 (+86)", value: "0086", placeholder: "131 2345 6789" }
     ];
 
     const phone_placeholder = localeOptions.filter(
