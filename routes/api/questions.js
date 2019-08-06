@@ -285,11 +285,11 @@ router.get(
       game: {},
       user: {}
     };
-    //console.log("render_create_form", Date.now());
+
     const game = await GameModel.getGameById(game_id);
     const servers = await GameModel.getServersByGameId(game_id);
     const faq_result = await GameModel.getFaqByGameId(game_id);
-    const events = await EventModel.getSerailEvents(game_id);
+    const events = await EventModel.getSerailEvents(game_id, req.whitelisted);
 
     rtn_data = {
       game: { game_id, game_name: game.msg.game_name, servers: servers.msg },

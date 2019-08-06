@@ -1,11 +1,15 @@
 const { db1, db2 } = require("./db_conn");
 
 const EventModel = {
-  getSerailEvents: async game_id => {
+  getSerailEvents: async (game_id, isWhiteListed = false) => {
+    let conditionSql = "";
+    if (!isWhiteListed) {
+      conditionSql = " and begin_time < now() ";
+    }
     return await db2
       .promise()
       .query(
-        "select id,type, status,event_name,begin_time,end_time from events where type=2 and status <>0  and game_id=?  and end_time > now()",
+        `select id,type, status,event_name,begin_time,end_time from events where type=2 and status <>0  and game_id=?  ${conditionSql} and end_time > now()`,
         [game_id]
       )
       .then(([rows, fields]) => {

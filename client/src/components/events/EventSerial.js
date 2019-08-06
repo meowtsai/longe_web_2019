@@ -20,7 +20,7 @@ const EventSerial = props => {
   } = props;
 
   useEffect(() => {
-    console.log("useEffect called");
+    //console.log("useEffect called");
     props.loadUser(event_id, token);
   }, []);
 
@@ -187,7 +187,7 @@ const EventSerial = props => {
                             序號可至遊戲app登錄頁→客服→線上回報→問題類型：MyCard儲值活動獎勵或新手禮包→填寫表單內容→送出。
                           </li>
                           <li style={liStyle}>
-                            序號可兌換期限至 2019/10/15 晚上 23：59 止。
+                            序號可兌換期限至 2019/11/30 晚上 23：59 止。
                           </li>
                           <li style={liStyle}>
                             <b>

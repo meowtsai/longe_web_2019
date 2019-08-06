@@ -38,6 +38,20 @@ app.use(requestIp.mw());
 
 app.use(helmet());
 
+//check if ip is in whitelist
+app.use(function(req, res, next) {
+  const white_list = require("./config/config").white_list;
+  const found = white_list.find(item => item.ip === req.clientIp);
+  //console.log("req.clientIp", req.clientIp);
+  if (found) {
+    req.whitelisted = true;
+  } else {
+    req.whitelisted = false;
+  }
+  //console.log("req.whitelisted", req.whitelisted);
+  next();
+});
+
 app.use("/api/games", games);
 app.use("/api/service", service);
 app.use("/api/events", events);
