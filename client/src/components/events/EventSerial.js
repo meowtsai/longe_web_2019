@@ -6,6 +6,7 @@ import Spinner from "../common/Spinner";
 import { loadUser, redeemSerial } from "../../actions/eventActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import RedeemRecords from "./RedeemRecords";
+import EventNote from "./EventNote";
 import Alert from "../common/Alert";
 const EventSerial = props => {
   const [serial_no, setSerail] = useState("");
@@ -22,6 +23,7 @@ const EventSerial = props => {
   useEffect(() => {
     //console.log("useEffect called");
     props.loadUser(event_id, token);
+    // eslint-disable-next-line
   }, []);
 
   //console.log("errors", errors);
@@ -172,36 +174,7 @@ const EventSerial = props => {
                   <tr>
                     <td colSpan="2">
                       {logs.length > 0 && <RedeemRecords logs={logs} />}
-                      <fieldset className="m-3">
-                        <legend>
-                          {" "}
-                          <i className="fas fa-clipboard mr-2 text-info" />{" "}
-                          使用注意事項
-                        </legend>
-
-                        <ul className="m-3 small">
-                          <li style={liStyle}>
-                            本序號僅提供《超機動聯盟》亞洲服玩家兌換。
-                          </li>
-                          <li style={liStyle}>
-                            序號可至遊戲app登錄頁→客服→線上回報→問題類型：MyCard儲值活動獎勵或新手禮包→填寫表單內容→送出。
-                          </li>
-                          <li style={liStyle}>
-                            序號可兌換期限至 2019/11/30 晚上 23：59 止。
-                          </li>
-                          <li style={liStyle}>
-                            <b>
-                              <u>同一獎項類別，每個遊戲帳號只能兌換一次。</u>
-                            </b>
-                          </li>
-                          <li style={liStyle}>每個序號僅限一次兌換。</li>
-                          <li style={liStyle}>錯誤達十次將鎖定兌獎功能。</li>
-                          <li style={liStyle}>
-                            獎項將於每週一晚上 23：59
-                            前，發送上一週「週一~週日」兌換成功之帳號，將以遊戲內郵件發送獎勵至所填寫的角色ID。
-                          </li>
-                        </ul>
-                      </fieldset>
+                      <EventNote event={event} />
                     </td>
                   </tr>
                 </tbody>
@@ -213,8 +186,6 @@ const EventSerial = props => {
     </div>
   );
 };
-
-const liStyle = { listStyleType: "square", marginBottom: "0.5rem" };
 
 const mapStateToProps = state => ({
   event: state.event,

@@ -132,6 +132,20 @@ const EventModel = {
       .then(([rows, fields]) => {
         return rows;
       });
+  },
+  getSubeventCount: async event_id => {
+    return await db2
+      .promise()
+      .query("SELECT count(*) as chk FROM serial_main WHERE event_id=?", [
+        event_id
+      ])
+      .then(([rows, fields]) => {
+        if (rows.length > 0) {
+          return rows[0].chk;
+        } else {
+          return -1;
+        }
+      });
   }
 };
 

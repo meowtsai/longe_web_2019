@@ -28,10 +28,12 @@ router.get("/render_event_form/:event_id", auth, async (req, res) => {
       event_id,
       req.user.in_game_id
     );
+    const subEventCount = await EventModel.getSubeventCount(event_id);
+
     rtn_data.event = event.msg;
     rtn_data.logs = logs;
     rtn_data.redeem_status =
-      logs.length > 1
+      logs.length >= subEventCount
         ? "COMPLETED"
         : queryCount > 9
         ? "REACH_LIMITED"
