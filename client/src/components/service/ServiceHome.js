@@ -29,7 +29,13 @@ class ServiceHome extends Component {
     //console.log("game_id", search_game_id);
     //const game_id = this.props.match.params.game_id;
     let game_id = this.props.service.game_id;
-    const { is_in_game, unread_count, token, loading } = this.props.service;
+    const {
+      is_in_game,
+      unread_count,
+      token,
+      loading,
+      isWhitelisted
+    } = this.props.service;
 
     const parsed = queryString.parse(this.props.location.search);
     if (!isEmpty(parsed.param_game_id)) {
@@ -82,8 +88,15 @@ class ServiceHome extends Component {
                   </div>
                 </div>
                 <div className="row justify-content-center">
+                  {is_in_game && isWhitelisted && game_id === "g66naxx2tw" && (
+                    <div className="col-md-12 alert alert-info mt-3">
+                      邀請您加入
+                      <a href="https://line.me/R/ti/p/@302jpkze">官方帳號</a>
+                    </div>
+                  )}
+
                   {is_in_game && (
-                    <div className="col-md-12 alert alert-warning m-5">
+                    <div className="col-md-12 alert alert-warning mt-2">
                       提醒您：若無法選取檔案回報，請直接利用官網線上提問。
                     </div>
                   )}

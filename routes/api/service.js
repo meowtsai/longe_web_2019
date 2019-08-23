@@ -122,10 +122,11 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
       token,
       is_in_game,
       game_id,
-      unread_count: userObj.unread_count
+      unread_count: userObj.unread_count,
+      isWhitelisted: req.whitelisted
     });
   } else {
-    res.json({ is_in_game });
+    res.json({ is_in_game, isWhitelisted: req.whitelisted });
   }
 });
 

@@ -45,6 +45,7 @@ export default function(state = initialState, action) {
         is_in_game: action.payload.is_in_game,
         unread_count: action.payload.unread_count,
         game_id: action.payload.game_id,
+        isWhitelisted: action.payload.isWhitelisted,
         loading: false
       };
 
