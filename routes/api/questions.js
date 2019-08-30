@@ -445,7 +445,6 @@ router.post("/create_web_form", (req, res) => {
                 __dirname + "/../../public/template/mail.html",
                 "utf8"
               );
-              //service/g78naxx2hmt/view/300794?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVja19pZCI6IjFkamUwcWwiLCJlbWFpbCI6InNoaWhmYW4udHNhaUBnbWFpbC5jb20iLCJtb2JpbGUiOiI5MjY1NjgyNzkiLCJxdWVzdGlvbl9pZCI6MzAwNzk0LCJpYXQiOjE1NjcwNTk5NTcsImV4cCI6MTU2NzY2NDc1N30.s6Iw603U8WNGPe6P04Zyd6ntiMSIjEVXjrfSh8YuJNM
               const msg = `您提問的案件單號為#${q_id}<br />後續若要<a href='${SERVICE_CONFIG.report_path}/service/${game_id}/view/${q_id}?token=${token}'>追蹤此單號</a>的客服問題請用以下代碼進行查詢：<br /><b>${questionObject.check_id}</b>`;
 
               html_template = html_template.replace(

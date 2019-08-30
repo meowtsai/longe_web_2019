@@ -225,6 +225,7 @@ class ReportQuestion extends Component {
 
     let formContent;
     let typesOption = [];
+    let game_title;
     if (game && question_types) {
       // <? foreach($events as $e_row):?>
       // <?if ($partner_uid &&( ($e_row->status==1 && now() > $e_row->begin_time && now() < $e_row->end_time ) || IN_OFFICE)): ?>
@@ -252,6 +253,10 @@ class ReportQuestion extends Component {
         if (game.servers.length > 1) {
           serversOption = [...serversOption, { label: "請選擇", value: "" }];
         }
+      }
+
+      if (game.game_name) {
+        game_title = game.game_name;
       }
       if (user) {
         typesOption = [
@@ -386,7 +391,7 @@ class ReportQuestion extends Component {
       <div className="container">
         <div className="row">
           <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
-            <h4 className="text-center mt-5">線上回報</h4>
+            <h4 className="text-center mt-5">{game_title} 線上回報</h4>
             <small className="d-block mb-3 text-center">請填寫以下資訊</small>
 
             {loading ? (
