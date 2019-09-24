@@ -34,7 +34,8 @@ class ServiceHome extends Component {
       unread_count,
       token,
       loading,
-      isWhitelisted
+      showInvitation,
+      line_invite_link
     } = this.props.service;
 
     const parsed = queryString.parse(this.props.location.search);
@@ -68,7 +69,25 @@ class ServiceHome extends Component {
         ) : (
           <div className="container" style={{ marginTop: "50px" }}>
             <div className="row">
-              <div className="col-md-12 text-center">
+              <div className="col-md-12 text-center float-right">
+                {showInvitation && (
+                  <div className="col-md-6 mt-3">
+                    <span className="badge badge-info">訊息</span>{" "}
+                    <small>
+                      邀請您加入 LINE 官帳:
+                      <mark>瑞秋電台</mark>
+                    </small>
+                    <i className="fas fa-arrow-right mr-1 ml-1 text-danger"></i>
+                    <a href={`https://line.me/R/ti/p/${line_invite_link}`}>
+                      <img
+                        src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
+                        alt="加入好友"
+                        height="36"
+                        border="0"
+                      />
+                    </a>
+                  </div>
+                )}
                 <hr />
                 <div className="row justify-content-center">
                   <div className="col-sm-6 col-xs-6 col-md-4">
@@ -88,15 +107,8 @@ class ServiceHome extends Component {
                   </div>
                 </div>
                 <div className="row justify-content-center">
-                  {is_in_game && isWhitelisted && game_id === "g66naxx2tw" && (
-                    <div className="col-md-12 alert alert-info mt-3">
-                      邀請您加入
-                      <a href="https://line.me/R/ti/p/@302jpkze">官方帳號</a>
-                    </div>
-                  )}
-
                   {is_in_game && (
-                    <div className="col-md-12 alert alert-warning mt-2">
+                    <div className="col-md-12 alert alert-warning m-2">
                       提醒您：若無法選取檔案回報，請直接利用官網線上提問。
                     </div>
                   )}

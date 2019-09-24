@@ -50,6 +50,21 @@ const CharacterModel = {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
+  },
+  is_whale: async (c_id, game_id) => {
+    return await db2
+      .promise()
+      .query("select uid from whale_users where uid=? and site=?", [
+        c_id,
+        game_id
+      ])
+      .then(([rows, fields]) => {
+        if (rows.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      });
   }
 };
 

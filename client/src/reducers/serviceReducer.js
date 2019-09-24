@@ -19,7 +19,9 @@ const initialState = {
   loading: false,
   is_in_game: false,
   unread_count: 0,
-  game_id: null
+  game_id: null,
+  showInvitation: false,
+  line_invite_link: null
 };
 
 export default function(state = initialState, action) {
@@ -46,7 +48,9 @@ export default function(state = initialState, action) {
         unread_count: action.payload.unread_count,
         game_id: action.payload.game_id,
         isWhitelisted: action.payload.isWhitelisted,
-        loading: false
+        showInvitation: action.payload.showInvitation,
+        loading: false,
+        line_invite_link: action.payload.line_invite_link
       };
 
     case GET_QUESTION_BY_ID:

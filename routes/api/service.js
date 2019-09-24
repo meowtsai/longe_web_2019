@@ -118,12 +118,26 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
     const token = jwt.sign(userObj, SERVICE_CONFIG.jwt_encryption, {
       expiresIn: "1d"
     });
+
+    //0924 g66 check if vip
+    //
+    const isWhale = await CharacterModel.is_whale(partner_uid, game_id);
+
+    const showInvitation =
+      game_id === "g66naxx2tw" &&
+      (SERVICE_CONFIG.line_invite_public ? true : req.whitelisted) &&
+      isWhale
+        ? true
+        : false;
+
     res.json({
       token,
       is_in_game,
       game_id,
       unread_count: userObj.unread_count,
-      isWhitelisted: req.whitelisted
+      isWhitelisted: req.whitelisted,
+      showInvitation,
+      line_invite_link: showInvitation ? SERVICE_CONFIG.line_invite_link : null
     });
   } else {
     res.json({ is_in_game, isWhitelisted: req.whitelisted });
