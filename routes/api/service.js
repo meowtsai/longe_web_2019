@@ -28,15 +28,27 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
   //console.log("req.user auth", req.user);
 
   if (searchArray.length === 1 && req.user) {
+    const isWhale2 = await CharacterModel.is_whale(
+      req.user.partner_uid,
+      req.user.vendor_game_id
+    );
+    const showInvitation2 =
+      req.user.vendor_game_id === "g66naxx2tw" &&
+      (SERVICE_CONFIG.line_invite_public ? true : req.whitelisted) &&
+      isWhale2
+        ? true
+        : false;
     ServiceModel.getUnreadByUID(req.user.partner_uid)
       .then(unread_result => {
-        //console.log("init_setup unread_result", unread_result);
-
         res.json({
           token: req.header("x-auth-token"),
           is_in_game: true,
           unread_count: unread_result.cnt,
-          game_id: req.user.vendor_game_id
+          game_id: req.user.vendor_game_id,
+          showInvitation: showInvitation2,
+          line_invite_link: showInvitation2
+            ? SERVICE_CONFIG.line_invite_link
+            : null
         });
         return;
       })
