@@ -54,10 +54,10 @@ const CharacterModel = {
   is_whale: async (c_id, game_id) => {
     return await db2
       .promise()
-      .query("select uid from whale_users where uid=? and site=?", [
-        c_id,
-        game_id
-      ])
+      .query(
+        "select uid from whale_users where uid=? and site=? and deposit_total>149999",
+        [c_id, game_id]
+      )
       .then(([rows, fields]) => {
         if (rows.length > 0) {
           return true;
