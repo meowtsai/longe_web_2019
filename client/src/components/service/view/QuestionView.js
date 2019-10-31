@@ -47,18 +47,18 @@ class QuestionView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.service) {
-      const { question } = nextProps.service;
+    // if (nextProps.service) {
+    //   const { question } = nextProps.service;
 
-      //console.log("user", user);
-      if (
-        question &&
-        question.partner_uid !== null &&
-        this.props.match.params.game_id === "h38na"
-      ) {
-        this.setState({ useRecaptcha: false });
-      }
-    }
+    //   //console.log("user", user);
+    //   if (
+    //     question &&
+    //     question.partner_uid !== null &&
+    //     this.props.match.params.game_id === "h38na"
+    //   ) {
+    //     this.setState({ useRecaptcha: false });
+    //   }
+    // }
 
     if (nextProps.errors) {
       //console.log(nextProps.errors);
