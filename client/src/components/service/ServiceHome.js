@@ -29,6 +29,7 @@ class ServiceHome extends Component {
     //console.log("game_id", search_game_id);
     //const game_id = this.props.match.params.game_id;
     let game_id = this.props.service.game_id;
+    let device = "";
     const {
       is_in_game,
       unread_count,
@@ -45,6 +46,11 @@ class ServiceHome extends Component {
     if (game_id === undefined) {
       game_id = parsed.game_id;
     }
+
+    if (!isEmpty(parsed.usr_device)) {
+      device = parsed.usr_device;
+    }
+
     const linkReport = is_in_game
       ? `/service/${game_id}/create?token=${token}`
       : `/service/${game_id}/create`;
@@ -78,14 +84,25 @@ class ServiceHome extends Component {
                       <mark>瑞秋電台</mark>
                     </small>
                     <i className="fas fa-arrow-right mr-1 ml-1 text-danger"></i>
-                    <a href={`https://line.me/R/ti/p/${line_invite_link}`}>
-                      <img
-                        src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
-                        alt="加入好友"
-                        height="36"
-                        border="0"
-                      />
-                    </a>
+                    {device === "Android" ? (
+                      <a href={`/guide/line_add.html`}>
+                        <img
+                          src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
+                          alt="加入好友"
+                          height="36"
+                          border="0"
+                        />
+                      </a>
+                    ) : (
+                      <a href={`https://line.me/R/ti/p/${line_invite_link}`}>
+                        <img
+                          src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"
+                          alt="加入好友"
+                          height="36"
+                          border="0"
+                        />
+                      </a>
+                    )}
                   </div>
                 )}
                 <hr />
