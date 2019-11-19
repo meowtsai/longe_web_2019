@@ -14,6 +14,9 @@ import ReportQuestion from "./components/service/create/ReportQuestion";
 import EventSerial from "./components/events/EventSerial";
 import Complete_agreement from "./components/policies/Complete_agreement";
 
+import VipHome from "./components/vip/VipHome";
+import VipResult from "./components/vip/VipResult";
+
 class App extends Component {
   render() {
     return (
@@ -23,6 +26,9 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/service_quick" component={ServiceHome} />
             <Route exact path="/service/:game_id" component={ServiceHome} />
+
+            <Route exact path="/vip" component={VipHome} />
+            <Route exact path="/vip/result" component={VipResult} />
 
             <Route exact path="/support" component={SupportHome} />
             <Route

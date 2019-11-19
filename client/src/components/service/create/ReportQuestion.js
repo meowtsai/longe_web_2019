@@ -159,15 +159,15 @@ class ReportQuestion extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.report) {
-      const { user } = nextProps.report.settings;
+      //const { user } = nextProps.report.settings;
       //console.log("user", user);
-      if (
-        user &&
-        user.vendor_game_id === "h38na" &&
-        user.q_note.indexOf("windows") > -1
-      ) {
-        this.setState({ useRecaptcha: false });
-      }
+      // if (
+      //   user &&
+      //   user.vendor_game_id === "h38na" &&
+      //   user.q_note.indexOf("windows") > -1
+      // ) {
+      //   this.setState({ useRecaptcha: false });
+      // }
 
       if (nextProps.report.create_result.question_id) {
         this.handleOpenModal();

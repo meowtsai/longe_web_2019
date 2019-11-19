@@ -161,7 +161,7 @@ const ServiceModel = {
     return await db2
       .promise()
       .query(
-        "SELECT count(*) > (3-1) as chk FROM question_replies WHERE question_id=? and create_time > date_sub(now(), INTERVAL 1 MINUTE)",
+        "SELECT count(*) > (3-1) as chk FROM question_replies WHERE question_id=? and create_time > date_sub(now(), INTERVAL 3 MINUTE)",
         question_id
       )
       .then(([rows, fields]) => {

@@ -19,16 +19,16 @@ module.exports = function validateCreateWebInput(data) {
 
   //console.log("data.useRecaptcha", data.useRecaptcha);
 
-  if (data.useRecaptcha !== "false") {
-    if (isEmpty(data.captcha_token)) {
+  //if (data.useRecaptcha !== "false") {
+  if (isEmpty(data.captcha_token)) {
+    errors.captcha_token = "你是機器人嗎?";
+  } else {
+    if (!VerifyRecaptcha(data.captcha_token, data.ip)) {
+      //console.log("VerifyRecaptcha failed");
       errors.captcha_token = "你是機器人嗎?";
-    } else {
-      if (!VerifyRecaptcha(data.captcha_token, data.ip)) {
-        //console.log("VerifyRecaptcha failed");
-        errors.captcha_token = "你是機器人嗎?";
-      }
     }
   }
+  //}
 
   if (isEmpty(data.email)) {
     errors.email = "Email 為必填。";

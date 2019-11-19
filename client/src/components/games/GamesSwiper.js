@@ -1,14 +1,14 @@
 import React, { Component } from "react";
+//import { Navigation, Pagination } from "swiper/dist/js/swiper.esm.js";
+import "swiper/css/swiper.css";
 import Swiper from "react-id-swiper";
-import { Pagination, Navigation } from "swiper/dist/js/swiper.esm";
 import PropTypes from "prop-types";
 
 class GamesSwiper extends Component {
   render() {
     const { games } = this.props;
-
+    //console.log("GamesSwiper", games);
     const params = {
-      modules: [Pagination, Navigation],
       pagination: {
         el: ".swiper-pagination",
         type: "bullets",

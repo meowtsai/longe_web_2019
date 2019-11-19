@@ -32,3 +32,5 @@ export const CREATE_WEB_REPORT = "CREATE_WEB_REPORT";
 
 export const EVENT_LOAD_USER = "EVENT_LOAD_USER";
 export const REDEEM_SERIAL = "REDEEM_SERIAL";
+
+export const POST_VIP_ORDER = "POST_VIP_ORDER";

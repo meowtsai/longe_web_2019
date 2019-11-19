@@ -8,7 +8,7 @@ const service = require("./routes/api/service");
 const questions = require("./routes/api/questions");
 const upload = require("./routes/api/upload");
 const events = require("./routes/api/events");
-
+const vip = require("./routes/api/vip");
 const CONFIG = require("./config/config")[process.env.NODE_ENV];
 const requestIp = require("request-ip");
 const helmet = require("helmet");
@@ -57,6 +57,7 @@ app.use("/api/service", service);
 app.use("/api/events", events);
 app.use("/api/questions", questions);
 app.use("/api/upload", upload);
+app.use("/api/vip", vip);
 
 app.use("/uploads", express.static("client/public/uploads"));
 

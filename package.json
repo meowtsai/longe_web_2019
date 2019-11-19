@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production node server.js",
     "stage": "NODE_ENV=stage node server.js",
-    "devstart": "NODE_ENV=development nodemon -L server.js"
+    "devstart": "NODE_ENV=development nodemon  server.js"
   },
   "author": "",
   "license": "ISC",
