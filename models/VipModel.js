@@ -22,7 +22,7 @@ const VipModel = {
     return await db2
       .promise()
       .query(
-        "select vw.order_id,vw.phone,vw.email, vw.wire_code,vw.wire_time,vw.wire_amount,vw.wire_name,vw.bank_name,vw.char_name,vw.role_id,vw.server_id,vw.game_id, gi.name as server_name, g.name as game_name from vip_wire_report vw join servers gi on gi.server_id=vw.server_id join games g on g.game_id=gi.game_id where order_id=? order by id asc",
+        "select vw.report_id,vw.phone,vw.email, vw.wire_code,vw.wire_time,vw.wire_amount,vw.wire_name,vw.bank_name,vw.char_name,vw.role_id,vw.server_id,vw.game_id, gi.name as server_name, g.name as game_name from vip_wire_report vw join servers gi on gi.server_id=vw.server_id join games g on g.game_id=gi.game_id where report_id=? order by id asc",
         [report_id]
       )
       .then(([rows, fields]) => {

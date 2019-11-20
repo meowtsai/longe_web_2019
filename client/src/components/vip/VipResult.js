@@ -1,5 +1,5 @@
 import React from "react";
-import moment from "moment";
+import Moment from "react-moment";
 import PropTypes from "prop-types";
 
 const VipResult = ({ record }) => {
@@ -37,7 +37,7 @@ const VipResult = ({ record }) => {
                   <tbody>
                     <tr>
                       <th scope="row">回填單編號</th>
-                      <td>{record.order_id}</td>
+                      <td>{record.report_id}</td>
                     </tr>
                     <tr>
                       <th scope="row">Email</th>
@@ -54,7 +54,9 @@ const VipResult = ({ record }) => {
                     <tr>
                       <th scope="row">匯款時間</th>
                       <td>
-                        {moment(record.wire_time, "HH:mm").format("HH:mm A")}
+                        <Moment format="YYYY/MM/DD HH:mm">
+                          {record.wire_time}
+                        </Moment>
                       </td>
                     </tr>
                     <tr>

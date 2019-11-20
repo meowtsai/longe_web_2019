@@ -17,10 +17,10 @@ router.post("/createOrder", async (req, res) => {
     const ip = req.clientIp;
     const geo = geoip.lookup(ip);
 
-    const order_id = `VP${moment().format("YYYYMMDDHHmmss")}${makeid(3)}`;
+    const report_id = `VP${moment().format("YYYYMMDDHHmmss")}${makeid(3)}`;
 
     let wireReportObject = {
-      order_id,
+      report_id,
       phone: req.body.userPhone,
       email: req.body.email,
       wire_code: req.body.wireCode,
@@ -33,13 +33,17 @@ router.post("/createOrder", async (req, res) => {
       server_id: req.body.serverId,
       game_id: req.body.gameId,
       ip,
-      country: geo === null ? "NULL" : geo.country
+      country: geo === null ? "NULL" : geo.country,
+      invoice_option: req.body.invoiceOption,
+      address: req.body.area + req.body.address,
+      product_id: req.body.productId,
+      qty: req.body.qty
     };
 
     const result = await VipModel.createWireReport(wireReportObject);
 
     if (result.status === 1) {
-      const recordResult = await VipModel.getReportByID(order_id);
+      const recordResult = await VipModel.getReportByID(report_id);
       if (recordResult.status === 1) {
         const rptRecord = recordResult.msg;
 
@@ -52,7 +56,7 @@ router.post("/createOrder", async (req, res) => {
             __dirname + "/../../public/template/mail.html",
             "utf8"
           );
-          const msg = `您的匯款回報單號為#${rptRecord.order_id}<br />
+          const msg = `您的匯款回報單號為#${rptRecord.report_id}<br />
           回報明細如下:<br />
           匯款帳號後五碼:${rptRecord.wire_code}<br />
           匯款時間:${rptRecord.wire_time}<br />

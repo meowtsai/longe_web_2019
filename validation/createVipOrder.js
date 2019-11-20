@@ -14,6 +14,23 @@ module.exports = function validateVipOrderInput(data) {
   data.roleId = !isEmpty(data.roleId) ? data.roleId : "";
   data.serverId = !isEmpty(data.serverId) ? data.serverId : "";
 
+  data.invoiceOption = !isEmpty(data.invoiceOption) ? data.invoiceOption : "";
+  data.area = !isEmpty(data.area) ? data.area : "";
+  data.address = !isEmpty(data.address) ? data.address : "";
+  data.productId = !isEmpty(data.productId) ? data.productId : "";
+  data.qty = !isEmpty(data.qty) ? data.qty : "";
+
+  if (isEmpty(data.invoiceOption)) {
+    errors.invoiceOption = "請選擇是否捐贈發票。";
+  } else if (data.invoiceOption === "paper") {
+    if (isEmpty(data.area) || isEmpty(data.address)) {
+      errors.address = "請提供紙本發票寄送地址。";
+    }
+  }
+
+  if (isEmpty(data.productId)) {
+    errors.productId = "請選擇方案。";
+  }
   if (isEmpty(data.userPhone)) {
     errors.userPhone = "手機為必填。";
   }

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
+import TaiwanAddressPick from "../common/TaiwanAddressPick";
 import { getServers } from "../../actions/gameActions";
 import { createVipOrder } from "../../actions/vipActions";
 import VipResult from "./VipResult";
@@ -17,27 +18,37 @@ const VipHome = ({
   const [email, setEmail] = useState("");
   const [userPhone, setUserPhone] = useState("");
   const [wireCode, setWireCode] = useState("");
+
   const [wireTime, setWireTime] = useState("");
   const [wireAmount, setWireAmount] = useState("");
   const [wireName, setWireName] = useState("");
   const [bankName, setBankName] = useState("");
   const [charName, setCharName] = useState("");
   const [roleId, setRoleId] = useState("");
+
   const [note, setNote] = useState("");
+
+  const [invoiceOption, setInvoiceOption] = useState("donate");
+  const [area, setArea] = useState("");
+  const [address, setAddress] = useState("");
+  const [productId, setProductId] = useState("");
+  const [qty, setQty] = useState("1");
+
   const gameId = "g66naxx2tw";
 
   const [serversOption, setServersOption] = useState([]);
 
+  const productsOption = [
+    {
+      label:
+        "<明日之後> 台幣3000方案 - 信用點 6480 贈 1788，共可獲得 8268 信用點",
+      value: "75084"
+    }
+  ];
+
   useEffect(() => {
     getServers(gameId);
   }, []);
-
-  // {
-  //   "server_id": "g66_530001",
-  //   "server_name": "多貝雪山",
-  //   "address": "多貝雪山",
-  //   "server_status": "public"
-  // },
 
   useEffect(() => {
     if (game.servers) {
@@ -71,16 +82,31 @@ const VipHome = ({
       roleId,
       gameId,
       serverId,
-      note
+      note,
+      invoiceOption,
+      area,
+      address,
+      productId,
+      qty
     };
 
     console.log("vipFormSubmit", vipOrders);
     createVipOrder(vipOrders);
   };
 
-  if (record.order_id) {
+  if (record.report_id) {
     return <VipResult record={record} />;
   }
+
+  const invoiceOptionClick = invoiceType => {
+    //console.log("invoiceOptionClick", invoiceType);
+    setInvoiceOption(invoiceType);
+  };
+
+  const onAddressChange = value => {
+    console.log("onAddressChange", value);
+    setArea(value);
+  };
 
   return (
     <div className="container">
@@ -227,6 +253,73 @@ const VipHome = ({
                   僅供訂單有異常時聯繫用
                 </small>
               </div>
+
+              <div className="form-group">
+                <label htmlFor="productId" className="col-form-label-sm">
+                  方案
+                </label>
+                <div className="form-group input-group">
+                  <div className="input-group-prepend">
+                    <span
+                      className="input-group-text"
+                      role="img"
+                      aria-label="gift"
+                    >
+                      🎁
+                    </span>
+                  </div>
+                  <select
+                    className={classnames("form-control form-control-md", {
+                      "is-invalid": errors.productId
+                    })}
+                    name={productId}
+                    value={productId}
+                    onChange={e => setProductId(e.target.value)}
+                  >
+                    <option value="">選擇方案</option>
+                    {productsOption.map(option => (
+                      <option key={option.label} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.productId && (
+                    <div className="invalid-feedback">{errors.productId}</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="qty" className="col-form-label-sm">
+                  數量
+                </label>
+                <div className="form-group input-group">
+                  <div className="input-group-prepend">
+                    <span
+                      className="input-group-text"
+                      role="img"
+                      aria-label="number"
+                    >
+                      #️⃣
+                    </span>
+                  </div>
+                  <input
+                    type="number"
+                    className={classnames("form-control form-control-md", {
+                      "is-invalid": errors.qty
+                    })}
+                    id="qty"
+                    placeholder="輸入數量"
+                    min="1"
+                    value={qty}
+                    onChange={e => setQty(e.target.value)}
+                  />
+                  {errors.qty && (
+                    <div className="invalid-feedback">{errors.qty}</div>
+                  )}
+                </div>
+              </div>
+
               <div className="form-group">
                 <label htmlFor="wireCode" className="col-form-label-sm">
                   匯款帳號後五碼
@@ -243,7 +336,7 @@ const VipHome = ({
                     </span>
                   </div>
                   <input
-                    type="number"
+                    type="text"
                     className={classnames("form-control form-control-md", {
                       "is-invalid": errors.wireCode
                     })}
@@ -251,6 +344,7 @@ const VipHome = ({
                     placeholder="輸入您匯款使用帳號的後五碼"
                     value={wireCode}
                     onChange={e => setWireCode(e.target.value)}
+                    maxLength="10"
                   />
                   {errors.wireCode && (
                     <div className="invalid-feedback">{errors.wireCode}</div>
@@ -273,7 +367,7 @@ const VipHome = ({
                     </span>
                   </div>
                   <input
-                    type="time"
+                    type="datetime-local"
                     className={classnames("form-control form-control-md", {
                       "is-invalid": errors.wireTime
                     })}
@@ -341,6 +435,7 @@ const VipHome = ({
                     placeholder="輸入匯款帳戶名稱"
                     value={wireName}
                     onChange={e => setWireName(e.target.value)}
+                    maxLength="10"
                   />
                   {errors.wireName && (
                     <div className="invalid-feedback">{errors.wireName}</div>
@@ -371,6 +466,7 @@ const VipHome = ({
                     placeholder="輸入銀行名稱"
                     value={bankName}
                     onChange={e => setBankName(e.target.value)}
+                    maxLength="20"
                   />
                   {errors.bankName && (
                     <div className="invalid-feedback">{errors.bankName}</div>
@@ -401,6 +497,7 @@ const VipHome = ({
                     placeholder="輸入角色名稱"
                     value={charName}
                     onChange={e => setCharName(e.target.value)}
+                    maxLength="20"
                   />
                   {errors.charName && (
                     <div className="invalid-feedback">{errors.charName}</div>
@@ -431,6 +528,7 @@ const VipHome = ({
                     placeholder="人物帳號ID "
                     value={roleId}
                     onChange={e => setRoleId(e.target.value)}
+                    maxLength="20"
                   />
                   {errors.roleId && (
                     <div className="invalid-feedback">{errors.roleId}</div>
@@ -494,6 +592,61 @@ const VipHome = ({
                     value={note}
                     onChange={e => setNote(e.target.value)}
                   />
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="invoice" className="col-form-label-sm">
+                  發票選項
+                </label>
+
+                <div className="form-group">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="invoiceOption"
+                      id="invoiceDonate"
+                      value="donate"
+                      checked={invoiceOption === "donate"}
+                      onChange={e => invoiceOptionClick(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="invoiceDonate">
+                      捐贈臺灣環境資訊協會 (
+                      <a
+                        target="_blank"
+                        href="https://teia.tw/zh-hant/donate/credit"
+                      >
+                        發票徵信
+                      </a>
+                      )
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="invoiceOption"
+                      id="invoicePaper"
+                      value="paper"
+                      checked={invoiceOption === "paper"}
+                      onChange={e => invoiceOptionClick(e.target.value)}
+                    />
+                    <label className="form-check-label" htmlFor="invoicePaper">
+                      紙本發票
+                    </label>
+                    {invoiceOption === "paper" && (
+                      <Fragment>
+                        <TaiwanAddressPick onChange={onAddressChange} />
+                        <input
+                          className="form-control"
+                          type="text"
+                          placeholder="發票寄送地址"
+                          value={address}
+                          onChange={e => setAddress(e.target.value)}
+                        />
+                      </Fragment>
+                    )}
+                  </div>
                 </div>
               </div>
               <button type="submit" className="btn btn-primary">
