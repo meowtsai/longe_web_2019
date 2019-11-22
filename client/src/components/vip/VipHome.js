@@ -642,7 +642,7 @@ const VipHome = ({
                     {invoiceOption === "paper" && (
                       <Fragment>
                         <input
-                          className="form-control"
+                          className="form-control mb-2"
                           type="text"
                           placeholder="收件人姓名"
                           value={recipient}
