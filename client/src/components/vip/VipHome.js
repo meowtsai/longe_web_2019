@@ -34,6 +34,7 @@ const VipHome = ({
   const [address, setAddress] = useState("");
   const [productId, setProductId] = useState("");
   const [qty, setQty] = useState("1");
+  const [recipient, setRecipient] = useState("");
 
   const gameId = "g66naxx2tw";
 
@@ -86,6 +87,7 @@ const VipHome = ({
       note,
       invoiceOption,
       area,
+      recipient,
       address,
       productId,
       qty
@@ -639,6 +641,14 @@ const VipHome = ({
                     </label>
                     {invoiceOption === "paper" && (
                       <Fragment>
+                        <input
+                          className="form-control"
+                          type="text"
+                          placeholder="收件人姓名"
+                          value={recipient}
+                          onChange={e => setRecipient(e.target.value)}
+                          maxLength="10"
+                        />
                         <TaiwanAddressPick onChange={onAddressChange} />
                         <input
                           className="form-control"

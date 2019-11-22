@@ -39,7 +39,8 @@ router.post("/createOrder", async (req, res) => {
       address: req.body.area + req.body.address,
       product_id: req.body.productId,
       qty: req.body.qty,
-      note: req.body.note
+      note: req.body.note,
+      recipient: req.body.recipient
     };
 
     const result = await VipModel.createWireReport(wireReportObject);
@@ -71,6 +72,7 @@ router.post("/createOrder", async (req, res) => {
           角色名稱:${rptRecord.char_name}<br />
           人物帳號ID:${rptRecord.role_id}<br />
           發票選項:${invoiceOptions[rptRecord.invoice_option]}<br />
+          收件人:${rptRecord.recipient}<br />
           地址:${rptRecord.address}<br />
           購買方案:${rptRecord.title}<br />
           方案數量:${rptRecord.qty}<br />

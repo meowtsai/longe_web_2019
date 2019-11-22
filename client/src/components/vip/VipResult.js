@@ -27,7 +27,7 @@ const VipResult = ({ record }) => {
         <div className="col-lg-3 mt-3"> </div>
         <div className="col-lg-6 mt-3">
           <div className="card border-success mb-3">
-            <div class="card-header bg-success text-light">填寫完成</div>
+            <div className="card-header bg-success text-light">填寫完成</div>
             <div className="card-body text-success">
               <h5 className="card-title">
                 謝謝您，已經收到您的匯款回報．我們將盡快處理!
