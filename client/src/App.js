@@ -27,8 +27,7 @@ class App extends Component {
             <Route exact path="/service_quick" component={ServiceHome} />
             <Route exact path="/service/:game_id" component={ServiceHome} />
 
-            <Route exact path="/vip" component={VipHome} />
-            <Route exact path="/vip/result" component={VipResult} />
+            <Route exact path="/wire_report/:game_id" component={VipHome} />
 
             <Route exact path="/support" component={SupportHome} />
             <Route

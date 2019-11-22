@@ -6,6 +6,7 @@ const VipModel = require("../../models/VipModel");
 const smtp_server = require("../../config/config")["smtp_server"];
 const validateVipOrderInput = require("../../validation/createVipOrder");
 const nodemailer = require("nodemailer");
+const { invoiceOptions } = require("../../config/service");
 
 router.post("/createOrder", async (req, res) => {
   const { errors, isValid } = validateVipOrderInput({
@@ -56,8 +57,10 @@ router.post("/createOrder", async (req, res) => {
             __dirname + "/../../public/template/mail.html",
             "utf8"
           );
-          const msg = `您的匯款回報單號為#${rptRecord.report_id}<br />
-          回報明細如下:<br />
+          const msg = `您的匯款回報單號為#${
+            rptRecord.report_id
+          },有問題可以隨時和服務人員聯繫!<br />
+          以下是您的回報資料:<br />
           匯款帳號後五碼:${rptRecord.wire_code}<br />
           匯款時間:${rptRecord.wire_time}<br />
           匯款金額:${rptRecord.wire_amount}<br />
@@ -66,6 +69,10 @@ router.post("/createOrder", async (req, res) => {
           伺服器名稱:${rptRecord.server_name}<br />
           角色名稱:${rptRecord.char_name}<br />
           人物帳號ID:${rptRecord.role_id}<br />
+          發票選項:${invoiceOptions[rptRecord.invoice_option]}<br />
+          地址:${rptRecord.address}<br />
+          購買方案:${rptRecord.title}<br />
+          方案數量:${rptRecord.qty}<br />
           <hr />
           我們會盡快於服務時間幫您處理, 謝謝您!
           `;
@@ -85,9 +92,9 @@ router.post("/createOrder", async (req, res) => {
             //$_SESSION['game_name']."客服代碼通知信[".date("Y/m/d H:i:s")."]",
             from: '"龍邑自動回覆系統" <no-reply@longeplay.com.tw>', // sender address
             to: rptRecord.email, // list of receivers
-            subject: `${rptRecord.game_name}回報完成通知信 ${moment().format(
-              "YYYY-MM-DD HH:mm:ss"
-            )}`, // Subject line
+            subject: `${
+              rptRecord.game_name
+            }方案購買 - 匯款登記確認 ${moment().format("YYYY-MM-DD HH:mm:ss")}`, // Subject line
             html: html_template // html body
           };
 

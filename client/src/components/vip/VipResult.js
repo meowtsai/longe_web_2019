@@ -30,8 +30,9 @@ const VipResult = ({ record }) => {
             <div class="card-header bg-success text-light">填寫完成</div>
             <div className="card-body text-success">
               <h5 className="card-title">
-                謝謝您，已經收到您的匯款回報．您的回報內容如下:
+                謝謝您，已經收到您的匯款回報．我們將盡快處理!
               </h5>
+              您的回報內容如下:
               <p className="card-text">
                 <table className="table table-hover">
                   <tbody>
@@ -97,6 +98,23 @@ const VipResult = ({ record }) => {
                       <th scope="row">角色名稱</th>
                       <td>{record.char_name}</td>
                     </tr>
+
+                    <tr>
+                      <th scope="row">發票選項</th>
+                      <td>{record.invoice_option}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">地址</th>
+                      <td>{record.address}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">購買方案</th>
+                      <td>{record.title}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">方案數量</th>
+                      <td>{record.qty}</td>
+                    </tr>
                   </tbody>
                 </table>
               </p>
@@ -115,6 +133,8 @@ const VipResult = ({ record }) => {
   );
 };
 
-VipResult.propTypes = {};
+VipResult.propTypes = {
+  record: PropTypes.object.isRequired
+};
 
 export default VipResult;
