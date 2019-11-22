@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
+import moment from "moment";
 import TaiwanAddressPick from "../common/TaiwanAddressPick";
 import { getServers } from "../../actions/gameActions";
 import { createVipOrder } from "../../actions/vipActions";
@@ -40,8 +41,7 @@ const VipHome = ({
 
   const productsOption = [
     {
-      label:
-        "<明日之後> 台幣3000方案 - 信用點 6480 贈 1788，共可獲得 8268 信用點",
+      label: "台幣3000方案 - 信用點 6480 贈 1788，共可獲得 8268 信用點",
       value: "75084"
     }
   ];
@@ -75,7 +75,7 @@ const VipHome = ({
       email,
       userPhone,
       wireCode,
-      wireTime,
+      wireTime: moment(wireTime).format("YYYY-MM-DD HH:mm:ss"),
       wireAmount,
       wireName,
       bankName,
@@ -91,7 +91,6 @@ const VipHome = ({
       qty
     };
 
-    console.log("vipFormSubmit", vipOrders);
     createVipOrder(vipOrders);
   };
 
@@ -105,7 +104,6 @@ const VipHome = ({
   };
 
   const onAddressChange = value => {
-    console.log("onAddressChange", value);
     setArea(value);
   };
 
@@ -376,7 +374,7 @@ const VipHome = ({
                       "is-invalid": errors.wireTime
                     })}
                     id="wireTime"
-                    value={wireTime}
+                    value={moment(wireTime).format("YYYY-MM-DDThh:mm")}
                     onChange={e => setWireTime(e.target.value)}
                   />
                   {errors.wireTime && (
