@@ -38,7 +38,8 @@ router.post("/createOrder", async (req, res) => {
       invoice_option: req.body.invoiceOption,
       address: req.body.area + req.body.address,
       product_id: req.body.productId,
-      qty: req.body.qty
+      qty: req.body.qty,
+      note: req.body.note
     };
 
     const result = await VipModel.createWireReport(wireReportObject);
