@@ -20,7 +20,7 @@ const VipHome = ({
   const [userPhone, setUserPhone] = useState("");
   const [wireCode, setWireCode] = useState("");
 
-  const [wireTime, setWireTime] = useState("");
+  const [wireTime, setWireTime] = useState(moment().format("YYYY-MM-DDTHH:mm"));
   const [wireAmount, setWireAmount] = useState("");
   const [wireName, setWireName] = useState("");
   const [bankName, setBankName] = useState("");
@@ -375,8 +375,7 @@ const VipHome = ({
                     })}
                     id="wireTime"
                     value={moment(wireTime).format("YYYY-MM-DDTHH:mm")}
-                    //onChange={e => setWireTime(e.target.value)}
-                    onChange="alert(event.target.value)"
+                    onChange={e => setWireTime(e.target.value)}
                   />
                   {errors.wireTime && (
                     <div className="invalid-feedback">{errors.wireTime}</div>
