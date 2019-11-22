@@ -2,8 +2,7 @@ import {
   BEGIN_LOADING,
   CLEAR_LOADING,
   POST_VIP_ORDER,
-  GET_ERRORS,
-  CLEAR_ERRORS
+  GET_ERRORS
 } from "./types";
 import axios from "axios";
 export const beginLoading = () => {

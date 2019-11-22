@@ -48,6 +48,7 @@ const VipHome = ({
 
   useEffect(() => {
     getServers(gameId);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -111,17 +112,19 @@ const VipHome = ({
   return (
     <div className="container">
       <div className="row">
-        <div className="col-12 mt-3">
+        <div className="col-lg-3 mt-3"> </div>
+        <div className="col-lg-6  col-sm-12  mt-3">
           <img
             src="https://lh3.googleusercontent.com/fWnsvnNSoQCvdHryUuEWpKhYThClG0ERsDEBr_cFYtkw_mSuZknZ1ruVoPCzBF_pElbi5uAh6QcprVDEClXjpkDDk3r0JpBhCqE1MZ7L-dHqhauzs0K8TsIdbh5n=w640"
-            className="rounded m-auto  d-block"
+            className="rounded img-fluid m-auto"
             alt="千呼萬喚的儲值方案登場了!!"
           ></img>
         </div>
+        <div className="col-lg-3 mt-3"> </div>
       </div>
       <div className="row">
         <div className="col-lg-3 mt-3"> </div>
-        <div className="col-lg-6 mt-3">
+        <div className="col-lg-6  col-sm-12 mt-3">
           <div className="jumbotron jumbotron-fluid">
             <div className="container">
               <h5 className="display-5">
@@ -135,14 +138,14 @@ const VipHome = ({
               </h5>
               <hr className="my-4" />
               <p>
-                目前僅有一種方案可以選擇： <br />
+                試營運方案： <br />
                 <span role="img" aria-label="hand">
                   👉
                 </span>
                 NTD.3,000，信用點 6480 贈 1788， 共可獲得 8268 信用點。
               </p>
               <p className="small">
-                未來也會持續新增其他面額的款項唷！
+                目前儲值系統還在試營運當中，未來還會再做調整！
                 <br />
                 若您有購買意願的話，可直接以轉帳、匯款方式進行．
               </p>
@@ -176,7 +179,7 @@ const VipHome = ({
       </div>
       <div className="row">
         <div className="col-lg-3 mt-3"> </div>
-        <div className="col-lg-6 mt-3">
+        <div className="col-lg-6 col-sm-12 mt-3">
           <form className="card border-info mb-3" onSubmit={vipFormSubmit}>
             <div className="card-body text-info">
               {errors.msg && (
@@ -311,6 +314,7 @@ const VipHome = ({
                     id="qty"
                     placeholder="輸入數量"
                     min="1"
+                    max="10"
                     value={qty}
                     onChange={e => setQty(e.target.value)}
                   />
@@ -614,6 +618,7 @@ const VipHome = ({
                       捐贈臺灣環境資訊協會 (
                       <a
                         target="_blank"
+                        rel="noopener noreferrer"
                         href="https://teia.tw/zh-hant/donate/credit"
                       >
                         發票徵信
@@ -655,22 +660,6 @@ const VipHome = ({
             </div>
           </form>
         </div>
-        <div className="col-lg-3 mt-3"> </div>
-      </div>
-
-      <div className="row">
-        <div className="col-lg-3 mt-3"> </div>
-        <div className="col-lg-6 mt-3"></div>
-        <div className="col-lg-3 mt-3"> </div>
-      </div>
-      <div className="row">
-        <div className="col-lg-3 mt-3"> </div>
-        <div className="col-lg-6 mt-3"></div>
-        <div className="col-lg-3 mt-3"> </div>
-      </div>
-      <div className="row">
-        <div className="col-lg-3 mt-3"> </div>
-        <div className="col-lg-6 mt-3"></div>
         <div className="col-lg-3 mt-3"> </div>
       </div>
     </div>

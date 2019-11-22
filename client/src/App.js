@@ -15,7 +15,6 @@ import EventSerial from "./components/events/EventSerial";
 import Complete_agreement from "./components/policies/Complete_agreement";
 
 import VipHome from "./components/vip/VipHome";
-import VipResult from "./components/vip/VipResult";
 
 class App extends Component {
   render() {

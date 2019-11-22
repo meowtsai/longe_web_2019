@@ -408,7 +408,7 @@ const zip3_dict = {
 
 const TaiwanAddressPick = ({ value, onChange }) => {
   const [area, setArea] = useState("");
-  const [subArea, setSubArea] = useState("");
+  //const [subArea, setSubArea] = useState("");
 
   const onSelectArea = area => {
     setArea(area);
@@ -416,7 +416,7 @@ const TaiwanAddressPick = ({ value, onChange }) => {
   };
 
   const onSelectSubArea = subArea => {
-    setSubArea(subArea);
+    //setSubArea(subArea);
     onChange(subArea);
   };
 
@@ -455,6 +455,8 @@ const TaiwanAddressPick = ({ value, onChange }) => {
   );
 };
 
-TaiwanAddressPick.propTypes = {};
+TaiwanAddressPick.propTypes = {
+  onChange: PropTypes.func.isRequired
+};
 
 export default TaiwanAddressPick;
