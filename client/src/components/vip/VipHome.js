@@ -374,8 +374,9 @@ const VipHome = ({
                       "is-invalid": errors.wireTime
                     })}
                     id="wireTime"
-                    value={moment(wireTime).format("YYYY-MM-DDThh:mm")}
-                    onChange={e => setWireTime(e.target.value)}
+                    value={moment(wireTime).format("YYYY-MM-DDTHH:mm")}
+                    //onChange={e => setWireTime(e.target.value)}
+                    onChange="alert(event.target.value)"
                   />
                   {errors.wireTime && (
                     <div className="invalid-feedback">{errors.wireTime}</div>
