@@ -17,6 +17,8 @@ module.exports = function validateVipOrderInput(data) {
   data.invoiceOption = !isEmpty(data.invoiceOption) ? data.invoiceOption : "";
   data.area = !isEmpty(data.area) ? data.area : "";
   data.address = !isEmpty(data.address) ? data.address : "";
+  data.recipient = !isEmpty(data.recipient) ? data.recipient : "";
+
   data.productId = !isEmpty(data.productId) ? data.productId : "";
   data.qty = !isEmpty(data.qty) ? data.qty : "";
 
@@ -25,6 +27,9 @@ module.exports = function validateVipOrderInput(data) {
   } else if (data.invoiceOption === "paper") {
     if (isEmpty(data.area) || isEmpty(data.address)) {
       errors.address = "請提供紙本發票寄送地址。";
+    }
+    if (isEmpty(data.recipient)) {
+      errors.recipient = "請提供紙本發票收件者姓名。";
     }
   }
 

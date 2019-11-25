@@ -642,21 +642,43 @@ const VipHome = ({
                     {invoiceOption === "paper" && (
                       <Fragment>
                         <input
-                          className="form-control mb-2"
+                          className={classnames(
+                            "form-control form-control-md mb-2",
+                            {
+                              "is-invalid": errors.recipient
+                            }
+                          )}
                           type="text"
                           placeholder="收件人姓名"
                           value={recipient}
                           onChange={e => setRecipient(e.target.value)}
                           maxLength="10"
                         />
+
+                        {errors.recipient && (
+                          <div className="invalid-feedback">
+                            {errors.recipient}
+                          </div>
+                        )}
                         <TaiwanAddressPick onChange={onAddressChange} />
                         <input
-                          className="form-control"
+                          className={classnames(
+                            "form-control form-control-md",
+                            {
+                              "is-invalid": errors.address
+                            }
+                          )}
                           type="text"
                           placeholder="發票寄送地址"
                           value={address}
                           onChange={e => setAddress(e.target.value)}
                         />
+
+                        {errors.address && (
+                          <div className="invalid-feedback">
+                            {errors.address}
+                          </div>
+                        )}
                       </Fragment>
                     )}
                   </div>
