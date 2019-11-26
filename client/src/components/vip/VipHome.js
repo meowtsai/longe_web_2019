@@ -7,13 +7,15 @@ import { getServers } from "../../actions/gameActions";
 import { createVipOrder } from "../../actions/vipActions";
 import VipResult from "./VipResult";
 import PropTypes from "prop-types";
+import Spinner from "../common/Spinner";
 
 const VipHome = ({
   errors = {},
   game = {},
   getServers,
   createVipOrder,
-  record
+  record,
+  loading
 }) => {
   const [serverId, setServerId] = useState("");
   const [email, setEmail] = useState("");
@@ -98,6 +100,10 @@ const VipHome = ({
 
   if (record.report_id) {
     return <VipResult record={record} />;
+  }
+
+  if (loading) {
+    return <Spinner />;
   }
 
   const invoiceOptionClick = invoiceType => {
@@ -704,7 +710,8 @@ VipHome.propTypes = {
 const mapStateToProps = state => ({
   errors: state.errors,
   game: state.games.game,
-  record: state.vip.record
+  record: state.vip.record,
+  loading: state.vip.loading
 });
 export default connect(mapStateToProps, { getServers, createVipOrder })(
   VipHome
