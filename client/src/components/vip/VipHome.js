@@ -645,6 +645,7 @@ const VipHome = ({
                     <label className="form-check-label" htmlFor="invoicePaper">
                       紙本發票
                     </label>
+
                     {invoiceOption === "paper" && (
                       <Fragment>
                         <input
@@ -685,6 +686,9 @@ const VipHome = ({
                             {errors.address}
                           </div>
                         )}
+                        <small className="text-danger d-block">
+                          註：我們會在開獎日後幫您對獎，若有中獎便會以掛號寄出紙本發票，讓您可至財政部指定兌領機構兌領獎金。
+                        </small>
                       </Fragment>
                     )}
                   </div>
