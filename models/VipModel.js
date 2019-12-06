@@ -19,7 +19,7 @@ const VipModel = {
   },
 
   getReportByID: async report_id => {
-    return await db2
+    return await db1
       .promise()
       .query(
         `select vw.report_id,vw.phone,vw.email, vw.wire_code,vw.wire_time,vw.wire_amount,vw.wire_name,vw.bank_name,vw.char_name,vw.role_id,vw.server_id,vw.game_id, gi.name as server_name, g.name as game_name ,vp.title,vw.qty,vw.invoice_option,vw.address
