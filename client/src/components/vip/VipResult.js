@@ -30,7 +30,7 @@ const VipResult = ({ record }) => {
             <div className="card-header bg-success text-light">填寫完成</div>
             <div className="card-body text-success">
               <h5 className="card-title">
-                謝謝您，已經收到您的匯款回報．我們將盡快處理!
+                謝謝您，已經收到您的匯款回報．也請連繫瑞秋，加速我們後續處理!
               </h5>
               您的回報內容如下:
               <p className="card-text">

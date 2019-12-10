@@ -178,6 +178,10 @@ const VipHome = ({
                 <br />
                 <br />
                 PS：完成交易後即無法進行退換貨的服務喔！
+                <br />
+                <span className="text-danger">
+                  PPS：請務必加入LINE群 並連繫瑞秋
+                </span>
               </p>
             </div>
           </div>
