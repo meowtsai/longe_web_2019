@@ -34,7 +34,7 @@ router.post("/createOrder", async (req, res) => {
       server_id: req.body.serverId,
       game_id: req.body.gameId,
       ip,
-      country: geo === null ? "NULL" : geo.country,
+      country: geo === null ? "NULL" : geo.city,
       invoice_option: req.body.invoiceOption,
       address: req.body.area + req.body.address,
       product_id: req.body.productId,
