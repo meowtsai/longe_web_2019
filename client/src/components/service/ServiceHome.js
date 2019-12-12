@@ -23,6 +23,7 @@ class ServiceHome extends Component {
       },
       search_values.token
     );
+    document.title = "龍邑遊戲|客服首頁";
   }
 
   render() {
@@ -151,7 +152,4 @@ const mapStateToProps = state => ({
   service: state.service
 });
 
-export default connect(
-  mapStateToProps,
-  { setUpQuestionConfig }
-)(ServiceHome);
+export default connect(mapStateToProps, { setUpQuestionConfig })(ServiceHome);

@@ -10,6 +10,7 @@ class QuestionList extends Component {
     const search_values = queryString.parse(this.props.location.search);
     const q_token = search_values.token;
     this.props.getQuestionList(q_token);
+    document.title = "龍邑遊戲|客服紀錄列表";
   }
 
   render() {
@@ -47,9 +48,7 @@ class QuestionList extends Component {
                           <strong>
                             #
                             <Link
-                              to={`/service/${
-                                this.props.match.params.game_id
-                              }/view/${q.id}?token=${q_token}`}
+                              to={`/service/${this.props.match.params.game_id}/view/${q.id}?token=${q_token}`}
                             >
                               {q.id} <i className="fas fa-search" />
                             </Link>
@@ -104,7 +103,4 @@ const mapStateToProps = state => ({
   errors: state.errors,
   service: state.service
 });
-export default connect(
-  mapStateToProps,
-  { getQuestionList }
-)(QuestionList);
+export default connect(mapStateToProps, { getQuestionList })(QuestionList);

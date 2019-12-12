@@ -39,7 +39,7 @@ class QuestionView extends Component {
   }
   componentDidMount() {
     const search_values = queryString.parse(this.props.location.search);
-    //console.log("search_values", search_values);
+    document.title = "龍邑遊戲|提問單檢視";
     const q_id = this.props.match.params.q_id;
 
     this.setState({ token: search_values.token });
@@ -377,7 +377,6 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
-  mapStateToProps,
-  { getQuestionById, insert_reply }
-)(withRouter(QuestionView));
+export default connect(mapStateToProps, { getQuestionById, insert_reply })(
+  withRouter(QuestionView)
+);

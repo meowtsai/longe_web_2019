@@ -24,6 +24,10 @@ class QuestionQuery extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    document.title = "龍邑遊戲|客服紀錄查詢";
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -32,9 +36,7 @@ class QuestionQuery extends Component {
       //console.log(nextProps.service.question);
       if (nextProps.service.user) {
         this.props.history.push(
-          `/service/${this.props.match.params.game_id}/view/${
-            nextProps.service.user.question_id
-          }?token=${nextProps.service.token}`
+          `/service/${this.props.match.params.game_id}/view/${nextProps.service.user.question_id}?token=${nextProps.service.token}`
         );
       }
 
@@ -59,9 +61,7 @@ class QuestionQuery extends Component {
   render() {
     const { errors } = this.state;
     const { loading } = this.props.service;
-    const home_link = `/service_quick?param_game_id=${
-      this.props.match.params.game_id
-    }`;
+    const home_link = `/service_quick?param_game_id=${this.props.match.params.game_id}`;
     return (
       <div className="query">
         {!errors && loading ? (

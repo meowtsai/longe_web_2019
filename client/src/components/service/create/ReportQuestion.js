@@ -154,6 +154,7 @@ class ReportQuestion extends Component {
     const search_values = queryString.parse(this.props.location.search);
 
     this.setState({ token: search_values.token });
+    document.title = "龍邑遊戲|客服回報單";
 
     this.props.renderForm(this.props.match.params.game_id, search_values.token);
   }
@@ -509,7 +510,6 @@ const mapStateToProps = state => ({
   errors: state.errors,
   service: state.service
 });
-export default connect(
-  mapStateToProps,
-  { renderForm, createWebReport }
-)(ReportQuestion);
+export default connect(mapStateToProps, { renderForm, createWebReport })(
+  ReportQuestion
+);

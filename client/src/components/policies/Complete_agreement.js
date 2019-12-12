@@ -3,6 +3,9 @@ import { withRouter } from 'react-router-dom';
 import './2018.css'
 
 class Complete_agreement extends Component {
+	componentDidMount() {
+		document.title = "龍邑遊戲|會員服務條款";
+	  }
 	render() {
 		return (
     <div>

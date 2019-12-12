@@ -11,6 +11,7 @@ import { getGames } from "../../actions/gameActions";
 class SupportHome extends Component {
   componentDidMount() {
     this.props.getGames();
+    document.title = "龍邑遊戲|Home";
   }
   render() {
     const { games } = this.props;
@@ -58,7 +59,4 @@ const mapStateToProps = state => ({
   games: state.games.games
 });
 
-export default connect(
-  mapStateToProps,
-  { getGames }
-)(SupportHome);
+export default connect(mapStateToProps, { getGames })(SupportHome);

@@ -51,6 +51,7 @@ const VipHome = ({
 
   useEffect(() => {
     getServers(gameId);
+    document.title = "龍邑遊戲 - 匯款回報";
     // eslint-disable-next-line
   }, []);
 
@@ -99,6 +100,7 @@ const VipHome = ({
   };
 
   if (record.report_id) {
+    document.title = "龍邑遊戲 - 匯款回報完成";
     return <VipResult record={record} />;
   }
 
