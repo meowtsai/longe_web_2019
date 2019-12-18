@@ -171,6 +171,9 @@ function validate_params(searchObject) {
     network,
     key
   } = searchObject;
+  if (in_game_id === "0") {
+    return false;
+  }
   const game_key = SERVICE_CONFIG.question_key[game_id];
   let encode_server_name = encodeURI(server_name);
   let encode_c_name = url_encode(character_name);
