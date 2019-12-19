@@ -91,7 +91,7 @@ router.post("/createOrder", async (req, res) => {
           <hr />
           我們會盡快於服務時間幫您處理, 謝謝您!
           <h6>下次可以透過<a href='/wire_report/${
-            record.game_id
+            rptRecord.game_id
           }?token=${token}'>專屬連結</a>使用預先載入資料的匯款回報單喔!</h6>
           `;
 
