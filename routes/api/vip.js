@@ -77,7 +77,11 @@ router.post("/createOrder", async (req, res) => {
           );
           const msg = `您的匯款回報單號為#${
             rptRecord.report_id
-          },有問題可以隨時和服務人員聯繫!<br />
+          },有問題可以隨時和服務人員聯繫!<br /><br />
+          <h5>下次可以透過<a href='${report_path}/wire_report/${
+            rptRecord.game_id
+          }?token=${token}'>您的專屬連結</a>使用預先載入資料的匯款回報單喔!</h5><br />
+
           以下是您的回報資料:<br />
           匯款帳號後五碼:${rptRecord.wire_code}<br />
           匯款時間:${rptRecord.wire_time}<br />
@@ -94,9 +98,6 @@ router.post("/createOrder", async (req, res) => {
           方案數量:${rptRecord.qty}<br />
           <hr />
           我們會盡快於服務時間幫您處理, 謝謝您!
-          <h5>下次可以透過<a href='${report_path}/wire_report/${
-            rptRecord.game_id
-          }?token=${token}'>您的專屬連結</a>使用預先載入資料的匯款回報單喔!</h5>
           `;
 
           html_template = html_template.replace(
