@@ -32,6 +32,15 @@ const VipResult = ({ record }) => {
               <h5 className="card-title">
                 謝謝您，已經收到您的匯款回報．也請連繫瑞秋，加速我們後續處理!
               </h5>
+              <h6 className="text-info mt-1 mb-1">
+                下次可以透過
+                <a
+                  href={`/wire_report/${record.game_id}?token=${record.token}`}
+                >
+                  此連結
+                </a>
+                來快速填寫匯款回報單
+              </h6>
               您的回報內容如下:
               <p className="card-text">
                 <table className="table table-hover">

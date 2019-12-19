@@ -6,7 +6,9 @@ const VipModel = require("../../models/VipModel");
 const smtp_server = require("../../config/config")["smtp_server"];
 const validateVipOrderInput = require("../../validation/createVipOrder");
 const nodemailer = require("nodemailer");
-const { invoiceOptions } = require("../../config/service");
+const { invoiceOptions, jwt_encryption } = require("../../config/service");
+
+var jwt = require("jsonwebtoken");
 
 router.post("/createOrder", async (req, res) => {
   const { errors, isValid } = validateVipOrderInput({
@@ -50,6 +52,16 @@ router.post("/createOrder", async (req, res) => {
       if (recordResult.status === 1) {
         const rptRecord = recordResult.msg;
 
+        //產生token方便快速填入
+        const token = jwt.sign(
+          { report_id: rptRecord.report_id },
+          jwt_encryption,
+          {
+            expiresIn: "14d"
+          }
+        );
+        rptRecord.token = token;
+
         /// EMAIL /////
         if (process.env.NODE_ENV != "development") {
           let transporter = nodemailer.createTransport(smtp_server);
@@ -78,6 +90,9 @@ router.post("/createOrder", async (req, res) => {
           方案數量:${rptRecord.qty}<br />
           <hr />
           我們會盡快於服務時間幫您處理, 謝謝您!
+          <h6>下次可以透過<a href='/wire_report/${
+            record.game_id
+          }?token=${token}'>專屬連結</a>使用預先載入資料的匯款回報單喔!</h6>
           `;
 
           html_template = html_template.replace(
@@ -127,5 +142,28 @@ const makeid = length => {
   }
   return result;
 };
+
+router.get("/checkWireReportToken/:token", async (req, res) => {
+  const token = req.params.token;
+  const decoded = jwt.verify(token, jwt_encryption);
+  if (decoded.report_id) {
+    const report = await VipModel.getReportByID(decoded.report_id);
+    if (report.status === 1) {
+      const rptRecord = report.msg;
+
+      res.json({ msg: "OK", record: rptRecord });
+    } else {
+      return res.status(500).json({ msg: "report not exist" });
+    }
+  } else {
+    return res.status(500).json({ msg: "not valid" });
+  }
+  //   console.log(decoded);
+  //   "msg": {
+  //     "report_id": "VP20191219150848ezw",
+  //     "iat": 1576739328,
+  //     "exp": 1577948928
+  // }
+});
 
 module.exports = router;

@@ -4,9 +4,10 @@ import classnames from "classnames";
 import moment from "moment";
 import TaiwanAddressPick from "../common/TaiwanAddressPick";
 import { getServers } from "../../actions/gameActions";
-import { createVipOrder } from "../../actions/vipActions";
+import { createVipOrder, checkWireReportToken } from "../../actions/vipActions";
 import VipResult from "./VipResult";
 import PropTypes from "prop-types";
+import queryString from "query-string";
 import Spinner from "../common/Spinner";
 
 const VipHome = ({
@@ -15,7 +16,10 @@ const VipHome = ({
   getServers,
   createVipOrder,
   record,
-  loading
+  previous_record,
+  loading,
+  location,
+  checkWireReportToken
 }) => {
   const [serverId, setServerId] = useState("");
   const [email, setEmail] = useState("");
@@ -51,6 +55,9 @@ const VipHome = ({
 
   useEffect(() => {
     getServers(gameId);
+    const search_values = queryString.parse(location.search);
+    checkWireReportToken(search_values.token);
+
     document.title = "龍邑遊戲 - 匯款回報";
     // eslint-disable-next-line
   }, []);
@@ -72,6 +79,20 @@ const VipHome = ({
       ]);
     }
   }, [game]);
+
+  useEffect(() => {
+    if (previous_record.report_id) {
+      setEmail(previous_record.email);
+      setUserPhone(previous_record.phone);
+      setWireCode(previous_record.wire_code);
+
+      setWireName(previous_record.wire_name);
+      setBankName(previous_record.bank_name);
+      setCharName(previous_record.char_name);
+      setRoleId(previous_record.role_id);
+      setServerId(previous_record.server_id);
+    }
+  }, [previous_record]);
 
   const vipFormSubmit = e => {
     e.preventDefault();
@@ -721,8 +742,11 @@ const mapStateToProps = state => ({
   errors: state.errors,
   game: state.games.game,
   record: state.vip.record,
+  previous_record: state.vip.previous_record,
   loading: state.vip.loading
 });
-export default connect(mapStateToProps, { getServers, createVipOrder })(
-  VipHome
-);
+export default connect(mapStateToProps, {
+  getServers,
+  createVipOrder,
+  checkWireReportToken
+})(VipHome);

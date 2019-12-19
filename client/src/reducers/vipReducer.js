@@ -1,7 +1,13 @@
-import { POST_VIP_ORDER, BEGIN_LOADING, CLEAR_LOADING } from "../actions/types";
+import {
+  POST_VIP_ORDER,
+  BEGIN_LOADING,
+  CLEAR_LOADING,
+  CHECK_WIRE_REPORT_TOKEN
+} from "../actions/types";
 
 const initialState = {
   record: {},
+  previous_record: {},
   loading: false
 };
 const vipReducer = (state = initialState, { type, payload }) => {
@@ -10,6 +16,12 @@ const vipReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         record: payload,
+        loading: false
+      };
+    case CHECK_WIRE_REPORT_TOKEN:
+      return {
+        ...state,
+        previous_record: payload,
         loading: false
       };
     case BEGIN_LOADING:
