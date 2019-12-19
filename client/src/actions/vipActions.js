@@ -58,9 +58,6 @@ export const checkWireReportToken = token => async dispatch => {
     });
   } catch (err) {
     //console.log("renderForm err", err);
-    dispatch({
-      type: GET_ERRORS,
-      payload: err.response.data
-    });
+    dispatch(clearLoading());
   }
 };

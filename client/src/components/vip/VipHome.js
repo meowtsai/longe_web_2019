@@ -56,7 +56,9 @@ const VipHome = ({
   useEffect(() => {
     getServers(gameId);
     const search_values = queryString.parse(location.search);
-    checkWireReportToken(search_values.token);
+    if (search_values.token) {
+      checkWireReportToken(search_values.token);
+    }
 
     document.title = "龍邑遊戲 - 匯款回報";
     // eslint-disable-next-line
@@ -85,7 +87,7 @@ const VipHome = ({
       setEmail(previous_record.email);
       setUserPhone(previous_record.phone);
       setWireCode(previous_record.wire_code);
-
+      setProductId("75084");
       setWireName(previous_record.wire_name);
       setBankName(previous_record.bank_name);
       setCharName(previous_record.char_name);

@@ -145,7 +145,14 @@ const makeid = length => {
 
 router.get("/checkWireReportToken/:token", async (req, res) => {
   const token = req.params.token;
-  const decoded = jwt.verify(token, jwt_encryption);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, jwt_encryption);
+  } catch (err) {
+    return res.status(500).json({ msg: "not valid" });
+  }
+
+  //console.log("decoded", decoded);
   if (decoded.report_id) {
     const report = await VipModel.getReportByID(decoded.report_id);
     if (report.status === 1) {
