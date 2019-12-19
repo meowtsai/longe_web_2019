@@ -6,7 +6,11 @@ const VipModel = require("../../models/VipModel");
 const smtp_server = require("../../config/config")["smtp_server"];
 const validateVipOrderInput = require("../../validation/createVipOrder");
 const nodemailer = require("nodemailer");
-const { invoiceOptions, jwt_encryption } = require("../../config/service");
+const {
+  invoiceOptions,
+  jwt_encryption,
+  report_path
+} = require("../../config/service");
 
 var jwt = require("jsonwebtoken");
 
@@ -90,9 +94,9 @@ router.post("/createOrder", async (req, res) => {
           方案數量:${rptRecord.qty}<br />
           <hr />
           我們會盡快於服務時間幫您處理, 謝謝您!
-          <h6>下次可以透過<a href='/wire_report/${
+          <h5>下次可以透過<a href='${report_path}/wire_report/${
             rptRecord.game_id
-          }?token=${token}'>專屬連結</a>使用預先載入資料的匯款回報單喔!</h6>
+          }?token=${token}'>您的專屬連結</a>使用預先載入資料的匯款回報單喔!</h5>
           `;
 
           html_template = html_template.replace(
