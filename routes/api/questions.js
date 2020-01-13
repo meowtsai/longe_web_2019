@@ -174,7 +174,7 @@ router.post("/insert_reply", auth, (req, res) => {
         let replyObject = {
           uid: 0,
           question_id,
-          content: Validator.escape(req.body.content)
+          content: nl2br(Validator.escape(req.body.content))
         };
 
         let add_pics = [];
