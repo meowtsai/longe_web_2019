@@ -206,6 +206,8 @@ const VipHome = ({
                 <br />
                 <span className="text-danger">
                   PPS：請務必加入LINE群 並連繫瑞秋
+                  <br />
+                  ※若未加入LINE群，並留下角色暱稱，將無法處理訂單※
                 </span>
               </p>
             </div>
