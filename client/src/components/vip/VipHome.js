@@ -637,7 +637,7 @@ const VipHome = ({
               </div>
               <div className="form-group">
                 <label htmlFor="invoice" className="col-form-label-sm">
-                  發票選項
+                  發票選項(一律開立二聯式發票)
                 </label>
 
                 <div className="form-group">
