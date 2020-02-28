@@ -1,22 +1,26 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const auth = require("../../middleware/auth");
-const validateRedeemInput = require("../../validation/redeem");
-const EventModel = require("../../models/EventModel");
+const auth = require('../../middleware/auth');
+const validateRedeemInput = require('../../validation/redeem');
+const validateDeliverooInput = require('../../validation/deliveroo');
+const smtp_server = require('../../config/config')['smtp_server'];
+const moment = require('moment');
+const nodemailer = require('nodemailer');
+const EventModel = require('../../models/EventModel');
 
-router.get("/test", (req, res) => {
-  res.json({ msg: "Events API Route works" });
+router.get('/test', (req, res) => {
+  res.json({ msg: 'Events API Route works' });
 });
 
 //@route: GET /api/events/render_event_form/:event_id
 //@desc: initial set up user data for serial redeem page
 //@access: private
-router.get("/render_event_form/:event_id", auth, async (req, res) => {
+router.get('/render_event_form/:event_id', auth, async (req, res) => {
   const event_id = req.params.event_id;
   const event = await EventModel.getEventById(event_id);
   let rtn_data = { user: req.user };
   if (event.status !== 1) {
-    return res.status(404).json({ msg: "活動不存在" });
+    return res.status(404).json({ msg: '活動不存在' });
   } else {
     //const initialState = { loading: false, user: {}, event: {}, logs: [] };
 
@@ -34,10 +38,10 @@ router.get("/render_event_form/:event_id", auth, async (req, res) => {
     rtn_data.logs = logs;
     rtn_data.redeem_status =
       logs.length >= subEventCount
-        ? "COMPLETED"
+        ? 'COMPLETED'
         : queryCount > 9
-        ? "REACH_LIMITED"
-        : "NORMAL";
+        ? 'REACH_LIMITED'
+        : 'NORMAL';
   }
 
   return res.json(rtn_data);
@@ -46,7 +50,7 @@ router.get("/render_event_form/:event_id", auth, async (req, res) => {
 //@route: POST /api/events/redeem_serial_code
 //@desc: redeem serial code
 //@access: private
-router.post("/redeem_serial_code/:event_id", auth, async (req, res) => {
+router.post('/redeem_serial_code/:event_id', auth, async (req, res) => {
   if (req.user) {
     //console.log(req.user);
     const { errors, isValid } = validateRedeemInput({
@@ -81,18 +85,14 @@ router.post("/redeem_serial_code/:event_id", auth, async (req, res) => {
     if (queryCount > 9)
       return res
         .status(400)
-        .json({ msg: "回報數量已達上限,若有疑問請回報客服!" });
+        .json({ msg: '回報數量已達上限,若有疑問請回報客服!' });
 
     //序號
     const serial_detail = await EventModel.getSerialCode(event_id, serial_no);
     if (serial_detail.status !== 1) {
-      return res
-        .status(400)
-        .json({ msg: `序號錯誤。 (剩餘次數: ${tryCount})` });
-    } else if (serial_detail.msg.status === "1") {
-      return res
-        .status(400)
-        .json({ msg: `序號已被使用。 (剩餘次數: ${tryCount})` });
+      return res.status(400).json({ msg: `序號錯誤。` });
+    } else if (serial_detail.msg.status === '1') {
+      return res.status(400).json({ msg: `序號已被使用。` });
     }
 
     //檢查
@@ -103,7 +103,7 @@ router.post("/redeem_serial_code/:event_id", auth, async (req, res) => {
 
     if (chkSub) {
       return res.status(400).json({
-        msg: `同一獎項類別，每個遊戲帳號只能兌換一次。(剩餘次數: ${tryCount})`
+        msg: `同一獎項類別，每個遊戲帳號只能兌換一次。`
       });
     }
 
@@ -123,16 +123,144 @@ router.post("/redeem_serial_code/:event_id", auth, async (req, res) => {
       );
       res.json({
         status: 1,
-        msg: "兌換成功，獎項發送時間請參考注意事項。",
+        msg: '兌換成功，獎項發送時間請參考注意事項。',
         logs
       });
     } else {
       return res.status(400).json({
-        msg: `兌換失敗, 可能是:序號錯誤/已被使用/同組獎品僅限一次。 (剩餘次數: ${tryCount})`
+        msg: `兌換失敗, 可能是:序號錯誤/已被使用/同組獎品僅限一次。`
       });
     }
   } else {
-    return res.status(400).json({ msg: "驗證失敗" });
+    return res.status(400).json({ msg: '驗證失敗' });
+  }
+});
+
+//@route: POST /api/events/verify_deliveroo
+//@desc: verify_deliveroo code and data
+//@access: private
+router.post('/verify_deliveroo', async (req, res) => {
+  //console.log('req.body', req.body);
+  const { errors, isValid } = validateDeliverooInput({
+    ...req.body.data
+  });
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  const event_id = 24;
+  const tryCount = 0;
+  const {
+    email,
+    char_id,
+    server_name,
+    character_name,
+    serial_no
+  } = req.body.data;
+
+  let log = {
+    char_id: char_id,
+    char_name: character_name,
+    ip: req.clientIp,
+    serial: serial_no,
+    event_id: event_id
+  };
+  //add log and get id
+  const logRes = await EventModel.addRedeemLog(log);
+  const logId = logRes.msg;
+
+  //檢查每個遊戲帳號，最多可兌換3次活動序號
+  //select count(*) from event_serial where personal_id=? and event_id=24
+  const chkcount = await EventModel.getRedeemCountByPersonalId(
+    event_id,
+    char_id
+  );
+  if (chkcount >= 3) {
+    return res.status(400).json({
+      msg: `每個遊戲帳號最多可兌換 3 次活動序號。(已經兌換次數: ${chkcount})`
+    });
+  }
+
+  //檢查序號
+  const serial_detail = await EventModel.getSerialCode(event_id, serial_no);
+  if (serial_detail.status !== 1) {
+    return res.status(400).json({ msg: `序號錯誤。` });
+  } else if (serial_detail.msg.status === '1') {
+    return res.status(400).json({ msg: `序號已被使用。` });
+  }
+
+  //兌換序號
+  //兌換
+  const redeem_result = await EventModel.redeemSerialByPersonalId(
+    char_id,
+    email,
+    serial_no,
+    event_id,
+    logId
+  );
+  //console.log("redeem_result", redeem_result);
+  if (redeem_result.status === 1) {
+    /// EMAIL /////
+    if (process.env.NODE_ENV != 'development') {
+      let transporter = nodemailer.createTransport(smtp_server);
+      const fs = require('fs');
+
+      let html_template = fs.readFileSync(
+        __dirname + '/../../public/template/mail.html',
+        'utf8'
+      );
+
+      const msg = `感謝您參與荒野行動*戶戶送虛寶兌換活動!
+
+      您本次登錄成功的資訊如下:<br />
+      伺服器名稱:${server_name}<br />
+      角色名稱:${character_name}<br />
+      角色id：:${char_id}<br />
+      序號：:${serial_no}<br />
+      獎勵內容:「蝶步舞曲禮包*1」+「白墨忍者福袋*1」+「武士魂印福袋*1」<br />
+  
+      <hr />
+      獎項將於 2020/3/31 晚上 23：59 前，以遊戲內郵件發送至所填寫的角色ID!
+      `;
+
+      html_template = html_template.replace(/{{game_name}}/g, '荒野行動');
+
+      html_template = html_template.replace('{{msg}}', msg);
+      html_template = html_template.replace(
+        '{{year}}',
+        new Date().getFullYear()
+      );
+
+      let mailOptions = {
+        //$_SESSION['game_name']."客服代碼通知信[".date("Y/m/d H:i:s")."]",
+        from: '"龍邑自動回覆系統" <no-reply@longeplay.com.tw>', // sender address
+        to: rptRecord.email, // list of receivers
+        subject: `荒野行動*戶戶送虛寶兌獎通知信 ${moment().format(
+          'YYYY-MM-DD HH:mm:ss'
+        )}`, // Subject line
+        html: html_template // html body
+      };
+
+      // send mail with defined transport object
+      let info = transporter.sendMail(mailOptions);
+
+      //console.log("Message sent: %s", info.messageId);
+
+      /// EMAIL /////
+    }
+
+    const logs = await EventModel.getRedeemRecordsByPersonalId(
+      char_id,
+      event_id
+    );
+    res.json({
+      status: 1,
+      msg: '兌換成功，獎項發送時間請參考注意事項。',
+      logs
+    });
+  } else {
+    return res.status(400).json({
+      msg: `兌換失敗, 可能是:序號錯誤/已被使用。`
+    });
   }
 });
 

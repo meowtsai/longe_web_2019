@@ -1,20 +1,22 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   EVENT_LOAD_USER,
   REDEEM_SERIAL,
   GET_ERRORS,
   CLEAR_ERRORS,
   BEGIN_LOADING,
-  CLEAR_LOADING
-} from "./types";
+  CLEAR_LOADING,
+  DELIVEROO_VERIFY,
+  DELIVEROO_RESET
+} from './types';
 
 const config = {
-  headers: { "Content-Type": "application/json" }
+  headers: { 'Content-Type': 'application/json' }
 };
 
 export const loadUser = (event_id, token) => dispatch => {
   if (token) {
-    config.headers["x-auth-token"] = token;
+    config.headers['x-auth-token'] = token;
   }
 
   dispatch(postLoading());
@@ -39,7 +41,7 @@ export const loadUser = (event_id, token) => dispatch => {
 
 export const redeemSerial = (event_id, token, serial_no) => dispatch => {
   if (token) {
-    config.headers["x-auth-token"] = token;
+    config.headers['x-auth-token'] = token;
   }
 
   dispatch(postLoading());
@@ -59,6 +61,32 @@ export const redeemSerial = (event_id, token, serial_no) => dispatch => {
         payload: err.response.data
       });
     });
+};
+
+export const deliverooVerify = data => dispatch => {
+  dispatch(postLoading());
+  dispatch(clearErrors());
+  axios
+    .post(`/api/events/verify_deliveroo`, { data }, config)
+    .then(res =>
+      dispatch({
+        type: DELIVEROO_VERIFY,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      dispatch(clearLoading());
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+export const resetDeliverooPage = () => dispatch => {
+  dispatch({
+    type: DELIVEROO_RESET
+  });
 };
 
 export const postLoading = () => {

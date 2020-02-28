@@ -2,16 +2,18 @@ import {
   EVENT_LOAD_USER,
   BEGIN_LOADING,
   CLEAR_LOADING,
-  REDEEM_SERIAL
-} from "../actions/types";
+  REDEEM_SERIAL,
+  DELIVEROO_VERIFY,
+  DELIVEROO_RESET
+} from '../actions/types';
 
 const initialState = {
   loading: true,
   user: {},
   event: {},
   logs: [],
-  redeem_msg: "",
-  redeem_status: "NORMAL"
+  redeem_msg: '',
+  redeem_status: 'NORMAL'
 };
 
 export default function(state = initialState, action) {
@@ -19,13 +21,13 @@ export default function(state = initialState, action) {
     case EVENT_LOAD_USER:
       return {
         ...action.payload,
-        redeem_msg: "",
+        redeem_msg: '',
         loading: false
       };
     case BEGIN_LOADING:
       return {
         ...state,
-        redeem_msg: "",
+        redeem_msg: '',
         loading: true
       };
     case CLEAR_LOADING:
@@ -40,6 +42,19 @@ export default function(state = initialState, action) {
         logs: action.payload.logs,
         loading: false
       };
+    case DELIVEROO_VERIFY:
+      return {
+        ...state,
+        redeem_msg: action.payload.msg,
+        logs: action.payload.logs,
+        loading: false
+      };
+    case DELIVEROO_RESET:
+      return {
+        ...initialState,
+        loading: false
+      };
+
     default:
       return state;
   }
