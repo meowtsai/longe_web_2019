@@ -169,8 +169,10 @@ router.post('/verify_deliveroo', async (req, res) => {
     char_name: character_name,
     ip: req.clientIp,
     serial: serial_no,
-    event_id: event_id
+    event_id: event_id,
+    note: server_name
   };
+
   //add log and get id
   const logRes = await EventModel.addRedeemLog(log);
   const logId = logRes.msg;
