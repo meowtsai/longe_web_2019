@@ -147,6 +147,13 @@ router.post('/verify_deliveroo', async (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  const serversOption = [
+    { label: '手機版', value: 'mobile' },
+    { label: 'PC伺服器 - 日本', value: 'pc_japan' },
+    { label: 'PC伺服器 - 北美', value: 'pc_north_america' },
+    { label: 'PC伺服器 - 東南亞', value: 'pc_se_asia' },
+    { label: 'PC伺服器 - 國際', value: 'pc_i10n' }
+  ];
   const event_id = 24;
   const tryCount = 0;
   const {
@@ -183,7 +190,7 @@ router.post('/verify_deliveroo', async (req, res) => {
   //檢查序號
   const serial_detail = await EventModel.getSerialCode(event_id, serial_no);
   if (serial_detail.status !== 1) {
-    return res.status(400).json({ msg: `序號錯誤。` });
+    return res.status(400).json({ msg: `序號錯誤，請輸入正確序號。` });
   } else if (serial_detail.msg.status === '1') {
     return res.status(400).json({ msg: `序號已被使用。` });
   }
@@ -212,7 +219,9 @@ router.post('/verify_deliveroo', async (req, res) => {
       const msg = `感謝您參與荒野行動*戶戶送虛寶兌換活動!
 
       您本次登錄成功的資訊如下:<br />
-      伺服器名稱:${server_name}<br />
+      伺服器名稱:${
+        serversOption.filter(s => s.value === server_name)[0].label
+      }<br />
       角色名稱:${character_name}<br />
       角色id：:${char_id}<br />
       序號：:${serial_no}<br />
