@@ -233,7 +233,7 @@ router.post('/verify_deliveroo', async (req, res) => {
       let mailOptions = {
         //$_SESSION['game_name']."客服代碼通知信[".date("Y/m/d H:i:s")."]",
         from: '"龍邑自動回覆系統" <no-reply@longeplay.com.tw>', // sender address
-        to: rptRecord.email, // list of receivers
+        to: email, // list of receivers
         subject: `荒野行動*戶戶送虛寶兌獎通知信 ${moment().format(
           'YYYY-MM-DD HH:mm:ss'
         )}`, // Subject line

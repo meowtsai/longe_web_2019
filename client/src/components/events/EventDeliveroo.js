@@ -57,11 +57,11 @@ const EventDeliveroo = ({
       <div className='row'>
         <div className='col-sm-12 col-md-9 col-lg-6 m-auto'>
           <h4 className='text-center mt-5'>
-            <span className='input-group-text' role='img' aria-label='pc'>
+            <span role='img' aria-label='wrapped gift'>
               🎁
             </span>{' '}
             兌獎中心{' '}
-            <span className='input-group-text' role='img' aria-label='pc'>
+            <span role='img' aria-label='wrapped gift'>
               🎁
             </span>
           </h4>
