@@ -1,20 +1,20 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const moment = require("moment");
-const geoip = require("geoip-lite");
-const VipModel = require("../../models/VipModel");
-const smtp_server = require("../../config/config")["smtp_server"];
-const validateVipOrderInput = require("../../validation/createVipOrder");
-const nodemailer = require("nodemailer");
+const moment = require('moment');
+const geoip = require('geoip-lite');
+const VipModel = require('../../models/VipModel');
+const smtp_server = require('../../config/config')['smtp_server'];
+const validateVipOrderInput = require('../../validation/createVipOrder');
+const nodemailer = require('nodemailer');
 const {
   invoiceOptions,
   jwt_encryption,
   report_path
-} = require("../../config/service");
+} = require('../../config/service');
 
-var jwt = require("jsonwebtoken");
+var jwt = require('jsonwebtoken');
 
-router.post("/createOrder", async (req, res) => {
+router.post('/createOrder', async (req, res) => {
   const { errors, isValid } = validateVipOrderInput({
     ...req.body
   });
@@ -24,7 +24,7 @@ router.post("/createOrder", async (req, res) => {
     const ip = req.clientIp;
     const geo = geoip.lookup(ip);
 
-    const report_id = `VP${moment().format("YYYYMMDDHHmmss")}${makeid(3)}`;
+    const report_id = `VP${moment().format('YYYYMMDDHHmmss')}${makeid(3)}`;
 
     let wireReportObject = {
       report_id,
@@ -40,7 +40,7 @@ router.post("/createOrder", async (req, res) => {
       server_id: req.body.serverId,
       game_id: req.body.gameId,
       ip,
-      country: geo === null ? "NULL" : geo.city,
+      country: geo === null ? 'NULL' : geo.city,
       invoice_option: req.body.invoiceOption,
       address: req.body.area + req.body.address,
       product_id: req.body.productId,
@@ -61,19 +61,19 @@ router.post("/createOrder", async (req, res) => {
           { report_id: rptRecord.report_id },
           jwt_encryption,
           {
-            expiresIn: "14d"
+            expiresIn: '180d'
           }
         );
         rptRecord.token = token;
 
         /// EMAIL /////
-        if (process.env.NODE_ENV != "development") {
+        if (process.env.NODE_ENV != 'development') {
           let transporter = nodemailer.createTransport(smtp_server);
-          const fs = require("fs");
+          const fs = require('fs');
 
           let html_template = fs.readFileSync(
-            __dirname + "/../../public/template/mail.html",
-            "utf8"
+            __dirname + '/../../public/template/mail.html',
+            'utf8'
           );
           const msg = `您的匯款回報單號為#${
             rptRecord.report_id
@@ -105,9 +105,9 @@ router.post("/createOrder", async (req, res) => {
             rptRecord.game_name
           );
 
-          html_template = html_template.replace("{{msg}}", msg);
+          html_template = html_template.replace('{{msg}}', msg);
           html_template = html_template.replace(
-            "{{year}}",
+            '{{year}}',
             new Date().getFullYear()
           );
 
@@ -117,7 +117,7 @@ router.post("/createOrder", async (req, res) => {
             to: rptRecord.email, // list of receivers
             subject: `${
               rptRecord.game_name
-            }方案購買 - 匯款登記確認 ${moment().format("YYYY-MM-DD HH:mm:ss")}`, // Subject line
+            }方案購買 - 匯款登記確認 ${moment().format('YYYY-MM-DD HH:mm:ss')}`, // Subject line
             html: html_template // html body
           };
 
@@ -128,9 +128,9 @@ router.post("/createOrder", async (req, res) => {
 
           /// EMAIL /////
         }
-        res.json({ msg: "OK", record: rptRecord });
+        res.json({ msg: 'OK', record: rptRecord });
       } else {
-        return res.status(500).json({ msg: "訂單回報失敗" });
+        return res.status(500).json({ msg: '訂單回報失敗' });
       }
     } else {
       return res.status(500).json({ msg: result.msg });
@@ -139,8 +139,8 @@ router.post("/createOrder", async (req, res) => {
 });
 
 const makeid = length => {
-  var result = "";
-  var characters = "abcdefghijklmnpqrstuvwxyz";
+  var result = '';
+  var characters = 'abcdefghijklmnpqrstuvwxyz';
   var charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -148,13 +148,13 @@ const makeid = length => {
   return result;
 };
 
-router.get("/checkWireReportToken/:token", async (req, res) => {
+router.get('/checkWireReportToken/:token', async (req, res) => {
   const token = req.params.token;
   let decoded;
   try {
     decoded = jwt.verify(token, jwt_encryption);
   } catch (err) {
-    return res.status(500).json({ msg: "not valid" });
+    return res.status(500).json({ msg: 'not valid' });
   }
 
   //console.log("decoded", decoded);
@@ -163,12 +163,12 @@ router.get("/checkWireReportToken/:token", async (req, res) => {
     if (report.status === 1) {
       const rptRecord = report.msg;
 
-      res.json({ msg: "OK", record: rptRecord });
+      res.json({ msg: 'OK', record: rptRecord });
     } else {
-      return res.status(500).json({ msg: "report not exist" });
+      return res.status(500).json({ msg: 'report not exist' });
     }
   } else {
-    return res.status(500).json({ msg: "not valid" });
+    return res.status(500).json({ msg: 'not valid' });
   }
   //   console.log(decoded);
   //   "msg": {
