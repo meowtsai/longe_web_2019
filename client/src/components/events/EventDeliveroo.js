@@ -32,6 +32,8 @@ const EventDeliveroo = ({
   ];
 
   const onClickNext = () => {
+    window.alert('兌換期間已經截止．');
+    return;
     const data = {
       email,
       server_name,
@@ -104,7 +106,6 @@ const EventDeliveroo = ({
                       <TextFieldGroup
                         placeholder='* 角色ID'
                         name='char_id'
-                        onChange={e => setCharacterName(e.target.value)}
                         type='text'
                         value={char_id}
                         onChange={e => {
@@ -123,9 +124,6 @@ const EventDeliveroo = ({
                         onChange={e => setCharacterName(e.target.value)}
                         type='text'
                         value={character_name}
-                        onChange={e => {
-                          setCharacterName(e.target.value);
-                        }}
                         error={errors.character_name}
                       />
                     </td>
@@ -139,9 +137,6 @@ const EventDeliveroo = ({
                         onChange={e => setEmail(e.target.value)}
                         type='text'
                         value={email}
-                        onChange={e => {
-                          setEmail(e.target.value);
-                        }}
                         error={errors.email}
                       />
                     </td>

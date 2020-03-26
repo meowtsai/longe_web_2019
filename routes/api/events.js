@@ -141,6 +141,10 @@ router.post('/redeem_serial_code/:event_id', auth, async (req, res) => {
 //@access: private
 router.post('/verify_deliveroo', async (req, res) => {
   //console.log('req.body', req.body);
+
+  return res.status(400).json({
+    msg: `兌換期間已經截止。`
+  });
   const { errors, isValid } = validateDeliverooInput({
     ...req.body.data
   });
