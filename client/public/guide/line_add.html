@@ -46,26 +46,23 @@
                                       />
                         </p>
                     </li>
-                    <li>方法二: 搜尋ID
+                    <li>方法二: 開啟邀請網頁
                         <ol>
                             <li>
-                               1. 打開手機的 Line 點選加入好友，選擇［搜尋］
-                                      <img
-                                        class="mt-3 rounded"
-                                        src="imgs/line_add_1.png"
-                                        width="370"
-                                        alt="打開line app 選擇加入好友, 選擇搜尋"
-                                      />
+                               1. 請按下［複製網址］
+                                      <!-- The text field -->
+                                      <input type="text" 
+                                      value="https://line.me/R/ti/p/@131aaubc" id="line_invite" 
+                                      readonly 
+                                      style="width:300px;">
+
+                                      <!-- The button used to copy the text -->
+                                      <button onclick="copytext()" style="background-color:moccasin;">複製網址</button>
                                     </li>
                       
                                     <li>
-                                     2. 在搜尋ID的框框輸入 @131aaubc
-                                      <img
-                                        class="mt-3 rounded"
-                                        src="imgs/line_add_2.png"
-                                        height="450"
-                                        alt="在搜尋頁面的ID輸入框輸入 @131aaubc"
-                                      />
+                                     2. 打開手機瀏覽器, 在網址列貼上並前往該網址．
+                                      
                                     </li>
                                   </ol>
                     </li>
@@ -95,5 +92,24 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+
+    
   </body>
 </html>
+
+<script>
+  function copytext() {
+  /* Get the text field */
+  var copyText = document.getElementById("line_invite");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  alert("網址已經複製: " + copyText.value);
+}
+</script>
