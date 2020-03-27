@@ -52,12 +52,13 @@
                                1. 請按下［複製網址］
                                       <!-- The text field -->
                                       <input type="text" 
-                                      value="https://line.me/R/ti/p/@131aaubc" id="line_invite" 
+                                      value="https://lin.ee/kZXSLmZ" id="line_invite" 
                                       readonly 
                                       style="width:300px;">
 
                                       <!-- The button used to copy the text -->
                                       <button onclick="copytext()" style="background-color:moccasin;">複製網址</button>
+                                      
                                     </li>
                       
                                     <li>
@@ -69,6 +70,7 @@
 
                     
                 </ul>
+                <span id="copied_message" class="alert-success"></span>
             </p>
 
             
@@ -101,6 +103,7 @@
   function copytext() {
   /* Get the text field */
   var copyText = document.getElementById("line_invite");
+  var messageSpan = document.getElementById("copied_message");
 
   /* Select the text field */
   copyText.select();
@@ -110,6 +113,7 @@
   document.execCommand("copy");
 
   /* Alert the copied text */
-  alert("網址已經複製: " + copyText.value);
+  //alert("網址已經複製: " + copyText.value);
+  messageSpan.innerText="網址已經複製";
 }
 </script>
