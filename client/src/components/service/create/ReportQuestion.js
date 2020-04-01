@@ -189,7 +189,8 @@ class ReportQuestion extends Component {
       question_types,
       user,
       faq,
-      events
+      events,
+      custom_forms
     } = this.props.report.settings;
 
     const { loading } = this.props.report;

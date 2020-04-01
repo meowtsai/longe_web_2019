@@ -11,7 +11,8 @@ import QuestionList from './components/service/query/QuestionList';
 import QuestionView from './components/service/view/QuestionView';
 
 import ReportQuestion from './components/service/create/ReportQuestion';
-//import ReportQuestion2020 from "./components/service/create/ReportQuestion2020";
+import ConfirmIssue from './components/service/create/ConfirmIssue';
+import ReportHome from './components/service/create/forms/ReportHome';
 import EventSerial from './components/events/EventSerial';
 import EventDeliveroo from './components/events/EventDeliveroo';
 import Complete_agreement from './components/policies/Complete_agreement';
@@ -52,6 +53,18 @@ class App extends Component {
               path='/service/:game_id/create'
               component={ReportQuestion}
             />
+
+            <Route
+              exact
+              path='/service/:game_id/confirm-issue'
+              component={ConfirmIssue}
+            />
+            <Route
+              exact
+              path='/service/:game_id/report-issue'
+              component={ReportHome}
+            />
+
             <Route
               exact
               path='/member/complete_agreement'

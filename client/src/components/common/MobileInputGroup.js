@@ -1,6 +1,6 @@
-import React from "react";
-import classnames from "classnames";
-import PropTypes from "prop-types";
+import React from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 const MobileInputGroup = ({
   name,
   placeholder,
@@ -10,7 +10,8 @@ const MobileInputGroup = ({
   type,
   onChange,
   info,
-  localeOptions
+  localeOptions,
+  register
 }) => {
   const selectOptions = localeOptions.map(option => (
     <option key={option.label} value={option.value}>
@@ -19,49 +20,50 @@ const MobileInputGroup = ({
   ));
 
   return (
-    <div className="form-row">
-      <div className="col-sm-4 my-1">
-        <label className="sr-only" htmlFor="inlineFormInputLocale">
+    <div className='form-row'>
+      <div className='col-sm-4 my-1'>
+        <label className='sr-only' htmlFor='inlineFormInputLocale'>
           locale
         </label>
-        <div className="input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <i className="fas fa-globe-asia" />
+        <div className='input-group'>
+          <div className='input-group-prepend'>
+            <span className='input-group-text'>
+              <i className='fas fa-globe-asia' />
             </span>
           </div>
           <select
-            className="form-control form-control-md"
-            name="mobile_locale"
+            className='form-control form-control-md'
+            name='mobile_locale'
             value={locale_value}
             onChange={onChange}
-          >
+            ref={register}>
             {selectOptions}
           </select>
         </div>
       </div>
-      <div className="col-sm-8 my-1">
-        <div className="input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <i className="fas fa-mobile-alt" />
+      <div className='col-sm-8 my-1'>
+        <div className='input-group'>
+          <div className='input-group-prepend'>
+            <span className='input-group-text'>
+              <i className='fas fa-mobile-alt' />
             </span>
           </div>
 
           <input
             type={type}
-            className={classnames("form-control form-control-md", {
-              "is-invalid": error
+            className={classnames('form-control form-control-md', {
+              'is-invalid': error
             })}
             placeholder={placeholder}
             name={name}
             value={value}
             onChange={onChange}
+            ref={register}
           />
         </div>
       </div>
-      {info && <small className="form-text text-muted">{info}</small>}
-      {error && <div className="invalid-feedback">{error}</div>}
+      {info && <small className='form-text text-muted'>{info}</small>}
+      {error && <div className='invalid-feedback'>{error}</div>}
     </div>
   );
 };
@@ -77,7 +79,7 @@ MobileInputGroup.propTypes = {
 };
 
 MobileInputGroup.defaultProps = {
-  type: "tel"
+  type: 'tel'
 };
 
 export default MobileInputGroup;
