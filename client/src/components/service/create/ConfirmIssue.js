@@ -19,9 +19,11 @@ const ConfirmIssue = props => {
 
   const nextStep = () => {
     // window.alert(issueType);
-    props.history.push(
-      `/service/${props.match.params.game_id}/report-issue?form_id=${issueType}`
-    );
+    let report_link = `/service/${props.match.params.game_id}/report-issue?form_id=${issueType}`;
+    if (!isEmpty(search_values.token)) {
+      report_link += `&token=${search_values.token}`;
+    }
+    props.history.push(report_link);
   };
   return (
     <div className='container'>

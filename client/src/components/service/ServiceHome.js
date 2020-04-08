@@ -19,7 +19,7 @@ class ServiceHome extends Component {
 
     this.props.setUpQuestionConfig(
       {
-        search_string: decodeURIComponent(this.props.location.search)
+        search_string: decodeURIComponent(this.props.location.search),
       },
       search_values.token
     );
@@ -37,7 +37,8 @@ class ServiceHome extends Component {
       token,
       loading,
       showInvitation,
-      line_invite_link
+      isWhitelisted,
+      line_invite_link,
     } = this.props.service;
 
     const parsed = queryString.parse(this.props.location.search);
@@ -129,14 +130,18 @@ class ServiceHome extends Component {
                     </Link>
                   </div>
                 </div>
-                <div className='row justify-content-center'>
-                  <div className='col-sm-6 col-xs-6 col-md-4'>
-                    <Link to={linkReport2020} className='quick-button'>
-                      <i className='fas fa-edit' />
-                      <p style={{ padding: '10px' }}>線上回報2020</p>
-                    </Link>
+                {isWhitelisted && (
+                  <div className='row justify-content-center mt-3'>
+                    <hr />
+                    <div className='col-sm-6 col-xs-6 col-md-4'>
+                      <Link to={linkReport2020} className='quick-button'>
+                        <i className='fas fa-edit' />
+                        <p style={{ padding: '10px' }}>線上回報2020(內網)</p>
+                      </Link>
+                    </div>
+                    <div className='col-sm-6 col-xs-6 col-md-4'></div>
                   </div>
-                </div>
+                )}
 
                 <div className='row justify-content-center'>
                   {is_in_game && (
@@ -155,15 +160,15 @@ class ServiceHome extends Component {
 }
 ServiceHome.defaultProps = {
   is_in_game: false,
-  unread_count: 0
+  unread_count: 0,
 };
 
 ServiceHome.propTypes = {
   setUpQuestionConfig: PropTypes.func.isRequired,
-  service: PropTypes.object.isRequired
+  service: PropTypes.object.isRequired,
 };
-const mapStateToProps = state => ({
-  service: state.service
+const mapStateToProps = (state) => ({
+  service: state.service,
 });
 
 export default connect(mapStateToProps, { setUpQuestionConfig })(ServiceHome);
