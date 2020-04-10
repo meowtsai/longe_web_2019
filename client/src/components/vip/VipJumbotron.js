@@ -143,7 +143,11 @@ const VipJumbotron = ({ game_id }) => {
                 {contact_nickname1}儘快確認
                 <br />
                 <br />
-                PS：匯款後即無法進行退換貨的服務喔！
+                PS：
+                <span className='text-danger'>
+                  <strong>匯款後</strong>
+                </span>
+                即無法進行退換貨的服務喔！
                 <br />
                 <span className='text-danger'>
                   PPS：請務必加入LINE群 並連繫{contact_nickname2}
