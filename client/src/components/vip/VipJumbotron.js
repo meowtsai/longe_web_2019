@@ -33,9 +33,72 @@ const VipJumbotron = ({ game_id }) => {
         alt='千呼萬喚的儲值方案登場了!!'></img>
     ) : null;
   const products_info =
-    game_id === 'g66naxx2tw'
-      ? 'NTD.3,000，信用點 6480 贈 1788， 共可獲得 8268 信用點。'
-      : '儲值NTD.3,000，共可獲得7200迴聲。';
+    game_id === 'g66naxx2tw' ? (
+      <div>
+        <h3>
+          試營運方案
+          <span className='text-danger'>
+            <strong>（5/1 00:00 方案截止）</strong>
+          </span>
+          ：
+        </h3>
+        <span role='img' aria-label='hand'>
+          👉
+        </span>
+        NTD.3,000，共可獲得 8268 信用點。
+        <br />
+        <h3 className='mt-2'>
+          正式營運方案
+          <span className='text-danger'>
+            <strong>（5/1 00:00 方案開始）</strong>
+          </span>
+          ：
+        </h3>
+        <ul>
+          <li>
+            <span role='img' aria-label='hand'>
+              🎊
+            </span>
+            NTD.9,000，共可獲得 24804 信用點。
+          </li>
+          <li>
+            <span role='img' aria-label='hand'>
+              🎊
+            </span>
+            NTD.12,000，共可獲得 33072 信用點。
+          </li>
+          <li>
+            <span role='img' aria-label='hand'>
+              🎊
+            </span>
+            NTD.15,000，共可獲得 41340 信用點。
+          </li>
+          <li>
+            <span role='img' aria-label='hand'>
+              🎊
+            </span>
+            NTD.18,000，共可獲得 49608 信用點。
+          </li>
+          <li>
+            <span role='img' aria-label='hand'>
+              🎊
+            </span>
+            NTD.30,000，共可獲得 82680 信用點。
+          </li>
+        </ul>
+        <br />
+      </div>
+    ) : (
+      <p>
+        試營運方案： <br />
+        <span role='img' aria-label='hand'>
+          👉
+        </span>
+        儲值NTD.3,000，共可獲得7200迴聲。
+      </p>
+    );
+  // ? 'NTD.3,000，信用點 6480 贈 1788，共可獲得 8268 信用點。'
+  // : '儲值NTD.3,000，共可獲得7200迴聲。';
   const contact_nickname1 = game_id === 'g66naxx2tw' ? '小夥伴' : '小管家';
   const contact_nickname2 = game_id === 'g66naxx2tw' ? '瑞秋' : '莊園小管家';
   return (
@@ -52,16 +115,9 @@ const VipJumbotron = ({ game_id }) => {
             <div className='container'>
               {slogan}
               <hr className='my-4' />
-              <p>
-                試營運方案： <br />
-                <span role='img' aria-label='hand'>
-                  👉
-                </span>
-                {products_info}
-              </p>
+              {products_info}
+
               <p className='small'>
-                目前儲值系統還在試營運當中，未來還會再做調整！
-                <br />
                 若您有購買意願的話，可直接以轉帳、匯款方式進行．
               </p>
               <p className='text-center'>
@@ -87,7 +143,7 @@ const VipJumbotron = ({ game_id }) => {
                 {contact_nickname1}儘快確認
                 <br />
                 <br />
-                PS：完成交易後即無法進行退換貨的服務喔！
+                PS：匯款後即無法進行退換貨的服務喔！
                 <br />
                 <span className='text-danger'>
                   PPS：請務必加入LINE群 並連繫{contact_nickname2}
