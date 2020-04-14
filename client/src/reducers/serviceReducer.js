@@ -8,8 +8,8 @@ import {
   GET_USER_BY_TOKEN,
   GET_REPLIES,
   CLOSE_QUESTION,
-  GET_QUESTION_LIST
-} from "../actions/types";
+  GET_QUESTION_LIST,
+} from '../actions/types';
 
 const initialState = {
   question: {},
@@ -20,17 +20,18 @@ const initialState = {
   is_in_game: false,
   unread_count: 0,
   game_id: null,
+  game_name: null,
   showInvitation: false,
-  line_invite_link: null
+  line_invite_link: null,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case POST_QUESTION:
       return {
         ...state,
         question: action.payload,
-        loading: false
+        loading: false,
       };
     case GET_QUESTION_BY_CHECKID:
       let { check_id, email, mobile, question_id, token } = action.payload;
@@ -38,7 +39,7 @@ export default function(state = initialState, action) {
         ...state,
         token,
         user: { check_id, email, mobile, question_id },
-        loading: false
+        loading: false,
       };
     case QUESTION_INIT_SETUP:
       return {
@@ -47,23 +48,24 @@ export default function(state = initialState, action) {
         is_in_game: action.payload.is_in_game,
         unread_count: action.payload.unread_count,
         game_id: action.payload.game_id,
+        game_name: action.payload.game_name,
         isWhitelisted: action.payload.isWhitelisted,
         showInvitation: action.payload.showInvitation,
         loading: false,
-        line_invite_link: action.payload.line_invite_link
+        line_invite_link: action.payload.line_invite_link,
       };
 
     case GET_QUESTION_BY_ID:
       return {
         ...state,
         question: action.payload,
-        loading: false
+        loading: false,
       };
     case GET_QUESTION_LIST:
       return {
         ...state,
         question_list: action.payload,
-        loading: false
+        loading: false,
       };
 
     case GET_REPLIES:
@@ -72,33 +74,33 @@ export default function(state = initialState, action) {
         question: {
           ...state.question,
           replies: action.payload.replies,
-          pic_plus: action.payload.pic_plus
+          pic_plus: action.payload.pic_plus,
         },
-        loading: false
+        loading: false,
       };
     case CLOSE_QUESTION:
       return {
         ...state,
-        question: { ...state.question, status: "4" },
-        loading: false
+        question: { ...state.question, status: '4' },
+        loading: false,
       };
 
     case GET_USER_BY_TOKEN:
       return {
         ...state,
         user: action.payload,
-        loading: false
+        loading: false,
       };
 
     case POSTING_LOADING:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case CLEAR_LOADING:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
 
     default:

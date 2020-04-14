@@ -25,6 +25,11 @@ class ServiceHome extends Component {
     );
     document.title = '龍邑遊戲|客服首頁';
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.service.game_name) {
+      document.title = `龍邑遊戲|${nextProps.service.game_name}客服首頁`;
+    }
+  }
 
   render() {
     //console.log("game_id", search_game_id);
@@ -34,6 +39,7 @@ class ServiceHome extends Component {
     const {
       is_in_game,
       unread_count,
+      game_name,
       token,
       loading,
       showInvitation,
@@ -73,7 +79,7 @@ class ServiceHome extends Component {
         <nav className='navbar navbar-dark bg-dark'>
           <div className='container text-center'>
             <span className='navbar-brand mb-0 h1 navbar-text m-auto'>
-              客服中心
+              {game_name}客服中心
             </span>
           </div>
         </nav>

@@ -1,18 +1,18 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-var jwt = require("jsonwebtoken");
-const md5 = require("md5");
-const auth_for_create = require("../../middleware/auth_for_create");
-const SERVICE_CONFIG = require("../../config/service");
-const ServiceModel = require("../../models/ServiceModel");
-const GameModel = require("../../models/GameModel");
-const CharacterModel = require("../../models/CharacterModel");
+var jwt = require('jsonwebtoken');
+const md5 = require('md5');
+const auth_for_create = require('../../middleware/auth_for_create');
+const SERVICE_CONFIG = require('../../config/service');
+const ServiceModel = require('../../models/ServiceModel');
+const GameModel = require('../../models/GameModel');
+const CharacterModel = require('../../models/CharacterModel');
 
-router.get("/test", async (req, res) => {
-  res.json({ status: 1, msg: "works" });
+router.get('/test', async (req, res) => {
+  res.json({ status: 1, msg: 'works' });
 });
 
-router.get("/question_types", (req, res) => {
+router.get('/question_types', (req, res) => {
   const types = SERVICE_CONFIG.question_types;
   res.json({ status: 1, msg: types });
 });
@@ -21,8 +21,8 @@ router.get("/question_types", (req, res) => {
 //@desc: get a question by email,phone, checkid
 //@access: public
 
-router.post("/init_setup", auth_for_create, async (req, res) => {
-  const searchArray = req.body.search_string.replace("?", "").split("&");
+router.post('/init_setup', auth_for_create, async (req, res) => {
+  const searchArray = req.body.search_string.replace('?', '').split('&');
   let searchObject = {};
   //console.log("init_setup searchArray length", searchArray.length);
   //console.log("req.user auth", req.user);
@@ -33,33 +33,35 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
       req.user.vendor_game_id
     );
     const showInvitation2 =
-      req.user.vendor_game_id === "g66naxx2tw" &&
+      req.user.vendor_game_id === 'g66naxx2tw' &&
       (SERVICE_CONFIG.line_invite_public ? true : req.whitelisted) &&
       isWhale2
         ? true
         : false;
+    const game = await GameModel.getGameById(req.user.vendor_game_id);
     ServiceModel.getUnreadByUID(req.user.partner_uid)
-      .then(unread_result => {
+      .then((unread_result) => {
         res.json({
-          token: req.header("x-auth-token"),
+          token: req.header('x-auth-token'),
           is_in_game: true,
           unread_count: unread_result.cnt,
           game_id: req.user.vendor_game_id,
+          game_name: game.msg.game_name,
           showInvitation: showInvitation2,
           line_invite_link: showInvitation2
             ? SERVICE_CONFIG.line_invite_link
-            : null
+            : null,
         });
         return;
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(400).json(err.message);
       });
     return;
   }
 
   for (let index = 0; index < searchArray.length; index++) {
-    const element = searchArray[index].split("=");
+    const element = searchArray[index].split('=');
     searchObject[element[0]] = element[1];
   }
 
@@ -75,9 +77,13 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
     app_ver,
     time_zone,
     network,
-    key
+    key,
+    param_game_id,
   } = searchObject;
   const is_in_game = validate_params(searchObject);
+  const game_info = await GameModel.getGameById(
+    game_id ? game_id : param_game_id
+  );
   //
   //console.log("is_in_game", is_in_game);
   if (is_in_game) {
@@ -88,8 +94,9 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
       server_name,
       character_name,
       q_note: `等級=${level}, 系統=${usr_device}, os=${os_ver}, app_ver=${app_ver},time_zone=${time_zone},network=${network}`,
-      is_in_game
+      is_in_game,
     };
+
     const server_info = await GameModel.getServersByGameIdAndAddress(
       game_id,
       server_name
@@ -103,7 +110,7 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
     if (char.status == 1) {
       if (char.msg.name !== character_name) {
         CharacterModel.update_character(char.msg.id, character_name).catch(
-          err => {
+          (err) => {
             //console.log("update_character", err.message);
             throw err;
           }
@@ -117,10 +124,10 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
         in_game_id,
         server_id: server_info.server_id,
         create_status: 0,
-        ad: ""
+        ad: '',
       };
       //console.log("character_info", character_info);
-      CharacterModel.create_character(character_info).catch(err => {
+      CharacterModel.create_character(character_info).catch((err) => {
         //console.log("create_character", err.message);
         throw err;
       });
@@ -128,7 +135,7 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
     const unread_result = await ServiceModel.getUnreadByUID(partner_uid);
     userObj.unread_count = unread_result.cnt;
     const token = jwt.sign(userObj, SERVICE_CONFIG.jwt_encryption, {
-      expiresIn: "1d"
+      expiresIn: '1d',
     });
 
     //0924 g66 check if vip
@@ -136,7 +143,7 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
     const isWhale = await CharacterModel.is_whale(partner_uid, game_id);
 
     const showInvitation =
-      game_id === "g66naxx2tw" &&
+      game_id === 'g66naxx2tw' &&
       (SERVICE_CONFIG.line_invite_public ? true : req.whitelisted) &&
       isWhale
         ? true
@@ -146,13 +153,18 @@ router.post("/init_setup", auth_for_create, async (req, res) => {
       token,
       is_in_game,
       game_id,
+      game_name: game_info.msg.game_name,
       unread_count: userObj.unread_count,
       isWhitelisted: req.whitelisted,
       showInvitation,
-      line_invite_link: showInvitation ? SERVICE_CONFIG.line_invite_link : null
+      line_invite_link: showInvitation ? SERVICE_CONFIG.line_invite_link : null,
     });
   } else {
-    res.json({ is_in_game, isWhitelisted: req.whitelisted });
+    res.json({
+      is_in_game,
+      isWhitelisted: req.whitelisted,
+      game_name: game_info.msg.game_name,
+    });
   }
 });
 
@@ -169,25 +181,25 @@ function validate_params(searchObject) {
     app_ver,
     time_zone,
     network,
-    key
+    key,
   } = searchObject;
-  if (in_game_id === "0") {
+  if (in_game_id === '0') {
     return false;
   }
   const game_key = SERVICE_CONFIG.question_key[game_id];
   let encode_server_name = encodeURI(server_name);
   let encode_c_name = url_encode(character_name);
 
-  os_ver = os_ver ? encodeURI(os_ver) : "";
-  level = level ? level : "";
-  network = network ? network : "";
+  os_ver = os_ver ? encodeURI(os_ver) : '';
+  level = level ? level : '';
+  network = network ? network : '';
   let str_to_encrypt = `game_id=${game_id}&partner_uid=${partner_uid}&in_game_id=${in_game_id}&server_name=${encode_server_name}&character_name=${encode_c_name}&level=${level}&usr_device=${usr_device}&os_ver=${os_ver}&app_ver=${app_ver}&network=${network}&key=${game_key}`;
   let sig = md5(str_to_encrypt);
 
   if (key !== sig) {
-    str_to_encrypt = "";
+    str_to_encrypt = '';
     for (var jkey in searchObject) {
-      if (searchObject.hasOwnProperty(jkey) && jkey !== "key") {
+      if (searchObject.hasOwnProperty(jkey) && jkey !== 'key') {
         //console.log(jkey + ": " + req.body[jkey]);
         str_to_encrypt += `${jkey}=${url_encode(searchObject[jkey])}&`;
       }
@@ -207,7 +219,7 @@ function validate_params(searchObject) {
 }
 function url_encode(url) {
   url = encodeURIComponent(url);
-  url = url.replace("~", escape("~"));
+  url = url.replace('~', escape('~'));
   // # % { } | \ ^ ~ [ ] `<>
   // url = url.replace(/\%3A/g, ":");
   // url = url.replace(/\%2F/g, "/");
