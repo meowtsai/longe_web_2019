@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import isEmpty from '../../validation/is-empty';
 import Spinner from '../common/Spinner';
 import { setUpQuestionConfig } from '../../actions/questionActions';
-
+import InvitationPanel from './InvitationPanel';
 import './service.css';
 class ServiceHome extends Component {
   componentDidMount() {
@@ -90,33 +90,11 @@ class ServiceHome extends Component {
             <div className='row'>
               <div className='col-md-12 text-center float-right'>
                 {showInvitation && (
-                  <div className='col-md-6 mt-3'>
-                    <span className='badge badge-info'>訊息</span>{' '}
-                    <small>
-                      邀請您加入 LINE 官帳:
-                      <mark>瑞秋電台</mark>
-                    </small>
-                    <i className='fas fa-arrow-right mr-1 ml-1 text-danger'></i>
-                    {device === 'Android' ? (
-                      <a href={`/guide/line_add.html`}>
-                        <img
-                          src='https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png'
-                          alt='加入好友'
-                          height='36'
-                          border='0'
-                        />
-                      </a>
-                    ) : (
-                      <a href={`https://line.me/R/ti/p/${line_invite_link}`}>
-                        <img
-                          src='https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png'
-                          alt='加入好友'
-                          height='36'
-                          border='0'
-                        />
-                      </a>
-                    )}
-                  </div>
+                  <InvitationPanel
+                    game_id={game_id}
+                    line_invite_link={line_invite_link}
+                    device={device}
+                  />
                 )}
                 <hr />
                 <div className='row justify-content-center'>

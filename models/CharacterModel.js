@@ -1,4 +1,4 @@
-const { db1, db2 } = require("./db_conn");
+const { db1, db2 } = require('./db_conn');
 
 const CharacterModel = {
   getCharInfoByInGameId: async (server_id, in_game_id) => {
@@ -8,7 +8,7 @@ const CharacterModel = {
     return await db2
       .promise()
       .query(
-        "select id,name from characters where server_id=? and in_game_id=?",
+        'select id,name from characters where server_id=? and in_game_id=?',
         [server_id, in_game_id]
       )
       .then(([rows, fields]) => {
@@ -19,18 +19,18 @@ const CharacterModel = {
         }
       });
   },
-  create_character: async char_info => {
+  create_character: async (char_info) => {
     return await db1
       .promise()
-      .query("INSERT INTO characters SET ?", char_info)
+      .query('INSERT INTO characters SET ?', char_info)
       .then(([rows, fields]) => {
         if (rows.affectedRows > 0) {
           return { status: 1, msg: rows.insertId };
         } else {
-          return { status: -1, msg: "新增失敗" };
+          return { status: -1, msg: '新增失敗' };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
@@ -38,15 +38,15 @@ const CharacterModel = {
   update_character: async (c_id, c_name) => {
     return await db1
       .promise()
-      .query("UPDATE characters SET name=? WHERE id= ?", [c_name, c_id])
+      .query('UPDATE characters SET name=? WHERE id= ?', [c_name, c_id])
       .then(([rows, fields]) => {
         if (rows.affectedRows > 0) {
-          return { status: 1, msg: "修改成功" };
+          return { status: 1, msg: '修改成功' };
         } else {
-          return { status: -1, msg: "修改失敗" };
+          return { status: -1, msg: '修改失敗' };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
@@ -55,7 +55,7 @@ const CharacterModel = {
     return await db2
       .promise()
       .query(
-        "select uid from whale_users where uid=? and site=? and deposit_total>149999",
+        'select uid from whale_users where uid=? and site=? and vip_ranking is not null',
         [c_id, game_id]
       )
       .then(([rows, fields]) => {
@@ -65,7 +65,7 @@ const CharacterModel = {
           return false;
         }
       });
-  }
+  },
 };
 
 module.exports = CharacterModel;

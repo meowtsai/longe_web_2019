@@ -31,7 +31,12 @@ const VipJumbotron = ({ game_id }) => {
         src='https://lh3.googleusercontent.com/fWnsvnNSoQCvdHryUuEWpKhYThClG0ERsDEBr_cFYtkw_mSuZknZ1ruVoPCzBF_pElbi5uAh6QcprVDEClXjpkDDk3r0JpBhCqE1MZ7L-dHqhauzs0K8TsIdbh5n=w640'
         className='rounded img-fluid m-auto'
         alt='千呼萬喚的儲值方案登場了!!'></img>
-    ) : null;
+    ) : (
+      <img
+        src='/p/image/support_help/h55_wire_report_banner.png'
+        className='rounded img-fluid m-auto'
+        alt='各位親愛的偵探們照過來!!'></img>
+    );
   const products_info =
     game_id === 'g66naxx2tw' ? (
       <div>

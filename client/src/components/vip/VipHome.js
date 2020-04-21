@@ -68,7 +68,7 @@ const VipHome = ({
       : [
           {
             label: '儲值NTD.3,000，共可獲得7200迴聲。',
-            value: '06439',
+            value: '75831',
           },
         ];
 

@@ -138,16 +138,29 @@ router.post('/init_setup', auth_for_create, async (req, res) => {
       expiresIn: '1d',
     });
 
-    //0924 g66 check if vip
     //
     const isWhale = await CharacterModel.is_whale(partner_uid, game_id);
+    // console.log('isWhale', partner_uid, game_id, isWhale);
+    // console.log(SERVICE_CONFIG.vip_invite_settings[game_id]);
+    let showInvitation = false;
 
-    const showInvitation =
-      game_id === 'g66naxx2tw' &&
-      (SERVICE_CONFIG.line_invite_public ? true : req.whitelisted) &&
-      isWhale
-        ? true
-        : false;
+    const vip_invite_settings = SERVICE_CONFIG.vip_invite_settings[game_id];
+
+    //0421 vip invitation config
+    if (vip_invite_settings) {
+      showInvitation =
+        (vip_invite_settings.line_invite_public ? true : req.whitelisted) &&
+        isWhale
+          ? true
+          : false;
+    }
+
+    // const showInvitation =
+    //   game_id === 'g66naxx2tw' &&
+    //   (SERVICE_CONFIG.line_invite_public ? true : req.whitelisted) &&
+    //   isWhale
+    //     ? true
+    //     : false;
 
     res.json({
       token,
@@ -157,7 +170,9 @@ router.post('/init_setup', auth_for_create, async (req, res) => {
       unread_count: userObj.unread_count,
       isWhitelisted: req.whitelisted,
       showInvitation,
-      line_invite_link: showInvitation ? SERVICE_CONFIG.line_invite_link : null,
+      line_invite_link: showInvitation
+        ? vip_invite_settings.line_invite_link
+        : null,
     });
   } else {
     res.json({
