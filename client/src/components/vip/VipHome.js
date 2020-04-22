@@ -52,7 +52,9 @@ const VipHome = ({
   const roleIdLabelText =
     gameId === 'g66naxx2tw'
       ? '人物帳號ID (右上方設定點擊進去看到) *'
-      : '人物帳號ID (偵探大廳右上齒輪設定中的角色數字ID) *';
+      : '人物角色ID (偵探大廳右上齒輪設定中的角色數字ID) *';
+  const roleIdPlaceholderText =
+    gameId === 'g66naxx2tw' ? '人物帳號ID' : '人物角色ID';
   const notePlaceholderText =
     gameId === 'g66naxx2tw'
       ? '有需要註記給瑞秋的都可以填上 '
@@ -67,7 +69,7 @@ const VipHome = ({
         ]
       : [
           {
-            label: '儲值NTD.3,000，共可獲得7200迴聲。',
+            label: '儲值NTD.3,000，共可獲得7200回聲。',
             value: '75831',
           },
         ];
@@ -508,7 +510,7 @@ const VipHome = ({
                       'is-invalid': errors.roleId,
                     })}
                     id='roleId'
-                    placeholder='人物帳號ID '
+                    placeholder={roleIdPlaceholderText}
                     value={roleId}
                     onChange={(e) => setRoleId(e.target.value)}
                     maxLength='20'

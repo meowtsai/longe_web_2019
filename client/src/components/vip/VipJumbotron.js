@@ -99,11 +99,11 @@ const VipJumbotron = ({ game_id }) => {
         <span role='img' aria-label='hand'>
           👉
         </span>
-        儲值NTD.3,000，共可獲得7200迴聲。
+        儲值NTD.3,000，共可獲得7200回聲。
       </p>
     );
   // ? 'NTD.3,000，信用點 6480 贈 1788，共可獲得 8268 信用點。'
-  // : '儲值NTD.3,000，共可獲得7200迴聲。';
+  // : '儲值NTD.3,000，共可獲得7200回聲。';
   const contact_nickname1 = game_id === 'g66naxx2tw' ? '小夥伴' : '小管家';
   const contact_nickname2 = game_id === 'g66naxx2tw' ? '瑞秋' : '莊園小管家';
   return (
