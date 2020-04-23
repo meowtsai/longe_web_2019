@@ -597,8 +597,8 @@ const VipHome = ({
                       <a
                         target='_blank'
                         rel='noopener noreferrer'
-                        href='/p/image/support_help/SKMBT_28320042313570.pdf'>
-                        2020年1-3月感謝狀
+                        href='https://teia.tw/zh-hant/donate/credit'>
+                        發票徵信
                       </a>{' '}
                       <small className='text-muted'>
                         {' '}
