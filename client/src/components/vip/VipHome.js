@@ -593,14 +593,17 @@ const VipHome = ({
                       onChange={(e) => invoiceOptionClick(e.target.value)}
                     />
                     <label className='form-check-label' htmlFor='invoiceDonate'>
-                      捐贈臺灣環境資訊協會 (
+                      捐贈臺灣環境資訊協會 <br />
                       <a
                         target='_blank'
                         rel='noopener noreferrer'
-                        href='https://teia.tw/zh-hant/donate/credit'>
-                        發票徵信
-                      </a>
-                      )
+                        href='/p/image/support_help/SKMBT_28320042313570.pdf'>
+                        2020年1-3月感謝狀
+                      </a>{' '}
+                      <small className='text-muted'>
+                        {' '}
+                        ❤️感謝大家和我們一起守護地球🌏
+                      </small>
                     </label>
                   </div>
                   <div className='form-check'>
