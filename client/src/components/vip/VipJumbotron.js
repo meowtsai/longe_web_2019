@@ -99,7 +99,7 @@ const VipJumbotron = ({ game_id }) => {
         <span role='img' aria-label='hand'>
           👉
         </span>
-        儲值NTD.3,000，共可獲得7200回聲，非專屬玩家請勿購買。
+        儲值NTD.3,000，共可獲得7200回聲，非專屬玩家請勿購買，請先找小管家完成驗證身分。
       </p>
     );
 
