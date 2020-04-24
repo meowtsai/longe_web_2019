@@ -99,8 +99,16 @@ const VipJumbotron = ({ game_id }) => {
         <span role='img' aria-label='hand'>
           👉
         </span>
-        儲值NTD.3,000，共可獲得7200回聲。
+        儲值NTD.3,000，共可獲得7200回聲，非專屬玩家請勿購買。
       </p>
+    );
+
+  const special_note =
+    game_id === 'g66naxx2tw' ? null : (
+      <strong className='text-danger'>
+        PPPS：非專屬玩家請勿購買，會收不到回聲喔。
+        <br />
+      </strong>
     );
   // ? 'NTD.3,000，信用點 6480 贈 1788，共可獲得 8268 信用點。'
   // : '儲值NTD.3,000，共可獲得7200回聲。';
@@ -156,7 +164,10 @@ const VipJumbotron = ({ game_id }) => {
                 <br />
                 <span className='text-danger'>
                   PPS：請務必加入LINE群 並連繫{contact_nickname2}
-                  <br />
+                </span>
+                <br />
+                {special_note}
+                <span className='text-danger'>
                   ※若未加入LINE群，並留下角色暱稱，將無法處理訂單※
                 </span>
               </p>
