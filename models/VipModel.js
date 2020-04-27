@@ -1,24 +1,24 @@
-const { db1, db2 } = require("./db_conn");
+const { db1, db2 } = require('./db_conn');
 
 const VipModel = {
-  createWireReport: async reportObject => {
+  createWireReport: async (reportObject) => {
     return await db1
       .promise()
-      .query("INSERT vip_wire_report set ?", reportObject)
+      .query('INSERT vip_wire_report set ?', reportObject)
       .then(([rows, fields]) => {
         if (rows.affectedRows > 0) {
           return { status: 1, msg: rows.insertId };
         } else {
-          return { status: -1, msg: "新增失敗" };
+          return { status: -1, msg: '新增失敗' };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
 
-  getReportByID: async report_id => {
+  getReportByID: async (report_id) => {
     return await db1
       .promise()
       .query(
@@ -32,14 +32,34 @@ const VipModel = {
         if (rows.length > 0) {
           return { status: 1, msg: rows[0] };
         } else {
-          return { status: -1, msg: "沒有符合的紀錄" };
+          return { status: -1, msg: '沒有符合的紀錄' };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
-  }
+  },
+
+  getVipRankingByRoleNumber: async (role_no, game_id) => {
+    return await db2
+      .promise()
+      .query(
+        `SELECT vip_ranking  FROM whale_users where char_in_game_id =? and site =  ?;`,
+        [role_no, game_id]
+      )
+      .then(([rows, fields]) => {
+        if (rows.length > 0) {
+          return rows[0].vip_ranking;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        //console.log(err);
+        return { status: -1, msg: err.message };
+      });
+  },
 };
 
 module.exports = VipModel;

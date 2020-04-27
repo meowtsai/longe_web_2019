@@ -9,14 +9,14 @@ const nodemailer = require('nodemailer');
 const {
   invoiceOptions,
   jwt_encryption,
-  report_path
+  report_path,
 } = require('../../config/service');
 
 var jwt = require('jsonwebtoken');
 
 router.post('/createOrder', async (req, res) => {
   const { errors, isValid } = validateVipOrderInput({
-    ...req.body
+    ...req.body,
   });
   if (!isValid) {
     return res.status(400).json(errors);
@@ -25,6 +25,10 @@ router.post('/createOrder', async (req, res) => {
     const geo = geoip.lookup(ip);
 
     const report_id = `VP${moment().format('YYYYMMDDHHmmss')}${makeid(3)}`;
+    const vip_ranking = await VipModel.getVipRankingByRoleNumber(
+      req.body.roleId,
+      req.body.gameId
+    );
 
     let wireReportObject = {
       report_id,
@@ -46,7 +50,8 @@ router.post('/createOrder', async (req, res) => {
       product_id: req.body.productId,
       qty: req.body.qty,
       note: req.body.note,
-      recipient: req.body.recipient
+      recipient: req.body.recipient,
+      vip_ranking,
     };
 
     const result = await VipModel.createWireReport(wireReportObject);
@@ -61,7 +66,7 @@ router.post('/createOrder', async (req, res) => {
           { report_id: rptRecord.report_id },
           jwt_encryption,
           {
-            expiresIn: '180d'
+            expiresIn: '180d',
           }
         );
         rptRecord.token = token;
@@ -118,7 +123,7 @@ router.post('/createOrder', async (req, res) => {
             subject: `${
               rptRecord.game_name
             }方案購買 - 匯款登記確認 ${moment().format('YYYY-MM-DD HH:mm:ss')}`, // Subject line
-            html: html_template // html body
+            html: html_template, // html body
           };
 
           // send mail with defined transport object
@@ -138,7 +143,7 @@ router.post('/createOrder', async (req, res) => {
   }
 });
 
-const makeid = length => {
+const makeid = (length) => {
   var result = '';
   var characters = 'abcdefghijklmnpqrstuvwxyz';
   var charactersLength = characters.length;
