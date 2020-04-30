@@ -315,7 +315,7 @@ const VipHome = ({
                     min='1'
                     max={
                       moment().format('YYYY-MM-DD HH:mm:ss') >
-                      '2020-05-01 00:00:00'
+                      '2020-04-01 00:00:00'
                         ? 1
                         : 10
                     }

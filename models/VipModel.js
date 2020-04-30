@@ -63,7 +63,9 @@ const VipModel = {
   getVipProductsByGameId: async (game_id) => {
     return await db2
       .promise()
-      .query(`SELECT *  FROM vip_products where game_id =?;`, [game_id])
+      .query(`SELECT *  FROM vip_products where game_id =? order by price ;`, [
+        game_id,
+      ])
       .then(([rows, fields]) => {
         if (rows.length > 0) {
           return rows;
