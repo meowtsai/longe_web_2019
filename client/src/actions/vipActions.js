@@ -3,48 +3,49 @@ import {
   CLEAR_LOADING,
   POST_VIP_ORDER,
   GET_ERRORS,
-  CHECK_WIRE_REPORT_TOKEN
-} from "./types";
-import axios from "axios";
+  CHECK_WIRE_REPORT_TOKEN,
+  GET_VIP_PRODUCTS,
+} from './types';
+import axios from 'axios';
 export const beginLoading = () => {
   return {
-    type: BEGIN_LOADING
+    type: BEGIN_LOADING,
   };
 };
 export const clearLoading = () => {
   return {
-    type: CLEAR_LOADING
+    type: CLEAR_LOADING,
   };
 };
 
-export const createVipOrder = orderData => dispatch => {
+export const createVipOrder = (orderData) => (dispatch) => {
   dispatch(beginLoading());
   axios
-    .post("/api/vip/createOrder", orderData, {
-      headers: { "Content-Type": "application/json" }
+    .post('/api/vip/createOrder', orderData, {
+      headers: { 'Content-Type': 'application/json' },
     })
-    .then(res => {
+    .then((res) => {
       dispatch({
         type: POST_VIP_ORDER,
-        payload: res.data.record
+        payload: res.data.record,
         //res.json({ msg: "OK", record: wireReportObject });
       });
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch(clearLoading());
 
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data,
       });
     });
 };
 
-export const checkWireReportToken = token => async dispatch => {
+export const checkWireReportToken = (token) => async (dispatch) => {
   dispatch(beginLoading());
 
   const config = {
-    headers: { "Content-Type": "application/json" }
+    headers: { 'Content-Type': 'application/json' },
   };
 
   try {
@@ -54,7 +55,27 @@ export const checkWireReportToken = token => async dispatch => {
 
     dispatch({
       type: CHECK_WIRE_REPORT_TOKEN,
-      payload: res.data.record
+      payload: res.data.record,
+    });
+  } catch (err) {
+    //console.log("renderForm err", err);
+    dispatch(clearLoading());
+  }
+};
+
+export const getProducts = (game_id) => async (dispatch) => {
+  const config = {
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  try {
+    let res = await axios.get(`/api/vip/products/${game_id}`, config);
+
+    //console.log("renderForm", res.data);
+
+    dispatch({
+      type: GET_VIP_PRODUCTS,
+      payload: res.data.products,
     });
   } catch (err) {
     //console.log("renderForm err", err);

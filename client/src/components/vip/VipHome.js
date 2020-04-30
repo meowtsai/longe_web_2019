@@ -4,7 +4,11 @@ import classnames from 'classnames';
 import moment from 'moment';
 import TaiwanAddressPick from '../common/TaiwanAddressPick';
 import { getServers } from '../../actions/gameActions';
-import { createVipOrder, checkWireReportToken } from '../../actions/vipActions';
+import {
+  createVipOrder,
+  checkWireReportToken,
+  getProducts,
+} from '../../actions/vipActions';
 import VipResult from './VipResult';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
@@ -18,10 +22,13 @@ const VipHome = ({
   getServers,
   createVipOrder,
   record,
+  products,
   previous_record,
   loading,
   location,
   checkWireReportToken,
+
+  getProducts,
 }) => {
   const [serverId, setServerId] = useState('');
   const [email, setEmail] = useState('');
@@ -59,23 +66,27 @@ const VipHome = ({
     gameId === 'g66naxx2tw'
       ? '有需要註記給瑞秋的都可以填上 '
       : '有需要註記給小管家的都可以填上 ';
-  const productsOption =
-    gameId === 'g66naxx2tw'
-      ? [
-          {
-            label: '台幣3000方案 - 信用點 6480 贈 1788，共可獲得 8268 信用點',
-            value: '75084',
-          },
-        ]
-      : [
-          {
-            label: '儲值NTD.3,000，共可獲得7200回聲。',
-            value: '75831',
-          },
-        ];
+  const productsOption = products.map((prod) => ({
+    label: prod.title + ' - ' + prod.product_desc,
+    value: prod.product_id,
+  }));
+  // gameId === 'g66naxx2tw'
+  //   ? [
+  //       {
+  //         label: '台幣3000方案 - 信用點 6480 贈 1788，共可獲得 8268 信用點',
+  //         value: '75084',
+  //       },
+  //     ]
+  //   : [
+  //       {
+  //         label: '儲值NTD.3,000，共可獲得7200回聲。',
+  //         value: '75831',
+  //       },
+  //     ];
 
   useEffect(() => {
     getServers(gameId);
+    getProducts(gameId);
     const search_values = queryString.parse(location.search);
     if (search_values.token) {
       checkWireReportToken(search_values.token);
@@ -302,7 +313,12 @@ const VipHome = ({
                     id='qty'
                     placeholder='輸入數量'
                     min='1'
-                    max='10'
+                    max={
+                      moment().format('YYYY-MM-DD HH:mm:ss') >
+                      '2020-05-01 00:00:00'
+                        ? 1
+                        : 10
+                    }
                     value={qty}
                     onChange={(e) => setQty(e.target.value)}
                   />
@@ -683,6 +699,7 @@ const VipHome = ({
 VipHome.propTypes = {
   getServers: PropTypes.func.isRequired,
   createVipOrder: PropTypes.func.isRequired,
+  getProducts: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 const mapStateToProps = (state) => ({
@@ -691,9 +708,11 @@ const mapStateToProps = (state) => ({
   record: state.vip.record,
   previous_record: state.vip.previous_record,
   loading: state.vip.loading,
+  products: state.vip.products,
 });
 export default connect(mapStateToProps, {
   getServers,
   createVipOrder,
   checkWireReportToken,
+  getProducts,
 })(VipHome);

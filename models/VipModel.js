@@ -60,6 +60,22 @@ const VipModel = {
         return { status: -1, msg: err.message };
       });
   },
+  getVipProductsByGameId: async (game_id) => {
+    return await db2
+      .promise()
+      .query(`SELECT *  FROM vip_products where game_id =?;`, [game_id])
+      .then(([rows, fields]) => {
+        if (rows.length > 0) {
+          return rows;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        //console.log(err);
+        return null;
+      });
+  },
 };
 
 module.exports = VipModel;

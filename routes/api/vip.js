@@ -183,4 +183,18 @@ router.get('/checkWireReportToken/:token', async (req, res) => {
   // }
 });
 
+router.get('/products/:game_id', async (req, res) => {
+  const game_id = req.params.game_id;
+  let products = await VipModel.getVipProductsByGameId(game_id);
+  if (game_id === 'g66naxx2tw') {
+    if (moment().format('YYYY-MM-DD HH:mm:ss') > '2020-04-30 11:00:00') {
+      products = products.filter((prod) => prod.product_id !== '75084');
+    } else {
+      products = products.filter((prod) => prod.product_id === '75084');
+    }
+  }
+
+  res.json({ msg: 'OK', products: products });
+});
+
 module.exports = router;
