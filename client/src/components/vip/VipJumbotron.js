@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+
 const VipJumbotron = ({ game_id }) => {
   const slogan =
     game_id === 'g66naxx2tw' ? (
@@ -40,24 +40,6 @@ const VipJumbotron = ({ game_id }) => {
   const products_info =
     game_id === 'g66naxx2tw' ? (
       <div>
-        {moment().format('YYYY-MM-DD HH:mm:ss') >
-        '2020-05-01 00:00:00' ? null : (
-          <Fragment>
-            <h3>
-              試營運方案
-              <span className='text-danger'>
-                <strong>（5/1 00:00 方案截止）</strong>
-              </span>
-              ：
-            </h3>
-            <span role='img' aria-label='hand'>
-              👉
-            </span>
-            NTD.3,000，共可獲得 8268 信用點。
-            <br />
-          </Fragment>
-        )}
-
         <h3 className='mt-2'>
           正式營運方案
           <span className='text-danger'>
@@ -110,7 +92,23 @@ const VipJumbotron = ({ game_id }) => {
     );
 
   const special_note =
-    game_id === 'g66naxx2tw' ? null : (
+    game_id === 'g66naxx2tw' ? (
+      <strong className='text-danger'>
+        <span role='img' aria-label='loudspeaker'>
+          📢
+        </span>
+        若您欲購買9000元以下的品項，歡迎使用
+        <a target='blank' href='https://www.lifeafterpay.com/'>
+          <img
+            width='60'
+            alt='MyCard logo'
+            src='https://image.mycard520.com/globalmycard/images/mycard_logo.png'
+          />
+        </a>
+        進行儲值喔!
+        <br />
+      </strong>
+    ) : (
       <strong className='text-danger'>
         PPPS：非專屬玩家請勿購買，會收不到回聲喔。
         <br />

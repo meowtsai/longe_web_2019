@@ -197,4 +197,33 @@ router.get('/products/:game_id', async (req, res) => {
   res.json({ msg: 'OK', products: products });
 });
 
+router.get('/report', async (req, res) => {
+  if (req.whitelisted) {
+    const start_date = req.query.start_date + ' 00:00:00';
+    const end_date = req.query.end_date + ' 23:59:59';
+
+    if (
+      !moment(start_date, 'YYYY/MM/DD HH:mm:ss').isValid() ||
+      !moment(end_date, 'YYYY/MM/DD HH:mm:ss').isValid()
+    ) {
+      return res.status(400).json({ error: 'bad request' });
+    }
+
+    const condition = { start_date, end_date };
+
+    let reports = await VipModel.getWireReports(condition);
+
+    reports = reports.map((item) => ({
+      ...item,
+      create_time: moment(item.create_time).format('YYYY/MM/DD HH:mm:ss'),
+      wire_time: moment(item.wire_time).format('YYYY/MM/DD HH:mm:ss'),
+      update_time: moment(item.update_time).format('YYYY/MM/DD HH:mm:ss'),
+    }));
+
+    res.json({ data: reports });
+  } else {
+    return res.status(403).json({ error: 'not authorized' });
+  }
+});
+
 module.exports = router;

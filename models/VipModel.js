@@ -78,6 +78,29 @@ const VipModel = {
         return null;
       });
   },
+  getWireReports: async ({ start_date, end_date }) => {
+    return await db2
+      .promise()
+      .query(
+        `SELECT a.report_id, a.phone,a.email,a.wire_code,a.wire_time, a.wire_amount,a.wire_name,a.bank_name,a.note as user_note, a.role_id,a.game_id, a.server_id, a.char_name,a.update_time, a.create_time,a.product_id,a.qty,a.orderids, a.vip_ranking,     g.name as game_name, si.name as server_name, vp.title, vp.price,vp.gold, 
+        vp.free_golds, b.name as admin_name FROM vip_wire_report a left join games g on a.game_id =g.game_id
+        left join servers si on a.server_id =si.server_id
+        left join vip_products vp on vp.product_id=a.product_id
+        left join admin_users b on a.admin_uid =b.uid where  a.report_status=4 and  a.create_time between ? and ? ;`,
+        [start_date, end_date]
+      )
+      .then(([rows, fields]) => {
+        if (rows.length > 0) {
+          return rows;
+        } else {
+          return null;
+        }
+      })
+      .catch((err) => {
+        //console.log(err);
+        return null;
+      });
+  },
 };
 
 module.exports = VipModel;
