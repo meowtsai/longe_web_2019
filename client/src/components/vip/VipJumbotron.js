@@ -52,6 +52,12 @@ const VipJumbotron = ({ game_id }) => {
             <span role='img' aria-label='hand'>
               🎊
             </span>
+            NTD.6,000，共可獲得 16536 信用點。
+          </li>
+          <li>
+            <span role='img' aria-label='hand'>
+              🎊
+            </span>
             NTD.9,000，共可獲得 24804 信用點。
           </li>
           <li>
@@ -97,7 +103,7 @@ const VipJumbotron = ({ game_id }) => {
         <span role='img' aria-label='loudspeaker'>
           📢
         </span>
-        若您欲購買9000元以下的品項，歡迎使用
+        若您欲購買6000元以下的品項，歡迎使用
         <a target='blank' href='https://www.lifeafterpay.com/'>
           <img
             width='60'
