@@ -213,12 +213,15 @@ router.get('/report', async (req, res) => {
 
     let reports = await VipModel.getWireReports(condition);
 
-    reports = reports.map((item) => ({
-      ...item,
-      create_time: moment(item.create_time).format('YYYY/MM/DD HH:mm:ss'),
-      wire_time: moment(item.wire_time).format('YYYY/MM/DD HH:mm:ss'),
-      update_time: moment(item.update_time).format('YYYY/MM/DD HH:mm:ss'),
-    }));
+    reports =
+      reports === null
+        ? []
+        : reports.map((item) => ({
+            ...item,
+            create_time: moment(item.create_time).format('YYYY/MM/DD HH:mm:ss'),
+            wire_time: moment(item.wire_time).format('YYYY/MM/DD HH:mm:ss'),
+            update_time: moment(item.update_time).format('YYYY/MM/DD HH:mm:ss'),
+          }));
 
     res.json({ data: reports });
   } else {
