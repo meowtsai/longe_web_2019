@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-const VipJumbotron = ({ game_id }) => {
+const VipJumbotron = ({ game_id, products }) => {
   const slogan =
     game_id === 'g66naxx2tw' ? (
       <h5 className='display-5'>
@@ -48,42 +48,14 @@ const VipJumbotron = ({ game_id }) => {
           ：
         </h3>
         <ul>
-          <li>
-            <span role='img' aria-label='hand'>
-              🎊
-            </span>
-            NTD.6,000，共可獲得 16536 信用點。
-          </li>
-          <li>
-            <span role='img' aria-label='hand'>
-              🎊
-            </span>
-            NTD.9,000，共可獲得 24804 信用點。
-          </li>
-          <li>
-            <span role='img' aria-label='hand'>
-              🎊
-            </span>
-            NTD.12,000，共可獲得 33072 信用點。
-          </li>
-          <li>
-            <span role='img' aria-label='hand'>
-              🎊
-            </span>
-            NTD.15,000，共可獲得 41340 信用點。
-          </li>
-          <li>
-            <span role='img' aria-label='hand'>
-              🎊
-            </span>
-            NTD.18,000，共可獲得 49608 信用點。
-          </li>
-          <li>
-            <span role='img' aria-label='hand'>
-              🎊
-            </span>
-            NTD.30,000，共可獲得 82680 信用點。
-          </li>
+          {products.map((prod) => (
+            <li key={`prod_${prod.product_id}`}>
+              <span role='img' aria-label='hand'>
+                🎊
+              </span>
+              NTD.{prod.price}，共可獲得 {prod.gold} 信用點。
+            </li>
+          ))}
         </ul>
         <br />
       </div>

@@ -125,7 +125,7 @@ const VipHome = ({
       setEmail(previous_record.email);
       setUserPhone(previous_record.phone);
       setWireCode(previous_record.wire_code);
-      setProductId('75084');
+      setProductId('');
       setWireName(previous_record.wire_name);
       setBankName(previous_record.bank_name);
       setCharName(previous_record.char_name);
@@ -180,7 +180,7 @@ const VipHome = ({
 
   return (
     <div className='container'>
-      <VipJumbotron game_id={gameId} />
+      <VipJumbotron game_id={gameId} products={products} />
       <div className='row'>
         <div className='col-lg-3 mt-3'> </div>
         <div className='col-lg-6 col-sm-12 mt-3'>
