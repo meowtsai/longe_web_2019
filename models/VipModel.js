@@ -64,7 +64,7 @@ const VipModel = {
     return await db2
       .promise()
       .query(
-        `SELECT *  FROM vip_products where game_id =? and is_active='1' and curdate() between IFNULL(start_time, curdate()) and IFNULL(end_time, curdate())   order by price ;`,
+        `SELECT *  FROM vip_products where game_id =? and is_active='1' and now() between IFNULL(start_time, now()) and IFNULL(end_time, now())   order by price ;`,
         [game_id]
       )
       .then(([rows, fields]) => {
