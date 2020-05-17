@@ -313,12 +313,7 @@ const VipHome = ({
                     id='qty'
                     placeholder='輸入數量'
                     min='1'
-                    max={
-                      moment().format('YYYY-MM-DD HH:mm:ss') >
-                      '2020-05-01 00:00:00'
-                        ? 1
-                        : 10
-                    }
+                    max={gameId === 'g66naxx2tw' ? 1 : 10}
                     value={qty}
                     onChange={(e) => setQty(e.target.value)}
                   />
