@@ -65,7 +65,7 @@ const VipJumbotron = ({ game_id, products }) => {
         <span role='img' aria-label='hand'>
           👉
         </span>
-        儲值NTD.3,000，共可獲得7200回聲，非專屬玩家請勿購買，請先找小管家完成驗證身分。
+        儲值NTD.3,000，共可獲得7200回聲，所有偵探們都先找小管家完成驗證身分才能購買喔。
       </p>
     );
 
@@ -88,7 +88,7 @@ const VipJumbotron = ({ game_id, products }) => {
       </strong>
     ) : (
       <strong className='text-danger'>
-        PPPS：非專屬玩家請勿購買，會收不到回聲喔。
+        PPPS：僅提供龍邑亞洲服角色購買。
         <br />
       </strong>
     );
