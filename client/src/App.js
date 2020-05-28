@@ -16,6 +16,7 @@ import ReportHome from './components/service/create/forms/ReportHome';
 import EventSerial from './components/events/EventSerial';
 import EventDeliveroo from './components/events/EventDeliveroo';
 import Complete_agreement from './components/policies/Complete_agreement';
+import SurveyMain from './components/survey/SurveyMain';
 
 import VipHome from './components/vip/VipHome';
 
@@ -73,6 +74,8 @@ class App extends Component {
 
             <Route exact path='/events/event_serial' component={EventSerial} />
             <Route exact path='/events/deliveroo' component={EventDeliveroo} />
+
+            <Route exact path='/survey/event18' component={SurveyMain} />
           </div>
         </Router>
       </Provider>

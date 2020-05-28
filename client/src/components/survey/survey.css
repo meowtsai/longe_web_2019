@@ -1,0 +1,15 @@
+.my-node-enter {
+  opacity: 0;
+  transform: translateY(-100vh);
+}
+.my-node-enter-active {
+  opacity: 1;
+  transition: transform 600ms ease 0s, opacity 300ms ease 0s;
+}
+.my-node-exit {
+  opacity: 1;
+}
+.my-node-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
+}
