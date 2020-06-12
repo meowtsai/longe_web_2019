@@ -32,7 +32,6 @@ class ServiceHome extends Component {
   }
 
   render() {
-    //console.log("game_id", search_game_id);
     //const game_id = this.props.match.params.game_id;
     let game_id = this.props.service.game_id;
     let device = '';
@@ -48,6 +47,8 @@ class ServiceHome extends Component {
     } = this.props.service;
 
     const parsed = queryString.parse(this.props.location.search);
+    console.log('game_name', game_name);
+    console.log('is_in_game', is_in_game);
     if (!isEmpty(parsed.param_game_id)) {
       game_id = parsed.param_game_id;
     }
@@ -73,6 +74,9 @@ class ServiceHome extends Component {
 
     // console.log(game_id);
     // console.log(game_id === undefined);
+    if (game_name === undefined) {
+      this.props.history.push('./support');
+    }
 
     return (
       <div>
