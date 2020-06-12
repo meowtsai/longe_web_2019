@@ -47,8 +47,8 @@ class ServiceHome extends Component {
     } = this.props.service;
 
     const parsed = queryString.parse(this.props.location.search);
-    console.log('game_name', game_name);
-    console.log('is_in_game', is_in_game);
+    // console.log('game_name', game_name);
+    // console.log('is_in_game', is_in_game);
     if (!isEmpty(parsed.param_game_id)) {
       game_id = parsed.param_game_id;
     }
