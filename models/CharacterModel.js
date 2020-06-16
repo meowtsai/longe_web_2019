@@ -55,7 +55,9 @@ const CharacterModel = {
     return await db2
       .promise()
       .query(
-        'select uid from whale_users where uid=? and site=? and vip_ranking is not null',
+        `select uid from whale_users where uid=? and site=? ${
+          game_id === 'g66naxx2tw' ? 'and vip_ranking is not null' : ''
+        }`,
         [c_id, game_id]
       )
       .then(([rows, fields]) => {

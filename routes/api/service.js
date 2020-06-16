@@ -32,12 +32,25 @@ router.post('/init_setup', auth_for_create, async (req, res) => {
       req.user.partner_uid,
       req.user.vendor_game_id
     );
-    const showInvitation2 =
-      req.user.vendor_game_id === 'g66naxx2tw' &&
-      (SERVICE_CONFIG.line_invite_public ? true : req.whitelisted) &&
-      isWhale2
-        ? true
-        : false;
+
+    let showInvitation2 = false;
+
+    if (SERVICE_CONFIG.vip_invite_settings[req.user.vendor_game_id]) {
+      showInvitation2 =
+        (SERVICE_CONFIG.vip_invite_settings[req.user.vendor_game_id]
+          .line_invite_public
+          ? true
+          : req.whitelisted) && isWhale2
+          ? true
+          : false;
+    }
+
+    // const showInvitation2 =
+    //   req.user.vendor_game_id === 'g66naxx2tw' &&
+    //   (SERVICE_CONFIG.line_invite_public ? truSERVICE_CONFIG.vip_invite_settings[req.user.vendor_game_id]e : req.whitelisted) &&
+    //   isWhale2
+    //     ? true
+    //     : false;
     const game = await GameModel.getGameById(req.user.vendor_game_id);
     ServiceModel.getUnreadByUID(req.user.partner_uid)
       .then((unread_result) => {
