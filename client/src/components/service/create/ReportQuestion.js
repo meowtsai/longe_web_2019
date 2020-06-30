@@ -41,7 +41,7 @@ class ReportQuestion extends Component {
       loading: false,
       showModal: false,
       token: "",
-      useRecaptcha: true
+      useRecaptcha: true,
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -138,7 +138,7 @@ class ReportQuestion extends Component {
         this.setState({
           file01: "",
           errors: { file01: "請勿選取超過6個檔案" },
-          attachments: []
+          attachments: [],
         });
       } else {
         this.setState({ errors: {}, attachments: e.target.files });
@@ -190,7 +190,7 @@ class ReportQuestion extends Component {
       user,
       faq,
       events,
-      custom_forms
+      custom_forms,
     } = this.props.report.settings;
 
     const { loading } = this.props.report;
@@ -202,8 +202,12 @@ class ReportQuestion extends Component {
       question_type,
       mobile_locale,
       token,
-      useRecaptcha
+      useRecaptcha,
     } = this.state;
+
+    if (errors.msg) {
+      this.props.history.push("/support");
+    }
 
     const localeOptions = [
       { label: "台灣 (+886)", value: "886", placeholder: "0912 345 678" },
@@ -211,15 +215,15 @@ class ReportQuestion extends Component {
       { label: "澳門 (+853)", value: "853", placeholder: "6612 3456" },
       { label: "新加坡 (+65)", value: "65", placeholder: "8123 4567" },
       { label: "馬來西亞 (+60)", value: "60", placeholder: "12 345 6789" },
-      { label: "中國 (+86)", value: "0086", placeholder: "131 2345 6789" }
+      { label: "中國 (+86)", value: "0086", placeholder: "131 2345 6789" },
     ];
 
     const phone_placeholder = localeOptions.filter(
-      local => local.value === mobile_locale
+      (local) => local.value === mobile_locale
     )[0].placeholder;
 
     const fileInfo = Object.keys(attachments).map(
-      attach => attachments[attach].name
+      (attach) => attachments[attach].name
     );
     const home_link = !isEmpty(user)
       ? `/service_quick?token=${token}`
@@ -237,19 +241,19 @@ class ReportQuestion extends Component {
       // <? endif;?>
       // <? endforeach;?>
 
-      typesOption = Object.getOwnPropertyNames(question_types).map(type => ({
+      typesOption = Object.getOwnPropertyNames(question_types).map((type) => ({
         label: question_types[type],
-        value: type
+        value: type,
       }));
 
       let serversOption = [];
 
       if (game.servers) {
         serversOption = game.servers
-          .filter(server => server.server_status === "public")
-          .map(server => ({
+          .filter((server) => server.server_status === "public")
+          .map((server) => ({
             label: server.server_name,
-            value: server.server_id
+            value: server.server_id,
           }));
         //console.log("serversOption", serversOption);
         if (game.servers.length > 1) {
@@ -263,10 +267,10 @@ class ReportQuestion extends Component {
       if (user) {
         typesOption = [
           ...typesOption,
-          ...events.map(event => ({
+          ...events.map((event) => ({
             label: event.event_name,
-            value: `event_${event.id}`
-          }))
+            value: `event_${event.id}`,
+          })),
         ];
         formContent = (
           <div>
@@ -504,12 +508,12 @@ class ReportQuestion extends Component {
 ReportQuestion.propTypes = {
   renderForm: PropTypes.func.isRequired,
   createWebReport: PropTypes.func.isRequired,
-  errors: PropTypes.object
+  errors: PropTypes.object,
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   report: state.report,
   errors: state.errors,
-  service: state.service
+  service: state.service,
 });
 export default connect(mapStateToProps, { renderForm, createWebReport })(
   ReportQuestion
