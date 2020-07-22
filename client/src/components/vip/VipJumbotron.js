@@ -84,14 +84,17 @@ const VipJumbotron = ({ game_id, products }) => {
       </strong>
     ) : (
       <strong className="text-danger">
-        PPPS：僅提供龍邑亞洲服角色購買。
+        <span role="img" aria-label="loudspeaker">
+          📢
+        </span>
+        僅提供龍邑亞洲服角色購買。
         <br />
       </strong>
     );
   // ? 'NTD.3,000，信用點 6480 贈 1788，共可獲得 8268 信用點。'
   // : '儲值NTD.3,000，共可獲得7200回聲。';
   const contact_nickname1 = game_id === "g66naxx2tw" ? "小夥伴" : "小管家";
-  const contact_nickname2 = game_id === "g66naxx2tw" ? "瑞秋" : "莊園小管家";
+
   return (
     <Fragment>
       <div className="row">
@@ -140,14 +143,8 @@ const VipJumbotron = ({ game_id, products }) => {
                 </span>
                 即無法進行退換貨的服務喔！
                 <br />
-                <span className="text-danger">
-                  PPS：請務必加入LINE群 並連繫{contact_nickname2}
-                </span>
                 <br />
                 {special_note}
-                <span className="text-danger">
-                  ※若未加入LINE群，並留下角色暱稱，將無法處理訂單※
-                </span>
               </p>
             </div>
           </div>

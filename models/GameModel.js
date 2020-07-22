@@ -5,16 +5,16 @@ const GameModel = {
     return await db2
       .promise()
       .query(
-        `select game_id, name as game_name,logo_path,tags,rank, fanpage,vendor_game_id, site, bg_path, slogan, title_path from games where is_active=1`
+        `select game_id, name as game_name,logo_path,tags,rank, fanpage,vendor_game_id, site, bg_path, slogan, title_path from games where is_active=1 order by field(game_id, 'g83tw','g78naxx2hmt','g66naxx2tw','g104naxx2tw','h55naxx2tw') desc`
       )
       .then(([rows, fields]) => ({ status: 1, msg: rows }))
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
 
-  getGameById: async game_id => {
+  getGameById: async (game_id) => {
     return await db2
       .promise()
       .query(
@@ -28,13 +28,13 @@ const GameModel = {
           return { status: -1, msg: `沒有這筆遊戲資料( ID = ${game_id})` };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
 
-  getServersByGameId: async game_id => {
+  getServersByGameId: async (game_id) => {
     return await db2
       .promise()
       .query(
@@ -48,12 +48,12 @@ const GameModel = {
           return { status: -1, msg: `該遊戲沒有設置伺服器( ID = ${game_id})` };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  getFaqByGameId: async game_id => {
+  getFaqByGameId: async (game_id) => {
     return await db2
       .promise()
       .query(
@@ -67,7 +67,7 @@ const GameModel = {
       .then(([rows, fields]) => {
         return { status: 1, msg: rows };
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
@@ -87,11 +87,11 @@ const GameModel = {
           return { server_id: address, server_name: address };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
-  }
+  },
 };
 
 module.exports = GameModel;
