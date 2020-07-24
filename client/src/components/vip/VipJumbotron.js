@@ -39,31 +39,46 @@ const VipJumbotron = ({ game_id, products }) => {
         alt="各位親愛的偵探們照過來!!"
       ></img>
     );
-  const products_info =
-    game_id === "g66naxx2tw" ? (
-      <div>
-        <h3 className="mt-2">方案如下 ：</h3>
-        <ul>
-          {products.map((prod) => (
-            <li key={`prod_${prod.product_id}`}>
-              <span role="img" aria-label="hand">
-                🎊
-              </span>
-              NTD.{prod.price}，共可獲得 {prod.gold} 信用點。
-            </li>
-          ))}
-        </ul>
-        <br />
-      </div>
-    ) : (
-      <p>
-        試營運方案： <br />
-        <span role="img" aria-label="hand">
-          👉
-        </span>
-        儲值NTD.3,000，共可獲得7200回聲，所有偵探們都先找小管家完成驗證身分才能購買喔。
-      </p>
-    );
+  const products_info = (
+    <div>
+      <h3 className="mt-2">方案如下 ：</h3>
+      <ul>
+        {products.map((prod) => (
+          <li key={`prod_${prod.product_id}`}>
+            <span role="img" aria-label="hand">
+              🎊
+            </span>
+            NTD.{prod.price}，共可獲得 {prod.gold} 信用點。
+          </li>
+        ))}
+      </ul>
+      <br />
+    </div>
+  );
+  // game_id === "g66naxx2tw" ? (
+  //   <div>
+  //     <h3 className="mt-2">方案如下 ：</h3>
+  //     <ul>
+  //       {products.map((prod) => (
+  //         <li key={`prod_${prod.product_id}`}>
+  //           <span role="img" aria-label="hand">
+  //             🎊
+  //           </span>
+  //           NTD.{prod.price}，共可獲得 {prod.gold} 信用點。
+  //         </li>
+  //       ))}
+  //     </ul>
+  //     <br />
+  //   </div>
+  // ) : (
+  //   <p>
+  //     試營運方案： <br />
+  //     <span role="img" aria-label="hand">
+  //       👉
+  //     </span>
+  //     儲值NTD.3,000，共可獲得7200回聲，所有偵探們都先找小管家完成驗證身分才能購買喔。
+  //   </p>
+  // );
 
   const special_note =
     game_id === "g66naxx2tw" ? (
