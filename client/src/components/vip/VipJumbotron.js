@@ -48,7 +48,8 @@ const VipJumbotron = ({ game_id, products }) => {
             <span role="img" aria-label="hand">
               🎊
             </span>
-            NTD.{prod.price}，共可獲得 {prod.gold} 信用點。
+            NTD.{prod.price}，共可獲得 {prod.gold}{" "}
+            {game_id === "g66naxx2tw" ? "信用點" : "回聲"}。
           </li>
         ))}
       </ul>
