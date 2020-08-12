@@ -9,6 +9,8 @@ const questions = require("./routes/api/questions");
 const upload = require("./routes/api/upload");
 const events = require("./routes/api/events");
 const vip = require("./routes/api/vip");
+const vipv2 = require("./routes/api/vipv2");
+
 const CONFIG = require("./config/config")[process.env.NODE_ENV];
 const requestIp = require("request-ip");
 const helmet = require("helmet");
@@ -16,7 +18,7 @@ const helmet = require("helmet");
 // create a rotating write stream
 var accessLogStream = rfs("access.log", {
   interval: "1d", // rotate daily
-  path: path.join(__dirname, "log")
+  path: path.join(__dirname, "log"),
 });
 const app = express();
 app.set("trust proxy", true);
@@ -26,10 +28,10 @@ app.use(
     limits: { fileSize: 50 * 1024 * 1024 },
     abortOnLimit: true,
     responseOnLimit: "檔案太大",
-    limitHandler: function(req, res, next) {
+    limitHandler: function (req, res, next) {
       //console.log("hi");
       return res.status(413).send({ file01: "檔案太大" });
-    }
+    },
   })
 );
 
@@ -39,9 +41,9 @@ app.use(requestIp.mw());
 app.use(helmet());
 
 //check if ip is in whitelist
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   const white_list = require("./config/config").white_list;
-  const found = white_list.find(item => item.ip === req.clientIp);
+  const found = white_list.find((item) => item.ip === req.clientIp);
   //console.log("req.clientIp", req.clientIp);
   if (found) {
     req.whitelisted = true;
@@ -58,7 +60,7 @@ app.use("/api/events", events);
 app.use("/api/questions", questions);
 app.use("/api/upload", upload);
 app.use("/api/vip", vip);
-
+app.use("/api/vipv2", vipv2);
 app.use("/uploads", express.static("client/public/uploads"));
 
 //serve static build (client)
@@ -83,7 +85,7 @@ if (app.get("env") !== "production") {
   var options = {
     key: fs.readFileSync(CONFIG.ssl_options.keyfile),
     cert: fs.readFileSync(CONFIG.ssl_options.certfile),
-    ca: [fs.readFileSync(CONFIG.ssl_options.cafile)]
+    ca: [fs.readFileSync(CONFIG.ssl_options.cafile)],
   };
 
   server = https.createServer(options, app);

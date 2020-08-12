@@ -20,14 +20,14 @@ const VipResult = ({ record }) => {
               <h6 className="text-info mt-1 mb-1">
                 下次可以透過
                 <a
-                  href={`/wire_report/${record.game_id}?token=${record.token}`}
+                  href={`/wire_report_v2/${record.game_id}?token=${record.token}`}
                 >
                   此連結
                 </a>
                 來快速填寫匯款回報單
               </h6>
               您的回報內容如下:
-              <p className="card-text">
+              <div className="card-text">
                 <table className="table table-hover">
                   <tbody>
                     <tr>
@@ -111,7 +111,7 @@ const VipResult = ({ record }) => {
                     </tr>
                   </tbody>
                 </table>
-              </p>
+              </div>
             </div>
             <div className="card-footer text-center">
               <small className="text-muted">
