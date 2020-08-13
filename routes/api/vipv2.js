@@ -91,7 +91,7 @@ router.post("/createReport", async (req, res) => {
     product_id: req.body.productId,
     qty: req.body.qty,
     note: req.body.note,
-    recipient: req.body.recipient,
+    recipient: req.body.recipient || "",
     vip_ranking,
   };
 
@@ -195,7 +195,6 @@ router.get("/prev_report/:token", async (req, res) => {
     return res.status(500).json({ msg: "not valid" });
   }
 
-  console.log("decoded", decoded);
   if (decoded.report_id) {
     const report = await VipV2Model.getReportByID(decoded.report_id);
     if (report.status === 1) {

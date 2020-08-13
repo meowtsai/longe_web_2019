@@ -437,8 +437,8 @@ const TaiwanAddressPick = ({ defaultValue, onChange }) => {
   };
 
   const onSelectSubArea = (subArea) => {
-    //setSubArea(subArea);
-    onChange(subArea);
+    setDefaultZip(subArea);
+    onChange(area + subArea);
   };
 
   return (
@@ -458,7 +458,7 @@ const TaiwanAddressPick = ({ defaultValue, onChange }) => {
         </select>
         <select
           className="custom-select"
-          onChange={(e) => onSelectSubArea(area + e.target.value)}
+          onChange={(e) => onSelectSubArea(e.target.value)}
           value={defaultZip}
         >
           <option value="">選擇區域鄉鎮</option>
