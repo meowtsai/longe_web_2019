@@ -150,6 +150,7 @@ const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
           <TaiwanAddressPick
             onChange={onAddressChange}
             defaultValue={prevReport.area}
+            showMainAreaOnly={true}
           />
         </div>
         <div className="form-group">

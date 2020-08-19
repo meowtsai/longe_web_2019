@@ -221,7 +221,10 @@ const ReportForm2ndPart = ({
                     </div>
                   )}
 
-                  <TaiwanAddressPick onChange={onAddressChange} />
+                  <TaiwanAddressPick
+                    onChange={onAddressChange}
+                    showMainAreaOnly={false}
+                  />
 
                   {errors.area && (
                     <small className="text-danger mt-0 mb-2">

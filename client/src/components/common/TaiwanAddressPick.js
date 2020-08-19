@@ -406,7 +406,11 @@ const zip3_dict = {
   南海諸島: { 東沙: "817", 南沙: "819" },
 };
 
-const TaiwanAddressPick = ({ defaultValue, onChange }) => {
+const TaiwanAddressPick = ({
+  defaultValue,
+  onChange,
+  showMainAreaOnly = false,
+}) => {
   const [area, setArea] = useState("");
   // Object.keys(zip3_dict).map((area) => {
   //   if (defaultValue.indexOf(area) >= 0) {
@@ -422,18 +426,26 @@ const TaiwanAddressPick = ({ defaultValue, onChange }) => {
         if (defaultValue.indexOf(area) >= 0) {
           setArea(area);
         }
-        Object.keys(zip3_dict[area]).forEach((subArea) => {
-          if (zip3_dict[area][subArea] === defaultValue.split(" ")[1].trim()) {
-            setDefaultZip(`${subArea} ${zip3_dict[area][subArea]} `);
-          }
-        });
+        if (defaultValue.split(" ")[1]) {
+          Object.keys(zip3_dict[area]).forEach((subArea) => {
+            if (
+              zip3_dict[area][subArea] === defaultValue.split(" ")[1].trim()
+            ) {
+              setDefaultZip(`${subArea} ${zip3_dict[area][subArea]} `);
+            }
+          });
+        }
       });
     }
   }, [defaultValue]);
 
   const onSelectArea = (area) => {
     setArea(area);
-    onChange("");
+    if (showMainAreaOnly) {
+      onChange(area);
+    } else {
+      onChange("");
+    }
   };
 
   const onSelectSubArea = (subArea) => {
@@ -456,22 +468,24 @@ const TaiwanAddressPick = ({ defaultValue, onChange }) => {
             </option>
           ))}
         </select>
-        <select
-          className="custom-select"
-          onChange={(e) => onSelectSubArea(e.target.value)}
-          value={defaultZip}
-        >
-          <option value="">選擇區域鄉鎮</option>
-          {area &&
-            Object.keys(zip3_dict[area]).map((subArea) => (
-              <option
-                key={subArea}
-                value={`${subArea} ${zip3_dict[area][subArea]} `}
-              >
-                {zip3_dict[area][subArea]} - {subArea}
-              </option>
-            ))}
-        </select>
+        {!showMainAreaOnly && (
+          <select
+            className="custom-select"
+            onChange={(e) => onSelectSubArea(e.target.value)}
+            value={defaultZip}
+          >
+            <option value="">選擇區域鄉鎮</option>
+            {area &&
+              Object.keys(zip3_dict[area]).map((subArea) => (
+                <option
+                  key={subArea}
+                  value={`${subArea} ${zip3_dict[area][subArea]} `}
+                >
+                  {zip3_dict[area][subArea]} - {subArea}
+                </option>
+              ))}
+          </select>
+        )}
       </div>
     </div>
   );

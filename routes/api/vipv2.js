@@ -68,7 +68,7 @@ router.post("/createReport", async (req, res) => {
     log.game_id
   );
 
-  console.log(req.body);
+  //console.log(req.body);
   const report_id = req.body.report_id;
 
   let wireReportObject = {
