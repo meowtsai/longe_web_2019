@@ -349,7 +349,7 @@ router.get(
 //@route: POST /api/questions/create_web_form
 //@desc: POST create_web_form
 //@access: public
-router.post("/create_web_form", (req, res) => {
+router.post("/create_web_form", async (req, res) => {
   let { errors, isValid } = validateCreateWebInput({
     ...req.body,
     files: req.files,
@@ -361,6 +361,13 @@ router.post("/create_web_form", (req, res) => {
   }
   const ip = req.clientIp;
   const geo = geoip.lookup(ip);
+
+  const isRepeat = await ServiceModel.checkRepeatSubmit(ip);
+
+  //console.log(chkResult);
+  if (isRepeat.status > 0) {
+    return res.status(400).json({ content: "請勿重複提問!" });
+  }
 
   //console.log("ip", ip);
   //console.log("geo", geo);

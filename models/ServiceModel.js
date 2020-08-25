@@ -1,7 +1,7 @@
 const { db1, db2 } = require("./db_conn");
 const isEmpty = require("../validation/is-empty");
 const ServiceModel = {
-  getUnreadByUID: async partner_uid => {
+  getUnreadByUID: async (partner_uid) => {
     return await db2
       .promise()
       .query(
@@ -9,7 +9,7 @@ const ServiceModel = {
         partner_uid
       )
       .then(([rows, fields]) => rows[0])
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return 0;
       });
@@ -39,12 +39,12 @@ const ServiceModel = {
           return { status: -1, msg: "沒有符合的提問紀錄" };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  getQuestionByID: async criteria => {
+  getQuestionByID: async (criteria) => {
     let sqlQuery =
       "SELECT q.id,q.type,q.content,q.server_id,q.character_name,q.partner_uid,q.pic_path1,q.pic_path2,q.pic_path3, q.create_time, q.status, q.phone,q.email, g.name as game_name, gi.name as server_name FROM questions  q join servers gi on gi.server_id=q.server_id join games g on g.game_id=gi.game_id WHERE  q.id=?";
     if (!isEmpty(criteria.partner_uid)) {
@@ -58,7 +58,7 @@ const ServiceModel = {
         criteria.question_id,
         !isEmpty(criteria.partner_uid)
           ? criteria.partner_uid
-          : criteria.check_id
+          : criteria.check_id,
       ])
       .then(([rows, fields]) => {
         if (rows.length > 0) {
@@ -68,19 +68,19 @@ const ServiceModel = {
             rows[0].status === "7"
           )
             db1.query("UPDATE questions set is_read=1 where id=?", [
-              criteria.question_id
+              criteria.question_id,
             ]);
           return { status: 1, msg: rows[0] };
         } else {
           return { status: -1, msg: "沒有符合的提問紀錄" };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  getQuestionByIDQuickCheck: async criteria => {
+  getQuestionByIDQuickCheck: async (criteria) => {
     let sqlQuery = "SELECT id FROM questions  q WHERE  q.id=?";
     if (!isEmpty(criteria.partner_uid)) {
       sqlQuery += " and q.partner_uid=?";
@@ -93,7 +93,7 @@ const ServiceModel = {
         criteria.question_id,
         !isEmpty(criteria.partner_uid)
           ? criteria.partner_uid
-          : criteria.check_id
+          : criteria.check_id,
       ])
       .then(([rows, fields]) => {
         if (rows.length > 0) {
@@ -102,7 +102,7 @@ const ServiceModel = {
           return false;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return false;
       });
@@ -122,12 +122,12 @@ const ServiceModel = {
           return { status: -1, msg: "沒有符合的提問紀錄" };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  getRepliesByQID: async question_id => {
+  getRepliesByQID: async (question_id) => {
     return await db2
       .promise()
       .query(
@@ -137,12 +137,12 @@ const ServiceModel = {
       .then(([rows, fields]) => {
         return { status: 1, msg: rows };
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  getPicplusByQID: async question_id => {
+  getPicplusByQID: async (question_id) => {
     return await db2
       .promise()
       .query(
@@ -152,12 +152,12 @@ const ServiceModel = {
       .then(([rows, fields]) => {
         return { status: 1, msg: rows };
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  checkRepeactReplies: async question_id => {
+  checkRepeactReplies: async (question_id) => {
     return await db2
       .promise()
       .query(
@@ -167,7 +167,22 @@ const ServiceModel = {
       .then(([rows, fields]) => {
         return { status: rows[0].chk, msg: rows[0].chk };
       })
-      .catch(err => {
+      .catch((err) => {
+        //console.log(err);
+        return { status: -1, msg: err.message };
+      });
+  },
+  checkRepeatSubmit: async (ip) => {
+    return await db2
+      .promise()
+      .query(
+        "select count(*) >0 as chk from questions where ip=?  and create_time > date_sub(now(), INTERVAL 3 MINUTE);",
+        ip
+      )
+      .then(([rows, fields]) => {
+        return { status: rows[0].chk, msg: rows[0].chk };
+      })
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
@@ -183,7 +198,7 @@ const ServiceModel = {
               "INSERT question_pictures set ?",
               {
                 question_id: rows.insertId,
-                pic_path: add_pics[cnt]
+                pic_path: add_pics[cnt],
               },
               (err, result) => {
                 if (err) throw err;
@@ -197,7 +212,7 @@ const ServiceModel = {
           return { status: -1, msg: "新增失敗" };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
@@ -214,7 +229,7 @@ const ServiceModel = {
               {
                 question_id: replyObject.question_id,
                 reply_id: rows.insertId,
-                pic_path: add_pics[cnt]
+                pic_path: add_pics[cnt],
               },
               (err, result) => {
                 if (err) throw err;
@@ -228,12 +243,12 @@ const ServiceModel = {
           return { status: -1, msg: "新增失敗" };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  openQuestion: async q_id => {
+  openQuestion: async (q_id) => {
     return await db1
       .promise()
       .query("UPDATE questions set is_read=0, status=1 where id=?", [q_id])
@@ -244,12 +259,12 @@ const ServiceModel = {
           return { status: -1, msg: "修改失敗" };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
   },
-  closeQuestion: async criteria => {
+  closeQuestion: async (criteria) => {
     let sqlQuery =
       "UPDATE questions set close_admin_uid=null,system_closed_start=null, status=4 where id=?";
     if (!isEmpty(criteria.partner_uid)) {
@@ -264,7 +279,7 @@ const ServiceModel = {
         criteria.question_id,
         !isEmpty(criteria.partner_uid)
           ? criteria.partner_uid
-          : criteria.check_id
+          : criteria.check_id,
       ])
       .then(([rows, fields]) => {
         if (rows.affectedRows > 0) {
@@ -273,11 +288,11 @@ const ServiceModel = {
           return { status: -1, msg: "修改失敗" };
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
         return { status: -1, msg: err.message };
       });
-  }
+  },
 };
 
 module.exports = ServiceModel;
