@@ -35,8 +35,8 @@ const VipWireReportHome = ({ match, location }) => {
     fetchProductsData(gameId);
   }, [gameId]); // Or [] if effect doesn't need props or state
 
-  const [logData, setLogData] = useState({ report_id: "VP20200825111008wvg" });
-  //const [logData, setLogData] = useState({});
+  //const [logData, setLogData] = useState({ report_id: "VP20200825111008wvg" });
+  const [logData, setLogData] = useState({});
   const [resultData, setResultData] = useState({});
 
   if (resultData.report_id) {
