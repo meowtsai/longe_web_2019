@@ -27,6 +27,7 @@ const ReportForm2ndPart = ({
 
   //console.log("errors", errors);
   const onSubmit = (data) => {
+    //console.log("area", area);
     if (area === "" && watchInvoiceOption === "paper") {
       setError("area", {
         type: "manual",
@@ -36,8 +37,9 @@ const ReportForm2ndPart = ({
     }
 
     const addInfo =
-      watchInvoiceOption === "donate" ? { area: "", address: "" } : {};
-
+      watchInvoiceOption === "donate" ? { area: "", address: "" } : { area };
+    //console.log({ ...data, ...addInfo });
+    //return;
     onSubmitReport({ ...data, ...addInfo });
     //onNextStepClick({ ...data, area, game_id: gameId });
   };
@@ -50,11 +52,12 @@ const ReportForm2ndPart = ({
     }
   }, [setValue, prevReport]);
   const onAddressChange = (value) => {
+    console.log("onAddressChange value", value);
     setArea(value);
   };
   return (
     <form className="card border-info mb-3" onSubmit={handleSubmit(onSubmit)}>
-      <div class="card-header  border-info">第二步: 本次匯款資料回報</div>
+      <div className="card-header  border-info">第二步: 本次匯款資料回報</div>
       <div className="card-body text-info">
         <ReportInput
           type="select"
