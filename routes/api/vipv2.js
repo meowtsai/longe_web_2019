@@ -29,7 +29,7 @@ router.post("/first_step", async (req, res) => {
   const log = {
     report_id,
     phone: req.body.userPhone,
-    email: req.body.email,
+    email: req.body.email.toLowerCase(),
     char_name: req.body.charName,
     role_id: req.body.roleId,
     server_id: req.body.serverId,

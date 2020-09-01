@@ -362,11 +362,13 @@ router.post("/create_web_form", async (req, res) => {
   const ip = req.clientIp;
   const geo = geoip.lookup(ip);
 
-  const isRepeat = await ServiceModel.checkRepeatSubmit(ip);
+  if (!req.whitelisted) {
+    const isRepeat = await ServiceModel.checkRepeatSubmit(ip);
 
-  //console.log(chkResult);
-  if (isRepeat.status > 0) {
-    return res.status(400).json({ content: "請勿重複提問!" });
+    //console.log(chkResult);
+    if (isRepeat.status > 0) {
+      return res.status(400).json({ content: "請勿重複提問!" });
+    }
   }
 
   //console.log("ip", ip);
