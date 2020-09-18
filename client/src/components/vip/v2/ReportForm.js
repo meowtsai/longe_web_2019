@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-
+import classnames from "classnames";
 import ReportInput from "./ReportInput";
 import moment from "moment";
 import axios from "axios";
 import TaiwanAddressPick from "../../common/TaiwanAddressPick";
 const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
   const [area, setArea] = useState("");
+  const [birthday, setBirthday] = useState(null);
   const [serverOptions, setServerOptions] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -18,7 +20,19 @@ const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
   } = useForm(); // initialise the hook
 
   const onSubmit = (data) => {
-    //console.log(data);
+    //     birthDayYYYY: ""
+    // birthdayDD: ""
+    // birthdayMM: "
+    const birthday = `${data.birthDayYYYY}-${data.birthdayMM}-${data.birthdayDD}`;
+
+    if (!moment(birthday, "YYYY-MM-DD").isValid()) {
+      setError("birthday", {
+        type: "manual",
+        message: "生日格式錯誤",
+      });
+      return;
+    }
+
     if (area === "") {
       setError("area", {
         type: "manual",
@@ -27,7 +41,12 @@ const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
       return;
     }
 
-    onNextStepClick({ ...data, area, game_id: gameId });
+    delete data.birthDayYYYY;
+    delete data.birthdayDD;
+    delete data.birthdayMM;
+    //console.log(data);
+
+    onNextStepClick({ ...data, area, game_id: gameId, birthday });
   };
 
   const roleIdPlaceholderText =
@@ -56,6 +75,7 @@ const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
       setValue("gender", prevReport.gender);
       setValue("birthday", moment(prevReport.birthday).format("YYYY-MM-DD"));
       setArea(prevReport.area);
+      setBirthday(moment(prevReport.birthday).format("YYYY-MM-DD"));
     }
   }, [setValue, prevReport]);
 
@@ -64,10 +84,56 @@ const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
     clearErrors("area");
   };
 
+  const birthDayYYYY = [];
+
+  for (
+    let yyIndex = 1940;
+    yyIndex < moment().subtract(17, "year").format("YYYY");
+    yyIndex++
+  ) {
+    if (moment(birthday).year() === yyIndex) {
+      birthDayYYYY.push(
+        <option selected key={`yyyy-${yyIndex}`}>
+          {yyIndex}
+        </option>
+      );
+    } else {
+      birthDayYYYY.push(<option key={`yyyy-${yyIndex}`}>{yyIndex}</option>);
+    }
+  }
+
+  const birthDayMM = [];
+
+  for (let mmIndex = 1; mmIndex < 13; mmIndex++) {
+    if (moment(birthday).month() + 1 === mmIndex) {
+      birthDayMM.push(
+        <option selected key={`mm-${mmIndex}`}>
+          {mmIndex}
+        </option>
+      );
+    } else {
+      birthDayMM.push(<option key={`mm-${mmIndex}`}>{mmIndex}</option>);
+    }
+  }
+
+  const birthDayDD = [];
+
+  for (let ddIndex = 1; ddIndex < 32; ddIndex++) {
+    if (moment(birthday).date() === ddIndex) {
+      birthDayDD.push(
+        <option selected key={`dd-${ddIndex}`}>
+          {ddIndex}
+        </option>
+      );
+    } else {
+      birthDayDD.push(<option key={`dd-${ddIndex}`}>{ddIndex}</option>);
+    }
+  }
+
   //console.log("errors", errors);
   return (
     <form className="card border-info mb-3" onSubmit={handleSubmit(onSubmit)}>
-      <div class="card-header  border-info">第一步: 個人資料專區</div>
+      <div className="card-header  border-info">第一步: 個人資料專區</div>
       <div className="card-body text-info">
         <ReportInput
           type="select"
@@ -174,16 +240,65 @@ const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
           ]}
         />
 
-        <ReportInput
-          type="date"
-          name="birthday"
-          label="生日"
-          symbol="‍🎂️"
-          register={register({
-            required: "請選擇出生年月日",
-          })}
-          error={errors.birthday}
-        />
+        <div className="form-group">
+          <label htmlFor={"birthday"} className="col-form-label-sm">
+            {"生日"}
+          </label>
+          <div className="form-group input-group">
+            <div className="input-group-prepend">
+              {" "}
+              <span
+                className="input-group-text"
+                role="img"
+                aria-label={"生日"}
+                aria-hidden={"false"}
+              >
+                {"‍🎂️"}
+              </span>
+            </div>
+            <select
+              name={"birthDayYYYY"}
+              ref={register}
+              defaultValue={birthday ? moment(birthday).year() : ""}
+              className={classnames("form-control form-control-md", {
+                "is-invalid": errors.birthDayYYYY,
+              })}
+              onChange={() => clearErrors("birthday")}
+            >
+              <option value="">--選擇年--</option>
+              {birthDayYYYY}
+            </select>
+
+            <select
+              name={"birthdayMM"}
+              ref={register}
+              defaultValue={birthday ? moment(birthday).month() + 1 : ""}
+              className={classnames("form-control form-control-md", {
+                "is-invalid": errors.birthdayMM,
+              })}
+              onChange={() => clearErrors("birthday")}
+            >
+              <option value="">--選擇月--</option>
+              {birthDayMM}
+            </select>
+
+            <select
+              name={"birthdayDD"}
+              ref={register}
+              defaultValue={birthday ? moment(birthday).day() : ""}
+              className={classnames("form-control form-control-md", {
+                "is-invalid": errors.birthdayDD,
+              })}
+              onChange={() => clearErrors("birthday")}
+            >
+              <option value="">--選擇日--</option>
+              {birthDayDD}
+            </select>
+          </div>
+        </div>
+        <div className="form-group">
+          <small className="text-danger">{errors.birthday?.message}</small>
+        </div>
 
         <button type="submit" className="btn btn-info float-right">
           下一步

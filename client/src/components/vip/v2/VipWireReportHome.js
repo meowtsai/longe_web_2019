@@ -52,7 +52,7 @@ const VipWireReportHome = ({ match, location }) => {
     axios
       .post("/api/vipv2/first_step", log)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
 
         setLogData(res.data?.record);
       })
@@ -70,7 +70,7 @@ const VipWireReportHome = ({ match, location }) => {
         report_id: logData.report_id,
       })
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
 
         setResultData(res.data?.record);
       })

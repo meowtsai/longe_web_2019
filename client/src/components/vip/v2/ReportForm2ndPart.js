@@ -52,7 +52,7 @@ const ReportForm2ndPart = ({
     }
   }, [setValue, prevReport]);
   const onAddressChange = (value) => {
-    console.log("onAddressChange value", value);
+    //console.log("onAddressChange value", value);
     setArea(value);
   };
   return (
