@@ -88,7 +88,7 @@ const ReportForm = ({ gameId, onNextStepClick, prevReport }) => {
 
   for (
     let yyIndex = 1940;
-    yyIndex < moment().subtract(17, "year").format("YYYY");
+    yyIndex < moment().subtract(5, "year").format("YYYY");
     yyIndex++
   ) {
     if (moment(birthday).year() === yyIndex) {
