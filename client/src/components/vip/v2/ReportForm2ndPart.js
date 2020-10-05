@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import classnames from "classnames";
 import ReportInput from "./ReportInput";
 import TaiwanAddressPick from "../../common/TaiwanAddressPick";
+
 const ReportForm2ndPart = ({
   gameId,
   onSubmitReport,
@@ -19,6 +20,24 @@ const ReportForm2ndPart = ({
     setValue,
   } = useForm(); // initialise the hook
   const watchInvoiceOption = watch("invoiceOption", "donate"); // you can supply default value as second argument
+  const watchQty = watch("qty"); // you can supply default value as second argument
+  const watchProductId = watch("productId"); // you can supply default value as second argument
+  // console.log("products", products);
+  // console.log("watchProductId", watchProductId);
+  useEffect(() => {
+    if (watchProductId !== undefined) {
+      const product = products.filter(
+        (p) => p.product_id === watchProductId
+      )[0];
+
+      if (product) {
+        if (gameId === "g66naxx2tw" && watchQty !== "1") {
+          setValue("qty", 1);
+        }
+        setValue("wireAmount", watchQty * product.price);
+      }
+    }
+  }, [watchQty, watchProductId, gameId, products, setValue]);
   const [area, setArea] = useState("");
   const notePlaceholderText =
     gameId === "g66naxx2tw"
@@ -122,6 +141,7 @@ const ReportForm2ndPart = ({
             required: "輸入匯款金額",
             min: 3000,
           })}
+          readonly={watchProductId ? true : false}
           error={errors.wireAmount}
         />
         <ReportInput

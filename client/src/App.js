@@ -24,7 +24,6 @@ import Complete_agreement from "./components/policies/Complete_agreement";
 import SurveyMain from "./components/survey/SurveyMain";
 
 import VipWireReportHome from "./components/vip/v2/VipWireReportHome";
-import VipHome from "./components/vip/VipHome";
 
 class App extends Component {
   render() {

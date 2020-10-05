@@ -60,6 +60,7 @@ class Navbar extends Component {
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
+                  href="!#"
                 >
                   遊戲
                 </a>
