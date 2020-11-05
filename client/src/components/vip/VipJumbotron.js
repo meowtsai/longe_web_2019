@@ -28,7 +28,7 @@ const VipJumbotron = ({ game_id, products }) => {
   const banner =
     game_id === "g66naxx2tw" ? (
       <img
-        src="https://lh3.googleusercontent.com/fWnsvnNSoQCvdHryUuEWpKhYThClG0ERsDEBr_cFYtkw_mSuZknZ1ruVoPCzBF_pElbi5uAh6QcprVDEClXjpkDDk3r0JpBhCqE1MZ7L-dHqhauzs0K8TsIdbh5n=w640"
+        src="/p/image/support_help/g66_wire_report_banner.jpg"
         className="rounded img-fluid m-auto"
         alt="千呼萬喚的儲值方案登場了!!"
       ></img>
@@ -39,47 +39,40 @@ const VipJumbotron = ({ game_id, products }) => {
         alt="各位親愛的偵探們照過來!!"
       ></img>
     );
+
+  const event_alert =
+    game_id === "g66naxx2tw" ? (
+      <div className="alert alert-primary" role="alert">
+        <h5 className="alert-heading"> 電台滿額禮：</h5>
+        單筆購買滿NTD 15,000元以上， <br />
+        贈送配方殘頁* 320、技能點* 20,000、新幣* 50,000。 <br />
+        購買滿NTD 30,000元，即贈送兩包滿額禮，以此類推！
+        <br />
+        滿額禮僅計算<strong>單筆消費</strong>，無法累積計算或合併計算。
+      </div>
+    ) : null;
   const products_info = (
     <div>
       <h3 className="mt-2">方案如下 ：</h3>
       <ul>
         {products.map((prod) => (
           <li key={`prod_${prod.product_id}`}>
-            <span role="img" aria-label="hand">
-              🎊
+            <span role="img" aria-label="box">
+              🔹
             </span>
             NTD.{prod.price}，共可獲得 {prod.gold}{" "}
             {game_id === "g66naxx2tw" ? "信用點" : "回聲"}。
+            {game_id === "g66naxx2tw" && prod.price >= 15000 ? (
+              <span role="img" aria-label="gift">
+                🎁
+              </span>
+            ) : null}
           </li>
         ))}
       </ul>
       <br />
     </div>
   );
-  // game_id === "g66naxx2tw" ? (
-  //   <div>
-  //     <h3 className="mt-2">方案如下 ：</h3>
-  //     <ul>
-  //       {products.map((prod) => (
-  //         <li key={`prod_${prod.product_id}`}>
-  //           <span role="img" aria-label="hand">
-  //             🎊
-  //           </span>
-  //           NTD.{prod.price}，共可獲得 {prod.gold} 信用點。
-  //         </li>
-  //       ))}
-  //     </ul>
-  //     <br />
-  //   </div>
-  // ) : (
-  //   <p>
-  //     試營運方案： <br />
-  //     <span role="img" aria-label="hand">
-  //       👉
-  //     </span>
-  //     儲值NTD.3,000，共可獲得7200回聲，所有偵探們都先找小管家完成驗證身分才能購買喔。
-  //   </p>
-  // );
 
   const special_note =
     game_id === "g66naxx2tw" ? (
@@ -125,6 +118,7 @@ const VipJumbotron = ({ game_id, products }) => {
             <div className="container">
               {slogan}
               <hr className="my-4" />
+              {event_alert}
               {products_info}
 
               <p className="small">
