@@ -80,7 +80,12 @@ const VipJumbotron = ({ game_id, products }) => {
         <span role="img" aria-label="loudspeaker">
           📢
         </span>
-        若您欲購買3000元以下的品項，歡迎使用
+        電台方案僅適用【台灣龍邑版本】，用戶需使用雙平台商店所下載的台灣龍邑版本。如非使用台灣龍邑版本，請先更換版本後再行匯款填單。
+        <br />
+        <span role="img" aria-label="loudspeaker">
+          📢
+        </span>
+        若您欲購買未滿3000元的品項，歡迎使用
         <a target="blank" href="https://www.lifeafterpay.com/">
           <img
             width="60"

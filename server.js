@@ -66,9 +66,9 @@ app.use("/uploads", express.static("client/public/uploads"));
 //serve static build (client)
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "stage") {
   //set static folder
-  app.use(express.static("client/build"));
+  app.use(express.static("client/live"));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "client", "live", "index.html"));
   });
 }
 
