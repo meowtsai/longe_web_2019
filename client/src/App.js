@@ -22,6 +22,7 @@ import EventSerial from "./components/events/EventSerial";
 import EventDeliveroo from "./components/events/EventDeliveroo";
 import Complete_agreement from "./components/policies/Complete_agreement";
 import SurveyMain from "./components/survey/SurveyMain";
+import SurveyLoginScreen from "./components/survey/SurveyLoginScreen";
 
 import VipWireReportHome from "./components/vip/v2/VipWireReportHome";
 
@@ -96,7 +97,16 @@ class App extends Component {
                 component={EventDeliveroo}
               />
 
-              <Route exact path="/survey/event18" component={SurveyMain} />
+              <Route
+                exact
+                path="/survey/event18/:game_id"
+                component={SurveyMain}
+              />
+              <Route
+                exact
+                path="/survey/2021/:game_id"
+                component={SurveyLoginScreen}
+              />
             </Switch>
           </div>
         </Router>
