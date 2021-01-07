@@ -346,7 +346,7 @@ router.post("/surveylogin", async (req, res) => {
       return;
     }
 
-    const randomCode = makeid(6).toUpperCase();
+    const randomCode = makeid(7).toUpperCase();
 
     const codeRecord = {
       event_id: 25,

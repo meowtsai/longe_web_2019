@@ -123,3 +123,7 @@
 #wrap_line_id .meg::-webkit-scrollbar-corner {
   display: none;
 }
+
+.surveyDiv {
+  background-color: --teal;
+}
