@@ -35,90 +35,85 @@ const SurveyLoginScreen = ({ match }) => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-md-9 col-sm">
-          {!verifiedRecord && (
-            <>
-              <TitlePart
-                title={"龍邑專屬服務問卷調查活動"}
-                desc={`親愛的專屬會員您好！歡迎您參加本次問卷調查活動！
+        {!verifiedRecord && (
+          <div className="col-md-9 col-sm">
+            <TitlePart
+              title={"龍邑專屬服務問卷調查活動"}
+              desc={`親愛的專屬會員您好！歡迎您參加本次問卷調查活動！
  擁有專屬資格的會員在完成問卷且驗證有效後，將會透過EMAIL發送 150 點 MYCARD 點數卡給您！
  還請會員們填寫真實建議，再次感謝您的寶貴意見與支持😊
  ※每個資格會員，限領乙組點數卡。
  `}
-              />
-              <form
-                className="card border-primary mb-3"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <div className="card-body">
-                  <div className="card-text">
-                    <div className="form-group col-md-6 col-sm">
-                      <ReportInput
-                        name="roleId"
-                        label={role_id_label}
-                        symbol="🔢"
-                        register={register({
-                          pattern: {
-                            value: /^\d{6,8}$/,
-                            message: "請輸入6~8碼數字",
-                          },
-                          required: `請輸入${role_id_label}`,
-                        })}
-                        placeholder="輸入角色ID"
-                        error={errors.roleId}
-                      />
-                      <small
-                        id="roleIdHelp"
-                        className="form-text text-muted"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setHint("gameid")}
-                      >
-                        💡 在遊戲設定中可以找到{role_id_label}
-                      </small>
-                    </div>
-                    <div className="form-group col-md-6 col-sm">
-                      <ReportInput
-                        name="accountId"
-                        label={"用戶中心帳號ID"}
-                        symbol="🆔"
-                        register={register({
-                          pattern: {
-                            value: /^\d{9}$/,
-                            message: "請輸入9碼數字",
-                          },
-                          required: "請輸入用戶中心帳號ID",
-                        })}
-                        placeholder="輸入用戶中心帳號ID"
-                        error={errors.accountId}
-                      />
-
-                      <small
-                        id="accountIdHelp"
-                        className="form-text text-muted"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setHint("accountid")}
-                      >
-                        💡 在登入主畫面及帳號設定中可以找到用戶中心帳號
-                      </small>
-                    </div>
-                    {errorMessage && (
-                      <small className="text-danger d-block">
-                        {errorMessage}
-                      </small>
-                    )}
-
-                    <button
-                      type="submit"
-                      className="btn btn-primary float-right"
+            />
+            <form
+              className="card border-primary mb-3"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className="card-body">
+                <div className="card-text">
+                  <div className="form-group col-md-6 col-sm">
+                    <ReportInput
+                      name="roleId"
+                      label={role_id_label}
+                      symbol="🔢"
+                      register={register({
+                        pattern: {
+                          value: /^\d{6,8}$/,
+                          message: "請輸入6~8碼數字",
+                        },
+                        required: `請輸入${role_id_label}`,
+                      })}
+                      placeholder="輸入角色ID"
+                      error={errors.roleId}
+                    />
+                    <small
+                      id="roleIdHelp"
+                      className="form-text text-muted"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setHint("gameid")}
                     >
-                      開始填寫問卷
-                    </button>
+                      💡 在遊戲設定中可以找到{role_id_label}
+                    </small>
                   </div>
+                  <div className="form-group col-md-6 col-sm">
+                    <ReportInput
+                      name="accountId"
+                      label={"用戶中心帳號ID"}
+                      symbol="🆔"
+                      register={register({
+                        pattern: {
+                          value: /^\d{9}$/,
+                          message: "請輸入9碼數字",
+                        },
+                        required: "請輸入用戶中心帳號ID",
+                      })}
+                      placeholder="輸入用戶中心帳號ID"
+                      error={errors.accountId}
+                    />
+
+                    <small
+                      id="accountIdHelp"
+                      className="form-text text-muted"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setHint("accountid")}
+                    >
+                      💡 在登入主畫面及帳號設定中可以找到用戶中心帳號
+                    </small>
+                  </div>
+                  {errorMessage && (
+                    <small className="text-danger d-block">
+                      {errorMessage}
+                    </small>
+                  )}
+
+                  <button type="submit" className="btn btn-primary float-right">
+                    開始填寫問卷
+                  </button>
                 </div>
-              </form>
-            </>
-          )}
-        </div>
+              </div>
+            </form>
+          </div>
+        )}
 
         {verifiedRecord && (
           <div className="col-md-9 col-sm">
