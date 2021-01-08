@@ -12,7 +12,7 @@ const TestPage1 = () => {
 
       {showForm === true && (
         <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSeqivxG0fqAxfNFnGEySofqSntk1Yu0Gx9Vl86OII79wYbaMA/viewform?embedded=true"
+          src="https://docs.google.com/forms/d/e/1FAIpQLSeqivxG0fqAxfNFnGEySofqSntk1Yu0Gx9Vl86OII79wYbaMA/viewform"
           width="640"
           height="943"
           frameBorder="0"

@@ -5,7 +5,12 @@ import ReportInput from "../vip/v2/ReportInput";
 const SurveyLoginScreen = ({ match }) => {
   const game_id = match.params.game_id;
 
-  const formId = game_id === "h55" ? "v3TcJodB6ttwRhMi9" : "GMMj4K6gc39VW6dm8";
+  //const formId = game_id === "h55" ? "v3TcJodB6ttwRhMi9" : "GMMj4K6gc39VW6dm8";
+  const formId =
+    game_id === "h55"
+      ? "1FAIpQLSf_pWteJjMefHoUAb_NFSSwFSDkrqiyxxNGgPTKlIxeE3ymwQ"
+      : "1FAIpQLSfLSZrK_xuzJzkbW3U1yjbxlXI2oBbGbcU-mrJyX74AfG0Qmw";
+
   const bgcolor = game_id === "h55" ? "#C7D2D6" : "#E6E6FA";
   const role_id_label = game_id === "h55" ? "角色ID" : "帳號ID";
   const [hint, setHint] = useState(null);
@@ -155,7 +160,7 @@ const SurveyLoginScreen = ({ match }) => {
               </p>
 
               <iframe
-                src={`https://forms.gle/${formId}`}
+                src={`https://docs.google.com/forms/d/e/${formId}/viewform?embedded=true`}
                 height="943"
                 width="100%"
                 frameBorder="0"
