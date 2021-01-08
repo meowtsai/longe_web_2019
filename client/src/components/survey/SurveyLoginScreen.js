@@ -25,7 +25,7 @@ const SurveyLoginScreen = ({ match }) => {
     if (loadCount > 0) {
       document
         .getElementsByTagName("iframe")[0]
-        .setAttribute("height", "200px");
+        .setAttribute("height", "300px");
       window.scrollTo(315, 0);
     }
   };
@@ -151,7 +151,7 @@ const SurveyLoginScreen = ({ match }) => {
                 <br />
                 請在驗證碼一欄填入
                 <strong>
-                  <u> 　{verifiedRecord.code}</u>
+                  <u>{verifiedRecord.code}</u>
                 </strong>
                 <br />
                 好讓我們辨識問卷填寫者的身分．
