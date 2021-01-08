@@ -23,7 +23,7 @@ import EventDeliveroo from "./components/events/EventDeliveroo";
 import Complete_agreement from "./components/policies/Complete_agreement";
 import SurveyMain from "./components/survey/SurveyMain";
 import SurveyLoginScreen from "./components/survey/SurveyLoginScreen";
-
+import TestHome from "./components/test/TestHome";
 import VipWireReportHome from "./components/vip/v2/VipWireReportHome";
 
 class App extends Component {
@@ -107,6 +107,7 @@ class App extends Component {
                 path="/survey/2021/:game_id"
                 component={SurveyLoginScreen}
               />
+              <Route exact path="/test/:t_id" component={TestHome} />
             </Switch>
           </div>
         </Router>
