@@ -24,10 +24,11 @@
   z-index: 999999999;
 }
 .wrap .wrap-con {
-  width: 813px;
+  width: 100%;
   position: fixed;
   top: 50%;
   left: 50%;
+  max-width: 600px;
   transform: translate(-50%, -50%);
 }
 .wrap .wrap-con > p {
@@ -53,7 +54,7 @@
 }
 .wrap .wrap-con .meg {
   width: 100%;
-  padding: 75px 90px 28px 90px;
+  /* padding: 75px 90px 28px 90px; */
   background: #281103;
   box-sizing: border-box;
   border-right: 1px solid #fff;
@@ -97,7 +98,7 @@
   background-size: cover;
 }
 #wrap_line_id .wrap-con {
-  width: 838px;
+  width: 100%;
 }
 #wrap_line_id .meg {
   width: 100%;
@@ -122,8 +123,4 @@
 }
 #wrap_line_id .meg::-webkit-scrollbar-corner {
   display: none;
-}
-
-.surveyDiv {
-  background-color: --teal;
 }

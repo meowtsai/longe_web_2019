@@ -16,11 +16,22 @@ const SurveyLoginScreen = ({ match }) => {
   const [hint, setHint] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [verifiedRecord, setVerifiedRecord] = useState(null);
+  const [loadCount, setLoadCount] = useState(0);
 
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 
+  const loaded = (e) => {
+    setLoadCount(loadCount + 1);
+    if (loadCount > 0) {
+      document
+        .getElementsByTagName("iframe")[0]
+        .setAttribute("height", "200px");
+      window.scrollTo(315, 0);
+    }
+  };
+
   const onSubmit = (data) => {
-    console.log(data);
+    //console.log(data);
 
     axios
       .post("/api/events/surveylogin", {
@@ -73,11 +84,11 @@ const SurveyLoginScreen = ({ match }) => {
                     />
                     <small
                       id="roleIdHelp"
-                      className="form-text text-muted"
+                      className="form-text text-primary"
                       style={{ cursor: "pointer" }}
                       onClick={() => setHint("gameid")}
                     >
-                      💡 在遊戲設定中可以找到{role_id_label}
+                      💡 在遊戲設定中可以找到{role_id_label}(如圖)
                     </small>
                   </div>
                   <div className="form-group col-md-6 col-sm">
@@ -98,11 +109,11 @@ const SurveyLoginScreen = ({ match }) => {
 
                     <small
                       id="accountIdHelp"
-                      className="form-text text-muted"
+                      className="form-text text-primary"
                       style={{ cursor: "pointer" }}
                       onClick={() => setHint("accountid")}
                     >
-                      💡 在登入主畫面及帳號設定中可以找到用戶中心帳號
+                      💡 在登入主畫面及帳號設定中可以找到用戶中心帳號(如圖)
                     </small>
                   </div>
                   {errorMessage && (
@@ -139,7 +150,9 @@ const SurveyLoginScreen = ({ match }) => {
                 誠摯邀請您完成以下問卷，
                 <br />
                 請在驗證碼一欄填入
-                <strong>　{verifiedRecord.code}</strong>
+                <strong>
+                  <u> 　{verifiedRecord.code}</u>
+                </strong>
                 <br />
                 好讓我們辨識問卷填寫者的身分．
                 <br />
@@ -161,11 +174,12 @@ const SurveyLoginScreen = ({ match }) => {
 
               <iframe
                 src={`https://docs.google.com/forms/d/e/${formId}/viewform?embedded=true`}
-                height="943"
+                height="4000px"
                 width="100%"
                 frameBorder="0"
                 marginHeight="0"
                 marginWidth="0"
+                onLoad={(e) => loaded(e)}
               >
                 Loading…
               </iframe>
