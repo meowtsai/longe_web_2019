@@ -23,11 +23,11 @@ const SurveyLoginScreen = ({ match }) => {
         gameId: game_id === "h55" ? "h55naxx2tw" : "g66naxx2tw",
       })
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         setVerifiedRecord(res.data);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        //console.log(err.response.data);
         setErrorMessage(err.response.data.message);
       });
   };
