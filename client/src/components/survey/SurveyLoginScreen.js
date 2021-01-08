@@ -7,12 +7,17 @@ const SurveyLoginScreen = ({ match }) => {
 
   //const formId = game_id === "h55" ? "v3TcJodB6ttwRhMi9" : "GMMj4K6gc39VW6dm8";
   const formId =
-    game_id === "h55"
+    game_id === "id5"
       ? "1FAIpQLSf_pWteJjMefHoUAb_NFSSwFSDkrqiyxxNGgPTKlIxeE3ymwQ"
       : "1FAIpQLSfLSZrK_xuzJzkbW3U1yjbxlXI2oBbGbcU-mrJyX74AfG0Qmw";
 
-  const bgcolor = game_id === "h55" ? "#C7D2D6" : "#E6E6FA";
-  const role_id_label = game_id === "h55" ? "角色ID" : "帳號ID";
+  const bgcolor = game_id === "id5" ? "#C7D2D6" : "#E6E6FA";
+  const role_id_label = game_id === "id5" ? "角色ID" : "帳號ID";
+  const imgUrl =
+    game_id === "id5"
+      ? "https://lh6.googleusercontent.com/Yz1b7xJkweHiiyDDk-Gx42IUUfDTUlDHT3eLoN-3OrfqPGNyWUgpGxcndPcped2zxlUQniJYV4-aERRVEnzzT3O_Wz00B5Ry21XTPcOxeEUlhBkUlRQ7F9F-m78K5A=w940"
+      : "https://lh5.googleusercontent.com/K2ZWEeNKGLJ7-KSzU7_aFJ_Q6C2tMJbWkt9JrF_XEL9t6PJyq_9eUvpr1xVxciuosk3YNChXbQMnTKOT0XXcOaY4nh2Hg4-OUTezMJ3T7l9KNa-xPn2Qmyo2il_39Q=w851";
+
   const [hint, setHint] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [verifiedRecord, setVerifiedRecord] = useState(null);
@@ -36,7 +41,7 @@ const SurveyLoginScreen = ({ match }) => {
     axios
       .post("/api/events/surveylogin", {
         ...data,
-        gameId: game_id === "h55" ? "h55naxx2tw" : "g66naxx2tw",
+        gameId: game_id === "id5" ? "h55naxx2tw" : "g66naxx2tw",
       })
       .then((res) => {
         //console.log(res.data);
@@ -142,6 +147,8 @@ const SurveyLoginScreen = ({ match }) => {
                 backgroundColor: bgcolor,
               }}
             >
+              <img src={imgUrl} width="100%" className="mt-2, mb-2 rounded" />
+
               <h4 className="alert-heading">專屬會員 您好! </h4>
               <p>
                 您的角色名稱 {verifiedRecord.record.char_name}，角色ID是{" "}
@@ -232,7 +239,7 @@ const HowToBox = ({ optionId, clearHint, game_id }) => {
       <div className="wrap-con">
         <p>
           {optionId === "gameid"
-            ? game_id === "h55"
+            ? game_id === "id5"
               ? "角色ID"
               : "帳號ID"
             : "用戶中心帳號ID"}
