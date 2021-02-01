@@ -43,9 +43,10 @@ const VipJumbotron = ({ game_id, products }) => {
   const event_alert =
     game_id === "g66naxx2tw" ? (
       <div className="alert alert-primary" role="alert">
-        <h5 className="alert-heading"> 電台滿額禮：</h5>
+        <h5 className="alert-heading"> 限時滿額禮：</h5>
         單筆購買滿NTD 15,000元以上， <br />
-        贈送配方殘頁* 320、技能點* 20,000、新幣* 50,000。 <br />
+        機械材料LV1*20、護甲材料LV1*20、配方殘頁*250、新幣30000
+        <br />
         購買滿NTD 30,000元，即贈送兩包滿額禮，以此類推！
         <br />
         滿額禮僅計算<strong>單筆消費</strong>，無法累積計算或合併計算。
