@@ -237,7 +237,7 @@ function validate_params(searchObject) {
   }
 
   //console.log("str_to_encrypt", str_to_encrypt);
-  console.log("sig", sig);
+  //console.log("sig", sig);
   //res.json({ str_to_encrypt, sig });
   if (key === sig) {
     return true;
