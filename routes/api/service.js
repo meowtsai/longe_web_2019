@@ -1,18 +1,18 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-var jwt = require('jsonwebtoken');
-const md5 = require('md5');
-const auth_for_create = require('../../middleware/auth_for_create');
-const SERVICE_CONFIG = require('../../config/service');
-const ServiceModel = require('../../models/ServiceModel');
-const GameModel = require('../../models/GameModel');
-const CharacterModel = require('../../models/CharacterModel');
+var jwt = require("jsonwebtoken");
+const md5 = require("md5");
+const auth_for_create = require("../../middleware/auth_for_create");
+const SERVICE_CONFIG = require("../../config/service");
+const ServiceModel = require("../../models/ServiceModel");
+const GameModel = require("../../models/GameModel");
+const CharacterModel = require("../../models/CharacterModel");
 
-router.get('/test', async (req, res) => {
-  res.json({ status: 1, msg: 'works' });
+router.get("/test", async (req, res) => {
+  res.json({ status: 1, msg: "works" });
 });
 
-router.get('/question_types', (req, res) => {
+router.get("/question_types", (req, res) => {
   const types = SERVICE_CONFIG.question_types;
   res.json({ status: 1, msg: types });
 });
@@ -21,8 +21,8 @@ router.get('/question_types', (req, res) => {
 //@desc: get a question by email,phone, checkid
 //@access: public
 
-router.post('/init_setup', auth_for_create, async (req, res) => {
-  const searchArray = req.body.search_string.replace('?', '').split('&');
+router.post("/init_setup", auth_for_create, async (req, res) => {
+  const searchArray = req.body.search_string.replace("?", "").split("&");
   let searchObject = {};
   //console.log("init_setup searchArray length", searchArray.length);
   //console.log("req.user auth", req.user);
@@ -55,7 +55,7 @@ router.post('/init_setup', auth_for_create, async (req, res) => {
     ServiceModel.getUnreadByUID(req.user.partner_uid)
       .then((unread_result) => {
         res.json({
-          token: req.header('x-auth-token'),
+          token: req.header("x-auth-token"),
           is_in_game: true,
           unread_count: unread_result.cnt,
           game_id: req.user.vendor_game_id,
@@ -74,7 +74,7 @@ router.post('/init_setup', auth_for_create, async (req, res) => {
   }
 
   for (let index = 0; index < searchArray.length; index++) {
-    const element = searchArray[index].split('=');
+    const element = searchArray[index].split("=");
     searchObject[element[0]] = element[1];
   }
 
@@ -137,7 +137,7 @@ router.post('/init_setup', auth_for_create, async (req, res) => {
         in_game_id,
         server_id: server_info.server_id,
         create_status: 0,
-        ad: '',
+        ad: "",
       };
       //console.log("character_info", character_info);
       CharacterModel.create_character(character_info).catch((err) => {
@@ -148,7 +148,7 @@ router.post('/init_setup', auth_for_create, async (req, res) => {
     const unread_result = await ServiceModel.getUnreadByUID(partner_uid);
     userObj.unread_count = unread_result.cnt;
     const token = jwt.sign(userObj, SERVICE_CONFIG.jwt_encryption, {
-      expiresIn: '1d',
+      expiresIn: "1d",
     });
 
     //
@@ -211,23 +211,23 @@ function validate_params(searchObject) {
     network,
     key,
   } = searchObject;
-  if (in_game_id === '0') {
+  if (in_game_id === "0") {
     return false;
   }
   const game_key = SERVICE_CONFIG.question_key[game_id];
   let encode_server_name = encodeURI(server_name);
   let encode_c_name = url_encode(character_name);
 
-  os_ver = os_ver ? encodeURI(os_ver) : '';
-  level = level ? level : '';
-  network = network ? network : '';
+  os_ver = os_ver ? encodeURI(os_ver) : "";
+  level = level ? level : "";
+  network = network ? network : "";
   let str_to_encrypt = `game_id=${game_id}&partner_uid=${partner_uid}&in_game_id=${in_game_id}&server_name=${encode_server_name}&character_name=${encode_c_name}&level=${level}&usr_device=${usr_device}&os_ver=${os_ver}&app_ver=${app_ver}&network=${network}&key=${game_key}`;
   let sig = md5(str_to_encrypt);
 
   if (key !== sig) {
-    str_to_encrypt = '';
+    str_to_encrypt = "";
     for (var jkey in searchObject) {
-      if (searchObject.hasOwnProperty(jkey) && jkey !== 'key') {
+      if (searchObject.hasOwnProperty(jkey) && jkey !== "key") {
         //console.log(jkey + ": " + req.body[jkey]);
         str_to_encrypt += `${jkey}=${url_encode(searchObject[jkey])}&`;
       }
@@ -237,7 +237,7 @@ function validate_params(searchObject) {
   }
 
   //console.log("str_to_encrypt", str_to_encrypt);
-  //console.log("sig", sig);
+  console.log("sig", sig);
   //res.json({ str_to_encrypt, sig });
   if (key === sig) {
     return true;
@@ -247,7 +247,7 @@ function validate_params(searchObject) {
 }
 function url_encode(url) {
   url = encodeURIComponent(url);
-  url = url.replace('~', escape('~'));
+  url = url.replace("~", escape("~"));
   // # % { } | \ ^ ~ [ ] `<>
   // url = url.replace(/\%3A/g, ":");
   // url = url.replace(/\%2F/g, "/");

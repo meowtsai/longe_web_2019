@@ -11,14 +11,16 @@ router.get("/test", (req, res) => {
 //@access: public
 router.get("/get_games", (req, res) => {
   GameModel.getGames()
-    .then(games => {
+    .then((games) => {
       if (games.status === 1) {
         res.send(games);
       } else {
         res.status(400).send(games);
       }
     })
-    .catch(err => res.status(400).send({ status: -1, msg: err.message }));
+    .catch((err) => {
+      return res.status(400).send({ status: -1, msg: err.message });
+    });
 });
 
 //@route: GET /api/games/get_games
@@ -27,14 +29,14 @@ router.get("/get_games", (req, res) => {
 router.get("/get_game/:game_id", (req, res) => {
   const game_id = req.params.game_id;
   GameModel.getGameById(game_id)
-    .then(game => {
+    .then((game) => {
       if (game.status === 1) {
         res.send(game);
       } else {
         res.status(400).send(game);
       }
     })
-    .catch(err => res.status(400).send({ status: -1, msg: err.message }));
+    .catch((err) => res.status(400).send({ status: -1, msg: err.message }));
 });
 
 //@route: GET /api/games/get_servers/:game_id
@@ -43,14 +45,14 @@ router.get("/get_game/:game_id", (req, res) => {
 router.get("/get_servers/:game_id", (req, res) => {
   const game_id = req.params.game_id;
   GameModel.getServersByGameId(game_id)
-    .then(game => {
+    .then((game) => {
       if (game.status === 1) {
         res.send(game);
       } else {
         res.status(400).send(game);
       }
     })
-    .catch(err => res.status(400).send({ status: -1, msg: err.message }));
+    .catch((err) => res.status(400).send({ status: -1, msg: err.message }));
 });
 
 module.exports = router;
