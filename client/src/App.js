@@ -25,6 +25,7 @@ import SurveyMain from "./components/survey/SurveyMain";
 import SurveyLoginScreen from "./components/survey/SurveyLoginScreen";
 import TestHome from "./components/test/TestHome";
 import VipWireReportHome from "./components/vip/v2/VipWireReportHome";
+import HelpScreen from "./components/pages/HelpScreen";
 
 class App extends Component {
   render() {
@@ -108,6 +109,7 @@ class App extends Component {
                 component={SurveyLoginScreen}
               />
               <Route exact path="/test/:t_id" component={TestHome} />
+              <Route exact path="/help/home" component={HelpScreen} />
             </Switch>
           </div>
         </Router>
