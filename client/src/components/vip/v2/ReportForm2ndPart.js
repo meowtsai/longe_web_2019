@@ -195,7 +195,7 @@ const ReportForm2ndPart = ({
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://teia.tw/zh-hant/donate/credit"
+                  href="https://teia.tw/financial-and-conference/"
                 >
                   發票徵信
                 </a>{" "}
