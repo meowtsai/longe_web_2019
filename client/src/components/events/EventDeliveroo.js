@@ -1,69 +1,69 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import { connect } from "react-redux";
 
-import PropTypes from 'prop-types';
-import Alert from '../common/Alert';
+import PropTypes from "prop-types";
+import Alert from "../common/Alert";
 import {
   deliverooVerify,
-  resetDeliverooPage
-} from '../../actions/eventActions';
-import TextFieldGroup from '../common/TextFieldGroup';
-import SelectListGroup from '../common/SelectListGroup';
-import EventDeliverooSuccess from './EventDeliverooSuccess';
+  resetDeliverooPage,
+} from "../../actions/eventActions";
+import TextFieldGroup from "../common/TextFieldGroup";
+import SelectListGroup from "../common/SelectListGroup";
+import EventDeliverooSuccess from "./EventDeliverooSuccess";
 const EventDeliveroo = ({
   event: { event, loading, logs, redeem_msg, redeem_status },
   errors,
   deliverooVerify,
-  resetDeliverooPage
+  resetDeliverooPage,
 }) => {
-  const [email, setEmail] = useState('');
-  const [server_name, setServerName] = useState('');
-  const [char_id, setCharId] = useState('');
-  const [character_name, setCharacterName] = useState('');
-  const [serial_no, setSerail] = useState('');
+  const [email, setEmail] = useState("");
+  const [server_name, setServerName] = useState("");
+  const [char_id, setCharId] = useState("");
+  const [character_name, setCharacterName] = useState("");
+  const [serial_no, setSerail] = useState("");
 
   let serversOption = [
-    { label: '手機版', value: 'mobile' },
-    { label: 'PC伺服器 - 日本', value: 'pc_japan' },
-    { label: 'PC伺服器 - 北美', value: 'pc_north_america' },
-    { label: 'PC伺服器 - 東南亞', value: 'pc_se_asia' },
-    { label: 'PC伺服器 - 國際', value: 'pc_i10n' },
-    { label: '請選擇', value: '' }
+    { label: "手機版", value: "mobile" },
+    { label: "PC伺服器 - 日本", value: "pc_japan" },
+    { label: "PC伺服器 - 北美", value: "pc_north_america" },
+    { label: "PC伺服器 - 東南亞", value: "pc_se_asia" },
+    { label: "PC伺服器 - 國際", value: "pc_i10n" },
+    { label: "請選擇", value: "" },
   ];
 
   const onClickNext = () => {
-    window.alert('兌換期間已經截止．');
+    window.alert("兌換期間已經截止．");
     return;
-    const data = {
-      email,
-      server_name,
-      character_name,
-      char_id,
-      serial_no
-    };
+    // const data = {
+    //   email,
+    //   server_name,
+    //   character_name,
+    //   char_id,
+    //   serial_no
+    // };
 
-    deliverooVerify(data);
+    // deliverooVerify(data);
   };
 
   const resetPage = () => {
-    setEmail('');
-    setServerName('');
-    setCharId('');
-    setCharacterName('');
-    setSerail('');
+    setEmail("");
+    setServerName("");
+    setCharId("");
+    setCharacterName("");
+    setSerail("");
 
     resetDeliverooPage();
   };
   return (
-    <div className='container'>
-      <div className='row'>
-        <div className='col-sm-12 col-md-9 col-lg-6 m-auto'>
-          <h4 className='text-center mt-5'>
-            <span role='img' aria-label='wrapped gift'>
+    <div className="container">
+      <div className="row">
+        <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
+          <h4 className="text-center mt-5">
+            <span role="img" aria-label="wrapped gift">
               🎁
-            </span>{' '}
-            兌獎中心{' '}
-            <span role='img' aria-label='wrapped gift'>
+            </span>{" "}
+            兌獎中心{" "}
+            <span role="img" aria-label="wrapped gift">
               🎁
             </span>
           </h4>
@@ -75,10 +75,10 @@ const EventDeliveroo = ({
                 resetPage={resetPage}
               />
             ) : (
-              <table className='table table-bordered'>
+              <table className="table table-bordered">
                 <thead>
                   <tr>
-                    <th nowrap='true' scope='col'>
+                    <th nowrap="true" scope="col">
                       活動名稱
                     </th>
                     <td>
@@ -88,27 +88,27 @@ const EventDeliveroo = ({
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope='row'>伺服器</th>
+                    <th scope="row">伺服器</th>
                     <td>
                       <SelectListGroup
-                        placeholder='伺服器'
-                        name='server_name'
+                        placeholder="伺服器"
+                        name="server_name"
                         value={server_name}
-                        onChange={e => setServerName(e.target.value)}
+                        onChange={(e) => setServerName(e.target.value)}
                         error={errors.server_name}
                         options={serversOption}
                       />
                     </td>
                   </tr>
                   <tr>
-                    <th scope='row'>角色ID：</th>
+                    <th scope="row">角色ID：</th>
                     <td>
                       <TextFieldGroup
-                        placeholder='* 角色ID'
-                        name='char_id'
-                        type='text'
+                        placeholder="* 角色ID"
+                        name="char_id"
+                        type="text"
                         value={char_id}
-                        onChange={e => {
+                        onChange={(e) => {
                           setCharId(e.target.value);
                         }}
                         error={errors.char_id}
@@ -116,78 +116,80 @@ const EventDeliveroo = ({
                     </td>
                   </tr>
                   <tr>
-                    <th scope='row'>角色名：</th>
+                    <th scope="row">角色名：</th>
                     <td>
                       <TextFieldGroup
-                        placeholder='* 角色名稱'
-                        name='character_name'
-                        onChange={e => setCharacterName(e.target.value)}
-                        type='text'
+                        placeholder="* 角色名稱"
+                        name="character_name"
+                        onChange={(e) => setCharacterName(e.target.value)}
+                        type="text"
                         value={character_name}
                         error={errors.character_name}
                       />
                     </td>
                   </tr>
                   <tr>
-                    <th scope='row'>Email：</th>
+                    <th scope="row">Email：</th>
                     <td>
                       <TextFieldGroup
-                        placeholder='* Email'
-                        name='email'
-                        onChange={e => setEmail(e.target.value)}
-                        type='text'
+                        placeholder="* Email"
+                        name="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
                         value={email}
                         error={errors.email}
                       />
                     </td>
                   </tr>
                   <tr>
-                    <th scope='row'>序號</th>
+                    <th scope="row">序號</th>
                     <td>
                       <TextFieldGroup
-                        placeholder='* 序號'
-                        name='serial_no'
-                        type='text'
+                        placeholder="* 序號"
+                        name="serial_no"
+                        type="text"
                         value={serial_no}
-                        onChange={e => {
+                        onChange={(e) => {
                           setSerail(e.target.value);
                         }}
                         error={errors.serial_no}
-                        info='請輸入兌換序號'
+                        info="請輸入兌換序號"
                       />
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan='2'>
-                      <div className='text-center'>
+                    <td colSpan="2">
+                      <div className="text-center">
                         {errors.msg && <Alert msg={errors.msg} />}
                         <a
-                          href='https://game.longeplay.com.tw/'
-                          className='btn btn-secondary  col-4'>
-                          <i class='fas fa-arrow-circle-left  mr-3' />
+                          href="https://game.longeplay.com.tw/"
+                          className="btn btn-secondary  col-4"
+                        >
+                          <i class="fas fa-arrow-circle-left  mr-3" />
                           取消
                         </a>
                         <button
                           onClick={onClickNext}
-                          className='btn btn-info  ml-3 col-4'>
+                          className="btn btn-info  ml-3 col-4"
+                        >
                           確認兌換
-                          <i class='fas fa-arrow-circle-right  ml-3' />
+                          <i class="fas fa-arrow-circle-right  ml-3" />
                         </button>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan='2'>
-                      <fieldset className='m-3'>
+                    <td colSpan="2">
+                      <fieldset className="m-3">
                         <legend>
-                          {' '}
-                          <i className='fas fa-clipboard mr-2 text-info' />{' '}
+                          {" "}
+                          <i className="fas fa-clipboard mr-2 text-info" />{" "}
                           使用注意事項
                         </legend>
 
-                        <div className='card'>
-                          <div className='card-body'>
-                            <ul className='m-3 small'>
+                        <div className="card">
+                          <div className="card-body">
+                            <ul className="m-3 small">
                               <li style={liStyle}>
                                 本序號提供有下載「荒野行動」並註冊帳號的用戶使用。
                               </li>
@@ -198,7 +200,7 @@ const EventDeliveroo = ({
                                 禮包內容物說明：
                                 <ul>
                                   <li style={liStyle2}>
-                                    {' '}
+                                    {" "}
                                     「蝶步舞曲禮包」
                                     可獲得頭像框-恭喜發財（1天）*6，另外有機會獲得蝶步舞曲套裝等多種稀有外觀獎勵
                                   </li>
@@ -224,7 +226,7 @@ const EventDeliveroo = ({
 
                               <li style={liStyle}>
                                 獎項將於 2020/3/31 晚上 23：59
-                                前，以遊戲內郵件發送至所填寫的角色ID。{' '}
+                                前，以遊戲內郵件發送至所填寫的角色ID。{" "}
                               </li>
                               <li style={liStyle}>
                                 此卡序號不得出售或兌換現金。
@@ -247,15 +249,15 @@ const EventDeliveroo = ({
 
 EventDeliveroo.propTypes = {
   deliverooVerify: PropTypes.func.isRequired,
-  resetDeliverooPage: PropTypes.func.isRequired
+  resetDeliverooPage: PropTypes.func.isRequired,
 };
-const liStyle = { listStyleType: 'square', marginBottom: '0.5rem' };
-const liStyle2 = { color: '#2458a1' };
-const mapStateToProps = state => ({
+const liStyle = { listStyleType: "square", marginBottom: "0.5rem" };
+const liStyle2 = { color: "#2458a1" };
+const mapStateToProps = (state) => ({
   event: state.event,
-  errors: state.errors
+  errors: state.errors,
 });
 export default connect(mapStateToProps, {
   deliverooVerify,
-  resetDeliverooPage
+  resetDeliverooPage,
 })(EventDeliveroo);

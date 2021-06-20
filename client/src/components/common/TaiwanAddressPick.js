@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const zip3_dict = {
@@ -9,7 +9,7 @@ const zip3_dict = {
     中山區: "203",
     安樂區: "204",
     暖暖區: "205",
-    七堵區: "206"
+    七堵區: "206",
   },
   台北市: {
     中正區: "100",
@@ -23,7 +23,7 @@ const zip3_dict = {
     北投區: "112",
     內湖區: "114",
     南港區: "115",
-    文山區: "116"
+    文山區: "116",
   },
   新北市: {
     萬里區: "207",
@@ -54,7 +54,7 @@ const zip3_dict = {
     八里區: "249",
     淡水區: "251",
     三芝區: "252",
-    石門區: "253"
+    石門區: "253",
   },
   宜蘭縣: {
     宜蘭市: "260",
@@ -69,7 +69,7 @@ const zip3_dict = {
     冬山鄉: "269",
     蘇澳鎮: "270",
     南澳鄉: "272",
-    釣魚台: "290"
+    釣魚台: "290",
   },
   新竹市: { 東區: "300", 北區: "300", 香山區: "300" },
   新竹縣: {
@@ -85,7 +85,7 @@ const zip3_dict = {
     橫山鄉: "312",
     尖石鄉: "313",
     北埔鄉: "314",
-    峨嵋鄉: "315"
+    峨嵋鄉: "315",
   },
   桃園市: {
     中壢區: "320",
@@ -100,7 +100,7 @@ const zip3_dict = {
     大溪區: "335",
     復興區: "336",
     大園區: "337",
-    蘆竹區: "338"
+    蘆竹區: "338",
   },
   苗栗縣: {
     竹南鎮: "350",
@@ -120,7 +120,7 @@ const zip3_dict = {
     銅鑼鄉: "366",
     三義鄉: "367",
     西湖鄉: "368",
-    卓蘭鎮: "369"
+    卓蘭鎮: "369",
   },
   台中市: {
     中區: "400",
@@ -151,7 +151,7 @@ const zip3_dict = {
     清水區: "436",
     大甲區: "437",
     外埔區: "438",
-    大安區: "439"
+    大安區: "439",
   },
   彰化縣: {
     彰化市: "500",
@@ -179,7 +179,7 @@ const zip3_dict = {
     二林鎮: "526",
     大城鄉: "527",
     芳苑鄉: "528",
-    二水鄉: "530"
+    二水鄉: "530",
   },
   南投縣: {
     南投市: "540",
@@ -194,7 +194,7 @@ const zip3_dict = {
     魚池鄉: "555",
     信義鄉: "556",
     竹山鎮: "557",
-    鹿谷鄉: "558"
+    鹿谷鄉: "558",
   },
   嘉義市: { 東區: "600", 西區: "600" },
   嘉義縣: {
@@ -215,7 +215,7 @@ const zip3_dict = {
     大林鎮: "622",
     溪口鄉: "623",
     義竹鄉: "624",
-    布袋鎮: "625"
+    布袋鎮: "625",
   },
   雲林縣: {
     斗南鎮: "630",
@@ -237,7 +237,7 @@ const zip3_dict = {
     水林鄉: "652",
     口湖鄉: "653",
     四湖鄉: "654",
-    元長鄉: "655"
+    元長鄉: "655",
   },
   台南市: {
     中西區: "700",
@@ -276,7 +276,7 @@ const zip3_dict = {
     大內區: "742",
     山上區: "743",
     新市區: "744",
-    安定區: "745"
+    安定區: "745",
   },
   高雄市: {
     新興區: "800",
@@ -316,7 +316,7 @@ const zip3_dict = {
     桃源區: "848",
     那瑪夏區: "849",
     茂林區: "851",
-    茄萣區: "852"
+    茄萣區: "852",
   },
   屏東縣: {
     屏東市: "900",
@@ -351,7 +351,7 @@ const zip3_dict = {
     車城鄉: "944",
     牡丹鄉: "945",
     恆春鎮: "946",
-    滿州鄉: "947"
+    滿州鄉: "947",
   },
   台東縣: {
     臺東市: "950",
@@ -369,7 +369,7 @@ const zip3_dict = {
     太麻里鄉: "963",
     金峰鄉: "964",
     大武鄉: "965",
-    達仁鄉: "966"
+    達仁鄉: "966",
   },
   花蓮縣: {
     花蓮市: "970",
@@ -384,7 +384,7 @@ const zip3_dict = {
     萬榮鄉: "979",
     玉里鎮: "981",
     卓溪鄉: "982",
-    富里鄉: "983"
+    富里鄉: "983",
   },
   金門縣: {
     金沙鎮: "890",
@@ -392,7 +392,7 @@ const zip3_dict = {
     金寧鄉: "892",
     金城鎮: "893",
     烈嶼鄉: "894",
-    烏坵鄉: "896"
+    烏坵鄉: "896",
   },
   連江縣: { 南竿鄉: "209", 北竿鄉: "210", 莒光鄉: "211", 東引鄉: "212" },
   澎湖縣: {
@@ -401,23 +401,56 @@ const zip3_dict = {
     望安鄉: "882",
     七美鄉: "883",
     白沙鄉: "884",
-    湖西鄉: "885"
+    湖西鄉: "885",
   },
-  南海諸島: { 東沙: "817", 南沙: "819" }
+  南海諸島: { 東沙: "817", 南沙: "819" },
 };
 
-const TaiwanAddressPick = ({ value, onChange }) => {
+const TaiwanAddressPick = ({
+  defaultValue,
+  onChange,
+  showMainAreaOnly = false,
+}) => {
   const [area, setArea] = useState("");
-  //const [subArea, setSubArea] = useState("");
+  // Object.keys(zip3_dict).map((area) => {
+  //   if (defaultValue.indexOf(area) >= 0) {
+  //     setArea(area);
+  //   }
+  // });
 
-  const onSelectArea = area => {
+  const [defaultZip, setDefaultZip] = useState("");
+
+  useEffect(() => {
+    if (defaultValue) {
+      Object.keys(zip3_dict).forEach((area) => {
+        if (defaultValue.indexOf(area) >= 0) {
+          setArea(area);
+        }
+        if (defaultValue.split(" ")[1]) {
+          Object.keys(zip3_dict[area]).forEach((subArea) => {
+            if (
+              zip3_dict[area][subArea] === defaultValue.split(" ")[1].trim()
+            ) {
+              setDefaultZip(`${subArea} ${zip3_dict[area][subArea]} `);
+            }
+          });
+        }
+      });
+    }
+  }, [defaultValue]);
+
+  const onSelectArea = (area) => {
     setArea(area);
-    onChange("");
+    if (showMainAreaOnly) {
+      onChange(area);
+    } else {
+      onChange("");
+    }
   };
 
-  const onSelectSubArea = subArea => {
-    //setSubArea(subArea);
-    onChange(subArea);
+  const onSelectSubArea = (subArea) => {
+    setDefaultZip(subArea);
+    onChange(area + subArea);
   };
 
   return (
@@ -425,38 +458,41 @@ const TaiwanAddressPick = ({ value, onChange }) => {
       <div className="input-group">
         <select
           className="custom-select"
-          onChange={e => onSelectArea(e.target.value)}
+          onChange={(e) => onSelectArea(e.target.value)}
           value={area}
         >
           <option value="">選擇縣市</option>
-          {Object.keys(zip3_dict).map(area => (
+          {Object.keys(zip3_dict).map((area) => (
             <option key={area} value={area}>
               {area}
             </option>
           ))}
         </select>
-        <select
-          className="custom-select"
-          onChange={e => onSelectSubArea(area + e.target.value)}
-        >
-          <option value="">選擇區域鄉鎮</option>
-          {area &&
-            Object.keys(zip3_dict[area]).map(subArea => (
-              <option
-                key={subArea}
-                value={`${subArea} ${zip3_dict[area][subArea]} `}
-              >
-                {zip3_dict[area][subArea]} - {subArea}
-              </option>
-            ))}
-        </select>
+        {!showMainAreaOnly && (
+          <select
+            className="custom-select"
+            onChange={(e) => onSelectSubArea(e.target.value)}
+            value={defaultZip}
+          >
+            <option value="">選擇區域鄉鎮</option>
+            {area &&
+              Object.keys(zip3_dict[area]).map((subArea) => (
+                <option
+                  key={subArea}
+                  value={`${subArea} ${zip3_dict[area][subArea]} `}
+                >
+                  {zip3_dict[area][subArea]} - {subArea}
+                </option>
+              ))}
+          </select>
+        )}
       </div>
     </div>
   );
 };
 
 TaiwanAddressPick.propTypes = {
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 export default TaiwanAddressPick;

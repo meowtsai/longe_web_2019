@@ -1,38 +1,38 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-var jwt = require('jsonwebtoken');
-const auth = require('../../middleware/auth');
-const auth_for_create = require('../../middleware/auth_for_create');
-const geoip = require('geoip-lite');
+var jwt = require("jsonwebtoken");
+const auth = require("../../middleware/auth");
+const auth_for_create = require("../../middleware/auth_for_create");
+const geoip = require("geoip-lite");
 
-const Validator = require('validator');
-const uniqid = require('uniqid');
-const md5 = require('md5');
-const path = require('path');
-const isEmpty = require('../../validation/is-empty');
+const Validator = require("validator");
+const uniqid = require("uniqid");
+const md5 = require("md5");
+const path = require("path");
+const isEmpty = require("../../validation/is-empty");
 
-const validateQuestionQueryInput = require('../../validation/question_query');
-const validateReplyInput = require('../../validation/reply');
-const validateCreateWebInput = require('../../validation/create');
-const nl2br = require('../../validation/nl2br');
-const nodemailer = require('nodemailer');
-const smtp_server = require('../../config/config')['smtp_server'];
+const validateQuestionQueryInput = require("../../validation/question_query");
+const validateReplyInput = require("../../validation/reply");
+const validateCreateWebInput = require("../../validation/create");
+const nl2br = require("../../validation/nl2br");
+const nodemailer = require("nodemailer");
+const smtp_server = require("../../config/config")["smtp_server"];
 
-const ServiceModel = require('../../models/ServiceModel');
-const GameModel = require('../../models/GameModel');
-const EventModel = require('../../models/EventModel');
-const moment = require('moment');
-const SERVICE_CONFIG = require('../../config/service');
+const ServiceModel = require("../../models/ServiceModel");
+const GameModel = require("../../models/GameModel");
+const EventModel = require("../../models/EventModel");
+const moment = require("moment");
+const SERVICE_CONFIG = require("../../config/service");
 
-router.get('/test', (req, res) => {
-  res.json({ msg: 'Questions API Route works' });
+router.get("/test", (req, res) => {
+  res.json({ msg: "Questions API Route works" });
 });
 
 //@route: POST /api/question/by_checkid
 //@desc: get a question by email,phone, checkid
 //@access: public
 
-router.post('/by_checkid', (req, res) => {
+router.post("/by_checkid", (req, res) => {
   //console.log("req.body", req.body);
   const { errors, isValid } = validateQuestionQueryInput(req.body);
   if (!isValid) {
@@ -41,23 +41,23 @@ router.post('/by_checkid', (req, res) => {
 
   const { email, mobile, check_id } = req.body;
 
-  ServiceModel.getQuestionByCheckID(check_id, email, mobile).then(qResult => {
+  ServiceModel.getQuestionByCheckID(check_id, email, mobile).then((qResult) => {
     if (qResult.status != 1) {
-      return res.status(404).json({ noexist: '查找的問題不存在' });
+      return res.status(404).json({ noexist: "查找的問題不存在" });
     } else {
       //console.log(qResult);
       const jsonToBeSinged = {
         check_id,
         email,
         mobile,
-        question_id: qResult.msg.id
+        question_id: qResult.msg.id,
       };
 
       jwt.sign(
         jsonToBeSinged,
         SERVICE_CONFIG.jwt_encryption,
         {
-          expiresIn: '7d'
+          expiresIn: "7d",
         },
         (err, token) => {
           //console.log(token);
@@ -72,7 +72,7 @@ router.post('/by_checkid', (req, res) => {
 //@route: GET /api/questions/view/:q_id
 //@desc: get question content by id
 //@access: private
-router.get('/view/:q_id', auth, (req, res) => {
+router.get("/view/:q_id", auth, (req, res) => {
   if (req.user) {
     let question = {};
     let replies = [];
@@ -80,40 +80,40 @@ router.get('/view/:q_id', auth, (req, res) => {
     if (!isEmpty(req.user.partner_uid)) {
       criteria = {
         partner_uid: req.user.partner_uid,
-        question_id: req.params.q_id
+        question_id: req.params.q_id,
       };
     } else {
       criteria = {
         check_id: req.user.check_id,
-        question_id: req.user.question_id
+        question_id: req.user.question_id,
       };
     }
     ServiceModel.getQuestionByID(criteria)
-      .then(qResult => {
+      .then((qResult) => {
         if (qResult.status == 1) {
           question = {
             ...qResult.msg,
-            type_text: SERVICE_CONFIG.question_types[qResult.msg.type]
+            type_text: SERVICE_CONFIG.question_types[qResult.msg.type],
           };
           //console.log("question", question);
           return ServiceModel.getRepliesByQID(question.id);
         } else {
-          return res.status(404).json({ noexist: '問題不存在' });
+          return res.status(404).json({ noexist: "問題不存在" });
         }
       })
-      .then(rResult => {
+      .then((rResult) => {
         replies = [...rResult.msg];
         question = {
           ...question,
-          replies
+          replies,
         };
         return ServiceModel.getPicplusByQID(question.id);
       })
-      .then(pResult => {
+      .then((pResult) => {
         pic_plus = [...pResult.msg];
         return res.json({ status: 1, msg: { ...question, pic_plus } });
       })
-      .catch(err => {
+      .catch((err) => {
         return res.status(400).json({ errors: err.message });
       });
   }
@@ -122,16 +122,16 @@ router.get('/view/:q_id', auth, (req, res) => {
 //@route: GET /api/questions/list/
 //@desc: get question list by user
 //@access: private
-router.get('/list', auth, (req, res) => {
+router.get("/list", auth, (req, res) => {
   if (req.user) {
     ServiceModel.getQuestions(
       req.user.partner_uid,
       req.user.server_info.server_id
-    ).then(listResult => {
+    ).then((listResult) => {
       if (listResult.status == 1) {
         return res.json(listResult);
       } else {
-        return res.status(404).json({ noexist: '問題不存在' });
+        return res.status(404).json({ noexist: "問題不存在" });
       }
     });
   }
@@ -140,14 +140,14 @@ router.get('/list', auth, (req, res) => {
 //@route: POST /api/questions/insert_reply
 //@desc: POST question_reply
 //@access: private
-router.post('/insert_reply', auth, (req, res) => {
+router.post("/insert_reply", auth, (req, res) => {
   //console.log("insert_reply", req.user);
   if (req.user) {
     //console.log(req.user);
     const { errors, isValid } = validateReplyInput({
       ...req.body,
       files: req.files,
-      ip: req.clientIp
+      ip: req.clientIp,
     });
     if (!isValid) {
       return res.status(400).json(errors);
@@ -157,15 +157,15 @@ router.post('/insert_reply', auth, (req, res) => {
     if (!isEmpty(req.user.partner_uid)) {
       criteria = {
         partner_uid: req.user.partner_uid,
-        question_id: req.body.question_id
+        question_id: req.body.question_id,
       };
     } else {
       criteria = {
         check_id: req.user.check_id,
-        question_id: req.user.question_id
+        question_id: req.user.question_id,
       };
     }
-    ServiceModel.getQuestionByIDQuickCheck(criteria).then(qExist => {
+    ServiceModel.getQuestionByIDQuickCheck(criteria).then((qExist) => {
       if (qExist) {
         const question_id = !isEmpty(req.user.partner_uid)
           ? req.body.question_id
@@ -174,7 +174,7 @@ router.post('/insert_reply', auth, (req, res) => {
         let replyObject = {
           uid: 0,
           question_id,
-          content: nl2br(Validator.escape(req.body.content))
+          content: nl2br(Validator.escape(req.body.content)),
         };
 
         let add_pics = [];
@@ -191,7 +191,7 @@ router.post('/insert_reply', auth, (req, res) => {
 
               req.files[keyName].mv(
                 `${SERVICE_CONFIG.image_upload_dir}${new_file_name}`,
-                err => {
+                (err) => {
                   if (err) return res.status(500).send({ file01: err.message });
                 }
               );
@@ -200,38 +200,38 @@ router.post('/insert_reply', auth, (req, res) => {
         }
         let rtnMsg = {};
         ServiceModel.checkRepeactReplies(question_id)
-          .then(chkResult => {
+          .then((chkResult) => {
             //console.log(chkResult);
             if (chkResult.status > 0) {
-              return res.status(400).json({ errors: '請勿重複提問!' });
+              return res.status(400).json({ errors: "請勿重複提問!" });
             } else {
               return ServiceModel.insertReply(replyObject, add_pics);
             }
           })
-          .then(insResult => {
+          .then((insResult) => {
             if (insResult.status !== 1) {
               return res.status(400).json({ errors: insResult.msg });
             }
 
             return ServiceModel.openQuestion(question_id);
           })
-          .then(setResult => {
+          .then((setResult) => {
             return ServiceModel.getRepliesByQID(question_id);
           })
-          .then(gResult => {
+          .then((gResult) => {
             rtnMsg.replies = [...gResult.msg];
             return ServiceModel.getPicplusByQID(question_id);
           })
-          .then(pResult => {
+          .then((pResult) => {
             rtnMsg.pic_plus = [...pResult.msg];
             //console.log("rtnMsg", rtnMsg);
             res.json({ status: 1, msg: rtnMsg });
           })
-          .catch(err => {
+          .catch((err) => {
             return res.status(400).json({ errors: err.message });
           });
       } else {
-        return res.status(404).json({ noexist: '問題不存在' });
+        return res.status(404).json({ noexist: "問題不存在" });
       }
     });
   }
@@ -240,24 +240,24 @@ router.post('/insert_reply', auth, (req, res) => {
 //@route: POST /api/questions/close_question
 //@desc: POST to close a question
 //@access: private
-router.post('/close_question', auth, (req, res) => {
+router.post("/close_question", auth, (req, res) => {
   if (req.user) {
     let criteria = {};
     if (!isEmpty(req.user.partner_uid)) {
       criteria = {
         partner_uid: req.user.partner_uid,
-        question_id: req.body.question_id
+        question_id: req.body.question_id,
       };
     } else {
       criteria = {
         check_id: req.user.check_id,
-        question_id: req.user.question_id
+        question_id: req.user.question_id,
       };
     }
 
     //console.log("close_question criteria", criteria);
 
-    ServiceModel.closeQuestion(criteria).then(cResult => {
+    ServiceModel.closeQuestion(criteria).then((cResult) => {
       res.json(cResult);
     });
   }
@@ -266,7 +266,7 @@ router.post('/close_question', auth, (req, res) => {
 //@route: GET /api/question/get_user_by_token
 //@desc: get user by verify its token
 //@access: private
-router.get('/get_user_by_token', auth, (req, res) => {
+router.get("/get_user_by_token", auth, (req, res) => {
   if (req.user) {
     //console.log(req.user);
     res.json({ ...req.user, question_types: SERVICE_CONFIG.question_types });
@@ -277,25 +277,28 @@ router.get('/get_user_by_token', auth, (req, res) => {
 //@desc: get user by verify its token
 //@access: private
 router.get(
-  '/render_create_form/:game_id',
+  "/render_create_form/:game_id",
   auth_for_create,
   async (req, res) => {
     const game_id = req.params.game_id;
     let rtn_data = {
       game: {},
-      user: {}
+      user: {},
     };
 
     const game = await GameModel.getGameById(game_id);
+    if (game.status !== 1) {
+      return res.status(500).send({ msg: "遊戲不存在或是未上架" });
+    }
     const servers = await GameModel.getServersByGameId(game_id);
     const faq_result = await GameModel.getFaqByGameId(game_id);
     const events = await EventModel.getSerailEvents(game_id, req.whitelisted);
     const custom_forms =
-      game_id === 'h55naxx2tw'
+      game_id === "h55naxx2tw"
         ? []
         : [
-            { type: 1, form_id: 'lost_account' },
-            { type: 2, form_id: 'topup_not_gone_through' }
+            { type: 1, form_id: "lost_account" },
+            { type: 2, form_id: "topup_not_gone_through" },
           ];
 
     rtn_data = {
@@ -304,7 +307,7 @@ router.get(
       faq: [...faq_result.msg],
       question_types: SERVICE_CONFIG.question_types,
       events: events.msg,
-      custom_forms
+      custom_forms,
     };
 
     //console.log("render_create_form", Date.now());
@@ -346,11 +349,11 @@ router.get(
 //@route: POST /api/questions/create_web_form
 //@desc: POST create_web_form
 //@access: public
-router.post('/create_web_form', (req, res) => {
+router.post("/create_web_form", async (req, res) => {
   let { errors, isValid } = validateCreateWebInput({
     ...req.body,
     files: req.files,
-    ip: req.clientIp
+    ip: req.clientIp,
   });
   //console.log("create_web_form", req.body);
   if (!isValid) {
@@ -358,6 +361,15 @@ router.post('/create_web_form', (req, res) => {
   }
   const ip = req.clientIp;
   const geo = geoip.lookup(ip);
+
+  if (!req.whitelisted) {
+    const isRepeat = await ServiceModel.checkRepeatSubmit(ip);
+
+    //console.log(chkResult);
+    if (isRepeat.status > 0) {
+      return res.status(400).json({ content: "請勿重複提問!" });
+    }
+  }
 
   //console.log("ip", ip);
   //console.log("geo", geo);
@@ -367,8 +379,8 @@ router.post('/create_web_form', (req, res) => {
   let partner_uid = null;
   let is_in_game = 0;
   let note = isEmpty(req.body.note)
-    ? ''
-    : req.body.note.replace('undefined', '');
+    ? ""
+    : req.body.note.replace("undefined", "");
   if (!isEmpty(req.body.partner_uid)) {
     partner_uid = req.body.partner_uid;
     is_in_game = 1;
@@ -388,8 +400,8 @@ router.post('/create_web_form', (req, res) => {
     is_quick: 1,
     update_time: new Date(),
     ip: ip,
-    country: geo === null ? 'NULL' : geo.country,
-    note
+    country: geo === null ? "NULL" : geo.country,
+    note,
   };
   let add_pics = [];
   //console.log("QuestionObject", questionObject);
@@ -405,7 +417,7 @@ router.post('/create_web_form', (req, res) => {
         if (index < 3) {
           questionObject = {
             ...questionObject,
-            [`pic_path${index + 1}`]: SERVICE_CONFIG.image_path + new_file_name
+            [`pic_path${index + 1}`]: SERVICE_CONFIG.image_path + new_file_name,
           };
         } else {
           add_pics.push(SERVICE_CONFIG.image_path + new_file_name);
@@ -413,7 +425,7 @@ router.post('/create_web_form', (req, res) => {
 
         req.files[keyName].mv(
           `${SERVICE_CONFIG.image_upload_dir}${new_file_name}`,
-          err => {
+          (err) => {
             if (err) return res.status(500).send({ file01: err.message });
           }
         );
@@ -423,7 +435,7 @@ router.post('/create_web_form', (req, res) => {
 
   //TODO: INSERT PICs DATA
   ServiceModel.createQuestion(questionObject, add_pics)
-    .then(createResult => {
+    .then((createResult) => {
       if (createResult.status === 1) {
         const q_id = createResult.msg;
 
@@ -431,27 +443,27 @@ router.post('/create_web_form', (req, res) => {
           check_id: questionObject.check_id,
           email: questionObject.email,
           mobile: questionObject.phone,
-          question_id: createResult.msg
+          question_id: createResult.msg,
         };
 
         jwt.sign(
           jsonToBeSinged,
           SERVICE_CONFIG.jwt_encryption,
           {
-            expiresIn: '7d'
+            expiresIn: "7d",
           },
           (err, token) => {
             //console.log(token);
             if (err) throw err;
 
             /// EMAIL /////
-            if (process.env.NODE_ENV != 'development' && !is_in_game) {
+            if (process.env.NODE_ENV != "development" && !is_in_game) {
               let transporter = nodemailer.createTransport(smtp_server);
-              const fs = require('fs');
+              const fs = require("fs");
 
               let html_template = fs.readFileSync(
-                __dirname + '/../../public/template/mail.html',
-                'utf8'
+                __dirname + "/../../public/template/mail.html",
+                "utf8"
               );
               const msg = `您提問的案件單號為#${q_id}<br />後續若要<a href='${SERVICE_CONFIG.report_path}/service/${game_id}/view/${q_id}?token=${token}'>追蹤此單號</a>的客服問題請用以下代碼進行查詢：<br /><b>${questionObject.check_id}</b>`;
 
@@ -460,9 +472,9 @@ router.post('/create_web_form', (req, res) => {
                 game_name
               );
 
-              html_template = html_template.replace('{{msg}}', msg);
+              html_template = html_template.replace("{{msg}}", msg);
               html_template = html_template.replace(
-                '{{year}}',
+                "{{year}}",
                 new Date().getFullYear()
               );
 
@@ -471,9 +483,9 @@ router.post('/create_web_form', (req, res) => {
                 from: '"龍邑自動回覆系統" <no-reply@longeplay.com.tw>', // sender address
                 to: questionObject.email, // list of receivers
                 subject: `${game_name}客服代碼通知信 ${moment().format(
-                  'YYYY-MM-DD HH:mm:ss'
+                  "YYYY-MM-DD HH:mm:ss"
                 )}`, // Subject line
-                html: html_template // html body
+                html: html_template, // html body
               };
 
               // send mail with defined transport object
@@ -490,16 +502,12 @@ router.post('/create_web_form', (req, res) => {
         return res.status(400).json(createResult);
       }
     })
-    .catch(err => {
+    .catch((err) => {
       return res.status(400).json({ errors: err.message });
     });
 });
 
-getCheckId = () =>
-  new Date()
-    .getTime()
-    .toString(32)
-    .substr(0, 7);
+getCheckId = () => new Date().getTime().toString(32).substr(0, 7);
 
 //136affa810126df66904cfb67c356031.png
 //def154ac90ac1f765f4df8c3d109bb9c.jpg

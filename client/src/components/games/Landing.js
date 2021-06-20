@@ -15,8 +15,10 @@ class Landing extends Component {
   }
   render() {
     const { games } = this.props;
-    const gameSlides = games.filter(game => game.tags.indexOf("首頁輪播") > -1);
-    const gameDisplay = games.filter(game => !isEmpty(game.site));
+    const gameSlides = games.filter(
+      (game) => game.tags?.indexOf("首頁輪播") > -1
+    );
+    const gameDisplay = games.filter((game) => !isEmpty(game.site));
     return (
       <div>
         <Navbar games={games} />
@@ -30,14 +32,11 @@ class Landing extends Component {
 }
 
 Landing.propTypes = {
-  getGames: PropTypes.func.isRequired
+  getGames: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  games: state.games.games
+const mapStateToProps = (state) => ({
+  games: state.games.games,
 });
 
-export default connect(
-  mapStateToProps,
-  { getGames }
-)(Landing);
+export default connect(mapStateToProps, { getGames })(Landing);

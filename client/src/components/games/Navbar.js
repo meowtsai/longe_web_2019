@@ -12,8 +12,8 @@ class Navbar extends Component {
       gamesMenu = null;
     } else {
       gamesMenu = games
-        .filter(game => !isEmpty(game.site))
-        .map(game => (
+        .filter((game) => !isEmpty(game.site))
+        .map((game) => (
           <a key={game.game_id} className="dropdown-item" href={game.site}>
             {game.game_name}
           </a>
@@ -60,6 +60,7 @@ class Navbar extends Component {
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
+                  href="!#"
                 >
                   遊戲
                 </a>

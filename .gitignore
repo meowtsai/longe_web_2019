@@ -8,3 +8,5 @@ jspm_packages/
 source/
 config/
 controllers/test_count.js
+live/
+build/
