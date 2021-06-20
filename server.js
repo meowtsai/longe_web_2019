@@ -41,9 +41,9 @@ app.use(requestIp.mw());
 app.use(helmet());
 // Add headers
 app.use(function (req, res, next) {
-
+  
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'https://www.identity-v.com/');
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.identity-v.com');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
